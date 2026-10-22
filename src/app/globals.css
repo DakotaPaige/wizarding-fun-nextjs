@@ -1,0 +1,40 @@
+:root {
+  --ink: #f3eee2;
+  --ink-muted: #a9a496;
+  --surface-0: #0b0a10;
+  --surface-1: #13121b;
+  --surface-2: #1c1a27;
+  --surface-3: #272435;
+  --line: #34303f;
+  --gold: #f5c451;
+  --house-accent: var(--gold);
+  --house-accent-2: var(--gold);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--surface-0);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), serif;
+}

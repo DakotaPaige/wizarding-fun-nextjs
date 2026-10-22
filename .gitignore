@@ -7,3 +7,20 @@ node_modules/
 coverage/
 playwright-report/
 test-results/
+
+# local tooling
+.superpowers/
+
+# next.js
+/out/
+
+# misc
+*.pem
+
+# debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
