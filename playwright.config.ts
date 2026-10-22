@@ -6,7 +6,7 @@ export default defineConfig({
   reporter: "list",
   use: { baseURL: "http://localhost:3000" },
   webServer: {
-    command: "pnpm build && pnpm start",
+    command: "corepack pnpm build && corepack pnpm start",
     port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
