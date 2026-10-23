@@ -6,6 +6,8 @@ export interface GraphQLContext {
   /** Loaded once per request; resolvers read from it instead of refetching. */
   data: WizardingData;
   ip: string | null;
+  /** `Date.now()` when the request began, before the data load; bounds the AI call's timeout. */
+  startedAt: number;
   /** Quizmaster collaborators; built from env per request, replaced by fakes in tests. */
   quiz: QuizServices;
 }
@@ -39,6 +41,7 @@ export function getClientIp(request?: Request): string | null {
 }
 
 export async function createContext(request?: Request): Promise<GraphQLContext> {
+  const startedAt = Date.now();
   const data = await getWizardingData();
-  return { data, ip: getClientIp(request), quiz: createQuizServices(data) };
+  return { data, ip: getClientIp(request), startedAt, quiz: createQuizServices(data) };
 }

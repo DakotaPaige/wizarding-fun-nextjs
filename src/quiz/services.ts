@@ -10,7 +10,8 @@ import type { Quizmaster, QuizData } from "@/quiz/types";
 export interface QuizServices {
   config: QuizConfig;
   guard: BudgetGuard | null;
-  makeAi: () => Quizmaster;
+  /** Builds the AI quizmaster for one call; the selection has already reserved its tokens. */
+  makeAi: (opts: { timeoutMs: number }) => Quizmaster;
   classic: Quizmaster;
   now: Date;
 }
@@ -35,13 +36,14 @@ export function createQuizServices(
     : null;
 
   const apiKey = config.apiKey;
-  const makeAi = (): Quizmaster => {
+  const makeAi = ({ timeoutMs }: { timeoutMs: number }): Quizmaster => {
     if (!apiKey || !guard) return classic;
     return createAiQuizmaster({
       client: new Anthropic({ apiKey }),
       model: config.model,
       topics,
-      onUsage: (tokens) => guard.recordUsage(tokens, now),
+      timeoutMs,
+      onUsage: (tokens) => guard.settleTokens(tokens, now),
     });
   };
 

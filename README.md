@@ -53,12 +53,12 @@ Never commit `.env.local`.
 
 The Sorting Hat quiz is a "dare-and-answer" game. With AI enabled, Claude plays the Hat and writes each turn; the sorting itself is computed server-side by a deterministic formula. Measured live on `claude-haiku-5-5`: roughly 1,250 tokens and 2-3 s per turn.
 
-Four layers stop it from ever running up a bill; the AI is used only while all of them allow it:
+Four layers cap what it can spend; the AI is used only while all of them allow it:
 
 1. **Anthropic Console cap (set up by hand).** Create a dedicated workspace and a dedicated API key for this site, and set a monthly spend limit on the workspace (suggested: $5). Once the cap is hit, the API rejects requests and layer 4 takes over.
-2. **Daily token budget.** `AI_DAILY_TOKEN_BUDGET` (default 200k). Each call adds its input and output tokens to a Redis counter that expires after 48 h; the budget is checked before every call.
-3. **Per-visitor limit.** `AI_GAMES_PER_IP_PER_DAY` (default 3). A game counts once, when it starts, and the IP is salted and hashed before it becomes a key.
-4. **Classic fallback.** Classic mode is used whenever there is no API key, no Redis config, a limit is reached, or the SDK errors, times out or returns an invalid tool call. Once a game falls back it stays classic until it ends, so the badge ("The Hat is awake" / "The Hat is resting") never flips back and forth.
+2. **Daily token budget.** `AI_DAILY_TOKEN_BUDGET` (default 200k). Before each call the server atomically reserves an estimate (1,500 tokens) on a Redis counter that expires after 48 h, and only calls Claude if the total still fits; afterwards the reservation is corrected to the tokens actually used. A burst of concurrent requests therefore cannot overshoot the budget.
+3. **Per-visitor limit.** `AI_GAMES_PER_IP_PER_DAY` (default 3). A game counts once, when it starts, and the IP is salted and hashed before it becomes a key. Later turns and the verdict only get the AI if their game was started and allowed, and one game makes at most 11 AI calls (10 turns and the verdict). A GraphQL request may select only one `quizTurn` or `quizVerdict`, so one request makes at most one AI call.
+4. **Classic fallback.** Classic mode is used whenever there is no API key, no Redis config, Redis fails, a limit is reached, too little of the request's ~8.5 s time budget is left, or the SDK errors, times out or returns an invalid tool call. Once a game falls back it stays classic until it ends, so the badge ("The Hat is awake" / "The Hat is resting") never flips back and forth.
 
 ### Upstash setup
 

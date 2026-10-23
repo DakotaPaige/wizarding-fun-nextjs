@@ -140,7 +140,8 @@ function toGameState(input: StateInput): GameState {
 
 function pickQuizmaster(state: GameState, ctx: GraphQLContext): Promise<Quizmaster> {
   const { config, guard, makeAi, classic, now } = ctx.quiz;
-  return selectQuizmaster({ state, ip: ctx.ip, now, config, guard, makeAi, classic });
+  const elapsedMs = Date.now() - ctx.startedAt;
+  return selectQuizmaster({ state, ip: ctx.ip, now, elapsedMs, config, guard, makeAi, classic });
 }
 
 /** The spec's own topic first, then the remaining available topics in order, at the requested difficulty. */
@@ -192,7 +193,7 @@ builder.mutationField("quizVerdict", (t) =>
 
       const stats = computePlayStats(state.turns);
       const { house, scores } = sortIntoHouse(stats);
-      // turns.length is ROUND_LENGTH here, so selection never counts this as a new game.
+      // turns.length is ROUND_LENGTH here, so selection requires the game's marker instead of counting a game.
       const quizmaster = await pickQuizmaster(state, ctx);
       try {
         return { house, scores, verdict: await quizmaster.verdict(stats, house), mode: quizmaster.mode };

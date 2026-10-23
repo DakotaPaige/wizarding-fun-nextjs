@@ -10,11 +10,11 @@ import {
   TOPIC_VALUES,
   buildTurnMessage,
 } from "./ai-prompt";
+import { AI_TIMEOUT_MS } from "./time-budget";
 import type { PlayStats, Quizmaster, Topic } from "./types";
 
 const TURN_MAX_TOKENS = 400;
 const VERDICT_MAX_TOKENS = 300;
-const REQUEST_OPTIONS = { timeout: 6000, maxRetries: 0 } as const;
 
 export class AiQuizmasterError extends Error {
   constructor(message: string, options?: { cause?: unknown }) {
@@ -27,7 +27,13 @@ export interface AiQuizmasterDeps {
   client: Pick<Anthropic, "messages">;
   model: string;
   topics: Topic[];
+  /**
+   * Called once per call with the tokens it used, so the guard can settle its reservation;
+   * 0 when the request failed and nothing came back.
+   */
   onUsage: (tokens: number) => Promise<void>;
+  /** The SDK timeout for this request's one call (shortened by the request's time budget). */
+  timeoutMs?: number;
 }
 
 const poseQuestionInput = z.object({
@@ -37,6 +43,17 @@ const poseQuestionInput = z.object({
 });
 
 export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
+  const requestOptions = { timeout: deps.timeoutMs ?? AI_TIMEOUT_MS, maxRetries: 0 } as const;
+
+  async function report(tokens: number) {
+    // A failing meter must not decide the outcome.
+    try {
+      await deps.onUsage(tokens);
+    } catch {
+      /* swallowed on purpose */
+    }
+  }
+
   async function send(params: Omit<Anthropic.MessageCreateParamsNonStreaming, "model" | "output_config">) {
     let response: Anthropic.Message;
     try {
@@ -46,17 +63,16 @@ export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
           output_config: { effort: "low" },
           ...params,
         },
-        REQUEST_OPTIONS,
+        requestOptions,
       );
     } catch (cause) {
+      await report(0);
       throw new AiQuizmasterError("Claude request failed", { cause });
     }
-    // Usage is spent whether or not the response is usable; a failing meter must not decide the outcome.
-    try {
-      await deps.onUsage(response.usage.input_tokens + response.usage.output_tokens);
-    } catch {
-      /* swallowed on purpose */
-    }
+    // Usage is spent whether or not the response is usable. A missing count reports NaN, which
+    // keeps the reservation rather than guessing low.
+    const usage = response.usage as Anthropic.Usage | undefined;
+    await report(Number(usage?.input_tokens) + Number(usage?.output_tokens));
     return response;
   }
 

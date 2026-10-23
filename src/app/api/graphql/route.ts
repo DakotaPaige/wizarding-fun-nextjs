@@ -1,13 +1,6 @@
-import { createYoga } from "graphql-yoga";
-import { createContext } from "@/graphql/context";
-import { schema } from "@/graphql/schema";
+import { createGraphQLServer } from "@/graphql/yoga";
 
-const { handleRequest } = createYoga({
-  schema,
-  context: ({ request }) => createContext(request),
-  graphqlEndpoint: "/api/graphql",
-  fetchAPI: { Response },
-});
+const { handleRequest } = createGraphQLServer();
 
 // Next passes `{ params }` as the second argument, which yoga's server context type does not accept.
 const handler = (request: Request) => handleRequest(request, {});

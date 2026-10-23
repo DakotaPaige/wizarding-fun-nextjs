@@ -131,7 +131,21 @@ describe("createAiQuizmaster nextTurn", () => {
     const err = await qm.nextTurn(STATE, false).catch((e: unknown) => e);
     expect(err).toBeInstanceOf(AiQuizmasterError);
     expect((err as AiQuizmasterError).cause).toBe(cause);
-    expect(onUsage).not.toHaveBeenCalled();
+    // Nothing usable came back: report 0 so the token reservation is released.
+    expect(onUsage).toHaveBeenCalledExactlyOnceWith(0);
+  });
+
+  it("passes a shortened timeout through, still with no retries", async () => {
+    const create = vi.fn().mockResolvedValue(toolResponse(VALID));
+    const qm = createAiQuizmaster({
+      client: { messages: { create } } as never,
+      model: "claude-haiku-5-5",
+      topics: TOPICS,
+      onUsage: vi.fn().mockResolvedValue(undefined),
+      timeoutMs: 4500,
+    });
+    await qm.nextTurn(STATE, false);
+    expect(create.mock.calls[0]?.[1]).toEqual({ timeout: 4500, maxRetries: 0 });
   });
 
   it("is not masked by a rejecting onUsage", async () => {
