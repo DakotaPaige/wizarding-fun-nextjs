@@ -1,0 +1,80 @@
+type Art {
+  alt: String!
+  height: Int!
+  src: String!
+  width: Int!
+}
+
+type Character {
+  actor: String
+  alive: Boolean!
+  alternateNames: [String!]!
+  ancestry: String
+  dateOfBirth: String
+  eyeColour: String
+  hairColour: String
+  house: HouseName
+  id: ID!
+  initials: String!
+  name: String!
+  patronus: String
+  portrait: Art
+  wand: Wand
+}
+
+type House {
+  displayName: String!
+
+  """Curated roster, in display order."""
+  members: [Character!]!
+  name: HouseName!
+  traits: [String!]!
+}
+
+enum HouseName {
+  GRYFFINDOR
+  HUFFLEPUFF
+  RAVENCLAW
+  SLYTHERIN
+}
+
+type Query {
+  character(id: ID!): Character
+  house(name: HouseName!): House
+  houses: [House!]!
+
+  """
+  The curated spells, in display order. Spells missing from the API data are omitted.
+  """
+  spells: [Spell!]!
+}
+
+type Spell {
+  """Hex colour for the bolt and glow."""
+  colour: String!
+
+  """Config override if present, else API text."""
+  description: String!
+  effect: SpellEffectKey!
+  id: ID!
+  name: String!
+}
+
+enum SpellEffectKey {
+  ACCIO
+  ALOHOMORA
+  EXPELLIARMUS
+  INCENDIO
+  LEVIOSA
+  LUMOS
+  PATRONUS
+  PROTEGO
+  REPARO
+  STUPEFY
+}
+
+type Wand {
+  core: String
+  lengthInches: Float
+  wood: String
+}

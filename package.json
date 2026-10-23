@@ -10,9 +10,15 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit",
-    "snapshot": "tsx scripts/snapshot.ts"
+    "snapshot": "tsx scripts/snapshot.ts",
+    "schema:print": "tsx scripts/print-schema.ts",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@pothos/core": "^4.15.1",
+    "graphql": "^17.0.2",
+    "graphql-yoga": "6.0.0",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -20,6 +26,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
+    "@graphql-codegen/cli": "^7.4.6",
+    "@graphql-codegen/client-preset": "^6.2.3",
     "@playwright/test": "^1.64.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",

@@ -12,5 +12,7 @@ export default defineConfig({
     setupFiles: ["./vitest.setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
     css: false,
+    // Pothos ships CJS and ESM builds; inlining keeps a single `graphql` realm under test.
+    server: { deps: { inline: [/@pothos/, /graphql/] } },
   },
 });
