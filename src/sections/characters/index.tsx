@@ -1,24 +1,13 @@
 import type { PageDataQuery } from "@/graphql/generated/graphql";
-import styles from "../placeholder.module.css";
+import { Characters } from "./Characters";
 
 interface CharactersSectionProps {
   houses: PageDataQuery["houses"];
 }
 
-/** Placeholder: the Great Hall (house tabs and roster) replaces this. */
+/** The Great Hall: hands the page query's house rosters to the client-side tabs and roster. */
 export function CharactersSection({ houses }: CharactersSectionProps) {
-  return (
-    <section id="great-hall" aria-labelledby="great-hall-title" className={styles.section}>
-      <h2 id="great-hall-title" className={styles.heading}>
-        The Great Hall
-      </h2>
-      <ul className={styles.list}>
-        {houses.map((house) => (
-          <li key={house.name}>
-            {house.displayName} · {house.members.length} members
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
+  // graphql-js builds results as null-prototype objects, which React won't pass to a Client
+  // Component; a structured clone gives the same data as plain objects.
+  return <Characters houses={structuredClone(houses)} />;
 }

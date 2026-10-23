@@ -16,3 +16,11 @@ export function withMotion(ctx: gsap.MatchMedia, full: () => void, reduced: () =
 export function prefersReducedMotion(): boolean {
   return typeof window !== "undefined" && window.matchMedia(REDUCED_MOTION).matches;
 }
+
+/**
+ * True only when the browser positively reports no motion preference. Use it to opt in to
+ * work that relies on an animation finishing (it is false where media queries never match).
+ */
+export function prefersFullMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia(FULL_MOTION).matches;
+}

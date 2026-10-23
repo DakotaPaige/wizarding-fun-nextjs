@@ -1,6 +1,6 @@
 import { graphql } from "@/graphql/generated";
 
-/** Everything the page renders server-side: house rosters (with detail-panel fields) and the curated spells. */
+/** Everything the page renders server-side: house rosters (with detail-panel fields and whether a portrait is registered) and the curated spells. */
 export const PageDataQuery = graphql(`
   query PageData {
     houses {
@@ -24,6 +24,9 @@ export const PageDataQuery = graphql(`
           wood
           core
           lengthInches
+        }
+        portrait {
+          src
         }
       }
     }
