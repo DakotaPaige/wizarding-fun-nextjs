@@ -1,10 +1,13 @@
 import { getWizardingData } from "@/data/repository";
+import { createQuizServices, type QuizServices } from "@/quiz/services";
 import type { CharacterRecord, SpellRecord, WizardingData } from "@/data/types";
 
 export interface GraphQLContext {
   /** Loaded once per request; resolvers read from it instead of refetching. */
   data: WizardingData;
   ip: string | null;
+  /** Quizmaster collaborators; built from env per request, replaced by fakes in tests. */
+  quiz: QuizServices;
 }
 
 export interface Lookups {
@@ -36,5 +39,6 @@ export function getClientIp(request?: Request): string | null {
 }
 
 export async function createContext(request?: Request): Promise<GraphQLContext> {
-  return { data: await getWizardingData(), ip: getClientIp(request) };
+  const data = await getWizardingData();
+  return { data, ip: getClientIp(request), quiz: createQuizServices(data) };
 }

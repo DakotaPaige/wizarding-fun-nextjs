@@ -37,3 +37,4 @@ export const SpellEffectKeyEnum = builder.enumType("SpellEffectKey", {
 });
 
 builder.queryType({});
+builder.mutationType({});
