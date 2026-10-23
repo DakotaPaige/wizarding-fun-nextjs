@@ -1,5 +1,5 @@
 import { gsap } from "@/animation/gsap";
-import { addToFx, EFFECT_FOCUS, SPELL_EFFECTS, type StageRefs } from "@/animation/spell-effects";
+import { addToFx, EFFECT_FOCUS, measureOnce, SPELL_EFFECTS, type StageRefs } from "@/animation/spell-effects";
 import type { SpellEffectKey } from "@/data/curated/spells";
 
 export interface CastOptions {
@@ -34,7 +34,7 @@ export function wandFlick({ wand, tip }: StageRefs, colour: string): gsap.core.T
  * starts, so it leaves wherever the flick has put the tip.
  */
 export function bolt(refs: StageRefs, colour: string): gsap.core.Timeline {
-  const { stage, tip } = refs;
+  const stageBox = measureOnce(refs);
   const streak = addToFx(refs, {
     width: `${BOLT_WIDTH}px`,
     height: `${BOLT_THICKNESS}px`,
@@ -52,19 +52,14 @@ export function bolt(refs: StageRefs, colour: string): gsap.core.Timeline {
   let path: { x0: number; y0: number; x1: number; y1: number; length: number; angle: number } | null = null;
   const measure = () => {
     if (path) return path;
-    const box = stage.getBoundingClientRect();
-    const end = tip.getBoundingClientRect();
-    const x0 = end.left + end.width / 2 - box.left;
-    const y0 = end.top + end.height / 2 - box.top;
-    const x1 = EFFECT_FOCUS.x * box.width;
-    const y1 = EFFECT_FOCUS.y * box.height;
+    const { tip, focus } = stageBox();
     path = {
-      x0,
-      y0,
-      x1,
-      y1,
-      length: Math.hypot(x1 - x0, y1 - y0),
-      angle: (Math.atan2(y1 - y0, x1 - x0) * 180) / Math.PI,
+      x0: tip.x,
+      y0: tip.y,
+      x1: focus.x,
+      y1: focus.y,
+      length: Math.hypot(focus.x - tip.x, focus.y - tip.y),
+      angle: (Math.atan2(focus.y - tip.y, focus.x - tip.x) * 180) / Math.PI,
     };
     return path;
   };
@@ -109,6 +104,16 @@ export function colourFade(stage: StageRefs, colour: string): gsap.core.Timeline
 }
 
 /**
+ * Stops a cast for good. Killing a timeline doesn't notify the timelines nested in it, so
+ * each is killed first: an effect still in flight gets its `onInterrupt` and can undo what
+ * the timeline doesn't own (Lumos's pointer listener, Stupefy's shudder of the stage).
+ */
+function interrupt(cast: gsap.core.Timeline): void {
+  for (const nested of cast.getChildren(true, false, true)) nested.kill();
+  cast.kill();
+}
+
+/**
  * Casts a spell on the stage: kills `previous` (the last cast's timeline), clears `fx` and
  * resets the wand, then plays wand flick → bolt in the spell's colour → signature effect.
  * Returns the new timeline; pass it back as `previous` on the next cast so the last one wins.
@@ -119,7 +124,7 @@ export function castSpell(
   previous: gsap.core.Timeline | null,
   { reduced = false }: CastOptions = {},
 ): gsap.core.Timeline {
-  previous?.kill();
+  if (previous) interrupt(previous);
   stage.fx.replaceChildren();
   gsap.set(stage.wand, { rotation: 0 });
   gsap.set(stage.tip, { opacity: 0 });
