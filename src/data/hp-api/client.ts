@@ -1,4 +1,5 @@
-export const HP_API_BASE_URL = "https://hp-api.onrender.com";
+/** Overridable so end-to-end tests can point the server at an unreachable host and exercise the snapshot fallback. */
+export const HP_API_BASE_URL = process.env.HP_API_BASE_URL || "https://hp-api.onrender.com";
 export const HP_API_TIMEOUT_MS = 4000;
 export const HP_API_REVALIDATE_SECONDS = 86400;
 

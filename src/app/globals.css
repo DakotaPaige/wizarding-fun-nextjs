@@ -1,12 +1,13 @@
 :root {
-  --ink: #f3eee2;
-  --ink-muted: #a9a496;
-  --surface-0: #0b0a10;
-  --surface-1: #13121b;
-  --surface-2: #1c1a27;
-  --surface-3: #272435;
-  --line: #34303f;
+  /* Visual baseline from the approved wireframes. */
+  --bg: #17181c;
+  --surface: #1e2026;
+  --surface-2: #23252b;
+  --border: #3a3d45;
+  --text: #e8e8ea;
+  --text-muted: #a3a6ae;
   --gold: #f5c451;
+  /* Re-pointed per house by the Great Hall (CSS custom properties tweened by GSAP). */
   --house-accent: var(--gold);
   --house-accent-2: var(--gold);
   color-scheme: dark;
@@ -25,8 +26,8 @@ body {
 }
 
 body {
-  background: var(--surface-0);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -37,4 +38,16 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display), serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

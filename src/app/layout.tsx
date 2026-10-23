@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Inter } from "next/font/google";
+import { SITE } from "@/content/site";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -13,8 +14,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Harry Potter Fun",
-  description: "A Harry Potter fan site with houses, characters and a sorting quiz.",
+  title: SITE.title,
+  description: `${SITE.tagline}: spells, the four houses and their people, and a Sorting Hat quiz. A Harry Potter fan project.`,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -44,3 +44,12 @@ export const HOUSES: readonly HouseInfo[] = [
     palette: "yellow & black",
   },
 ];
+
+const HOUSES_BY_NAME = new Map(HOUSES.map((house) => [house.name, house]));
+
+/** Curated info (accents, traits) for a house. Every `HouseName` has an entry. */
+export function getHouseInfo(name: HouseName): HouseInfo {
+  const info = HOUSES_BY_NAME.get(name);
+  if (!info) throw new Error(`No curated info for house ${name}`);
+  return info;
+}
