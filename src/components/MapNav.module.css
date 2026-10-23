@@ -7,9 +7,27 @@
   justify-content: space-between;
   gap: 16px;
   padding: 12px clamp(16px, 4vw, 48px);
+  will-change: transform;
+}
+
+/* The backing sits on its own layer so it can fade (opacity only) as the header leaves the intro. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: color-mix(in srgb, var(--bg) 82%, transparent);
   backdrop-filter: blur(10px);
-  will-change: transform;
+}
+
+.header[data-over-intro="true"]::before {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .header::before {
+    transition: opacity 300ms ease;
+  }
 }
 
 /* Keyboard users tabbing into a hidden header always get it back. */

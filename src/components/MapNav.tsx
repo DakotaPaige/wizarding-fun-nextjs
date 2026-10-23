@@ -32,6 +32,8 @@ export function MapNav() {
   const root = useRef<HTMLElement>(null);
   const button = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  // Over the night sky the header drops its backing; most visits start at the top.
+  const [overIntro, setOverIntro] = useState(true);
   const openRef = useRef(open);
   const sheetId = useId();
 
@@ -68,12 +70,24 @@ export function MapNav() {
           createAutoHide(header, 0, isPinned);
         },
       );
+
+      const intro = document.getElementById("top");
+      if (intro) {
+        const sync = (self: ScrollTrigger) => setOverIntro(self.isActive);
+        ScrollTrigger.create({
+          trigger: intro,
+          start: "top bottom",
+          end: () => `bottom top+=${header.offsetHeight}`,
+          onToggle: sync,
+          onRefresh: sync,
+        });
+      }
     },
     { scope: root },
   );
 
   return (
-    <header ref={root} className={styles.header}>
+    <header ref={root} className={styles.header} data-over-intro={overIntro}>
       <a href="#top" className={styles.brand}>
         <svg className={styles.mark} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z" />

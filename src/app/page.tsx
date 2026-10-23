@@ -1,3 +1,4 @@
+import { SITE } from "@/content/site";
 import { executeQuery } from "@/graphql/execute";
 import { HouseSelectionProvider } from "@/components/house-selection";
 import { MapNav } from "@/components/MapNav";
@@ -17,7 +18,7 @@ export default async function Home() {
     <HouseSelectionProvider>
       <MapNav />
       <main>
-        <IntroSection />
+        <IntroSection title={SITE.title} tagline={SITE.tagline} />
         <SpellsSection spells={spells} />
         <CharactersSection houses={houses} />
         <QuizSection />

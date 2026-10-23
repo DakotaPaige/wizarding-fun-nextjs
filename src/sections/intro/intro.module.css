@@ -1,0 +1,373 @@
+/*
+ * Night sky over the castle. The section has a fixed height and every layer is absolutely
+ * positioned, so nothing in here can shift layout; motion is transform/opacity only.
+ */
+.intro {
+  --sky-top: #04050d;
+  --overscan: 64px; /* ≥ PARALLAX_RANGE in parallax.ts, so drifting layers never show an edge */
+  position: relative;
+  height: max(100svh, 560px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--sky-top);
+}
+
+/* The wand tip replaces the cursor for mouse users only, and never while a keyboard user
+   has focus inside the intro. */
+@media (pointer: fine) {
+  .intro[data-wand]:not(:has(:focus-visible)) {
+    cursor: none;
+  }
+}
+
+/* With scripts and full motion, entrance targets start hidden and the timeline reveals
+   them. Without either, the resting scene shows straight away. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .intro [data-enter] {
+    opacity: 0;
+  }
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.layer {
+  position: absolute;
+  inset: calc(-1 * var(--overscan));
+  will-change: transform;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+/* Registered artwork fills its layer. */
+.layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Sky ---- */
+.skyShape {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 42% at 80% 22%, rgb(130 140 210 / 22%), transparent 70%),
+    radial-gradient(ellipse 110% 55% at 50% 100%, rgb(96 64 150 / 42%), transparent 72%),
+    radial-gradient(ellipse 60% 35% at 15% 85%, rgb(40 90 140 / 22%), transparent 70%),
+    linear-gradient(180deg, var(--sky-top) 0%, #090c20 32%, #131838 62%, #24224a 100%);
+}
+
+/* ---- Stars ---- */
+.star {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+}
+
+.star::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 calc(var(--size) * 2.5) rgb(220 228 255 / 70%);
+}
+
+/* The brightest stars get a soft four-point glint. */
+.star[data-bright]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--size) * 6);
+  height: calc(var(--size) * 6);
+  translate: -50% -50%;
+  background:
+    linear-gradient(90deg, transparent, rgb(255 255 255 / 55%), transparent) center / 100% 1px no-repeat,
+    linear-gradient(0deg, transparent, rgb(255 255 255 / 55%), transparent) center / 1px 100% no-repeat;
+}
+
+/* ---- Moon ---- */
+.moon {
+  position: absolute;
+  top: calc(var(--overscan) + clamp(84px, 13%, 150px));
+  right: calc(var(--overscan) + clamp(24px, 12%, 220px));
+  width: clamp(72px, 10vw, 136px);
+  aspect-ratio: 1;
+}
+
+.moonShape {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 64% 38%, rgb(170 160 130 / 40%) 0 9%, transparent 10%),
+    radial-gradient(circle at 36% 62%, rgb(170 160 130 / 32%) 0 13%, transparent 14%),
+    radial-gradient(circle at 58% 72%, rgb(170 160 130 / 28%) 0 6%, transparent 7%),
+    radial-gradient(circle at 30% 30%, rgb(170 160 130 / 22%) 0 5%, transparent 6%),
+    radial-gradient(circle at 38% 34%, #fffcef 0%, #f3ead0 48%, #d6cba8 100%);
+  box-shadow:
+    0 0 24px 4px rgb(255 244 210 / 45%),
+    0 0 90px 30px rgb(200 210 255 / 16%),
+    0 0 220px 90px rgb(150 160 230 / 10%);
+}
+
+/* ---- Castle ---- */
+.castle {
+  position: absolute;
+  inset: auto 0 0;
+  height: calc(var(--overscan) + clamp(180px, 30vw + 120px, 440px));
+}
+
+.castleSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.castleShape {
+  fill: #0a0b17;
+}
+
+.windows {
+  fill: var(--gold);
+  opacity: 0.85;
+}
+
+.windows rect:nth-child(3n) {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .windows rect:nth-child(5n + 2) {
+    animation: flicker 5s ease-in-out infinite alternate;
+  }
+
+  .windows rect:nth-child(7n) {
+    animation: flicker 7s ease-in-out -2s infinite alternate;
+  }
+}
+
+/* ---- Clouds ---- */
+.cloud {
+  position: absolute;
+  aspect-ratio: 3.4;
+}
+
+.puff {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(closest-side, rgb(200 208 238 / 34%), transparent) 16% 72% / 38% 62% no-repeat,
+    radial-gradient(closest-side, rgb(214 220 245 / 40%), transparent) 42% 34% / 44% 96% no-repeat,
+    radial-gradient(closest-side, rgb(200 208 238 / 32%), transparent) 72% 52% / 42% 80% no-repeat,
+    radial-gradient(closest-side, rgb(170 180 220 / 26%), transparent) 50% 86% / 96% 52% no-repeat;
+}
+
+.cloudA {
+  left: calc(var(--overscan) - 60px);
+  bottom: calc(var(--overscan) + 22%);
+  width: clamp(220px, 30vw, 400px);
+}
+
+.cloudB {
+  right: calc(var(--overscan) - 70px);
+  bottom: calc(var(--overscan) + 31%);
+  width: clamp(240px, 32vw, 440px);
+}
+
+.cloudC {
+  left: calc(var(--overscan) + 34%);
+  bottom: calc(var(--overscan) - 4%);
+  width: clamp(320px, 46vw, 680px);
+  opacity: 0.9;
+}
+
+.cloudD {
+  right: calc(var(--overscan) + 4%);
+  bottom: calc(var(--overscan) + 6%);
+  width: clamp(180px, 22vw, 320px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .puff {
+    animation: drift 38s ease-in-out infinite alternate;
+  }
+
+  .cloudB .puff,
+  .cloudD .puff {
+    animation-duration: 46s;
+    animation-direction: alternate-reverse;
+  }
+}
+
+/* Blends the bottom edge into the page so the next section continues the scene. */
+.horizon {
+  position: absolute;
+  inset: auto 0 0;
+  height: 96px;
+  background: linear-gradient(180deg, transparent, var(--bg));
+}
+
+/* ---- Title block ---- */
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.titleBlock {
+  position: absolute;
+  top: 32%;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.titleWrap {
+  position: relative;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.75rem, 7.5vw, 5.75rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  color: var(--text);
+  text-shadow: 0 2px 28px rgb(4 5 13 / 70%);
+}
+
+/* A gold copy of the title laid exactly over it; its letters flash during the entrance. */
+.glint {
+  position: absolute;
+  inset: 0;
+  color: var(--gold);
+  text-shadow:
+    0 0 12px rgb(245 196 81 / 85%),
+    0 0 36px rgb(245 196 81 / 45%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tagline {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.6vw, 1.1875rem);
+  text-shadow: 0 1px 12px rgb(4 5 13 / 80%);
+}
+
+.cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(40px, 8svh, 72px);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 88px;
+  min-height: 56px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow: 0 1px 10px rgb(4 5 13 / 90%);
+}
+
+.cue:hover {
+  color: var(--gold);
+}
+
+.cue:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chevron {
+    animation: nudge 1.8s ease-in-out infinite;
+  }
+}
+
+/* ---- Sparkle trail ---- */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.3;
+    transform: scale(0.65);
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-24px);
+  }
+  to {
+    transform: translateX(24px);
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .star::before {
+    animation: twinkle var(--twinkle) ease-in-out var(--delay) infinite alternate;
+  }
+}

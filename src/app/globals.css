@@ -40,6 +40,11 @@ h4 {
   font-family: var(--font-display), serif;
 }
 
+/* Anchored sections clear the fixed header (44 px targets + 2 × 12 px padding). */
+section[id] {
+  scroll-margin-top: 72px;
+}
+
 img {
   display: block;
   max-width: 100%;
