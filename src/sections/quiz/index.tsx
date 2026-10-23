@@ -1,12 +1,6 @@
-import styles from "../placeholder.module.css";
+import { Quiz } from "./Quiz";
 
-/** Placeholder: the Sorting Ceremony quiz replaces this. */
+/** The Sorting Ceremony: a client-side round against the quiz mutations; it takes no page data. */
 export function QuizSection() {
-  return (
-    <section id="sorting-ceremony" aria-labelledby="sorting-ceremony-title" className={styles.section}>
-      <h2 id="sorting-ceremony-title" className={styles.heading}>
-        The Sorting Ceremony
-      </h2>
-    </section>
-  );
+  return <Quiz />;
 }

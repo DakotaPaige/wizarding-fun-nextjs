@@ -15,9 +15,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  query PageData {\n    houses {\n      name\n      displayName\n      traits\n      members {\n        id\n        name\n        initials\n        house\n        alternateNames\n        ancestry\n        patronus\n        actor\n        dateOfBirth\n        alive\n        eyeColour\n        hairColour\n        wand {\n          wood\n          core\n          lengthInches\n        }\n        portrait {\n          src\n        }\n      }\n    }\n    spells {\n      id\n      name\n      description\n      colour\n      effect\n    }\n  }\n": typeof types.PageDataDocument,
+    "\n  mutation QuizTurn($input: QuizTurnInput!) {\n    quizTurn(input: $input) {\n      hatLine\n      mode\n      question {\n        id\n        topic\n        difficulty\n        prompt\n        artSlot\n        correctOptionId\n        options {\n          id\n          label\n        }\n      }\n    }\n  }\n": typeof types.QuizTurnDocument,
+    "\n  mutation QuizVerdict($input: QuizVerdictInput!) {\n    quizVerdict(input: $input) {\n      house\n      verdict\n      mode\n      scores {\n        gryffindor\n        slytherin\n        ravenclaw\n        hufflepuff\n      }\n    }\n  }\n": typeof types.QuizVerdictDocument,
 };
 const documents: Documents = {
     "\n  query PageData {\n    houses {\n      name\n      displayName\n      traits\n      members {\n        id\n        name\n        initials\n        house\n        alternateNames\n        ancestry\n        patronus\n        actor\n        dateOfBirth\n        alive\n        eyeColour\n        hairColour\n        wand {\n          wood\n          core\n          lengthInches\n        }\n        portrait {\n          src\n        }\n      }\n    }\n    spells {\n      id\n      name\n      description\n      colour\n      effect\n    }\n  }\n": types.PageDataDocument,
+    "\n  mutation QuizTurn($input: QuizTurnInput!) {\n    quizTurn(input: $input) {\n      hatLine\n      mode\n      question {\n        id\n        topic\n        difficulty\n        prompt\n        artSlot\n        correctOptionId\n        options {\n          id\n          label\n        }\n      }\n    }\n  }\n": types.QuizTurnDocument,
+    "\n  mutation QuizVerdict($input: QuizVerdictInput!) {\n    quizVerdict(input: $input) {\n      house\n      verdict\n      mode\n      scores {\n        gryffindor\n        slytherin\n        ravenclaw\n        hufflepuff\n      }\n    }\n  }\n": types.QuizVerdictDocument,
 };
 
 /**
@@ -38,6 +42,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query PageData {\n    houses {\n      name\n      displayName\n      traits\n      members {\n        id\n        name\n        initials\n        house\n        alternateNames\n        ancestry\n        patronus\n        actor\n        dateOfBirth\n        alive\n        eyeColour\n        hairColour\n        wand {\n          wood\n          core\n          lengthInches\n        }\n        portrait {\n          src\n        }\n      }\n    }\n    spells {\n      id\n      name\n      description\n      colour\n      effect\n    }\n  }\n"): (typeof documents)["\n  query PageData {\n    houses {\n      name\n      displayName\n      traits\n      members {\n        id\n        name\n        initials\n        house\n        alternateNames\n        ancestry\n        patronus\n        actor\n        dateOfBirth\n        alive\n        eyeColour\n        hairColour\n        wand {\n          wood\n          core\n          lengthInches\n        }\n        portrait {\n          src\n        }\n      }\n    }\n    spells {\n      id\n      name\n      description\n      colour\n      effect\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation QuizTurn($input: QuizTurnInput!) {\n    quizTurn(input: $input) {\n      hatLine\n      mode\n      question {\n        id\n        topic\n        difficulty\n        prompt\n        artSlot\n        correctOptionId\n        options {\n          id\n          label\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation QuizTurn($input: QuizTurnInput!) {\n    quizTurn(input: $input) {\n      hatLine\n      mode\n      question {\n        id\n        topic\n        difficulty\n        prompt\n        artSlot\n        correctOptionId\n        options {\n          id\n          label\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation QuizVerdict($input: QuizVerdictInput!) {\n    quizVerdict(input: $input) {\n      house\n      verdict\n      mode\n      scores {\n        gryffindor\n        slytherin\n        ravenclaw\n        hufflepuff\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation QuizVerdict($input: QuizVerdictInput!) {\n    quizVerdict(input: $input) {\n      house\n      verdict\n      mode\n      scores {\n        gryffindor\n        slytherin\n        ravenclaw\n        hufflepuff\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
