@@ -1,5 +1,5 @@
 import { gsap } from "@/animation/gsap";
-import { EFFECT_FOCUS, SPELL_EFFECTS, type StageRefs } from "@/animation/spell-effects";
+import { addToFx, EFFECT_FOCUS, SPELL_EFFECTS, type StageRefs } from "@/animation/spell-effects";
 import type { SpellEffectKey } from "@/data/curated/spells";
 
 export interface CastOptions {
@@ -15,13 +15,6 @@ const BOLT_TRAVEL = 0.16;
 /** The bolt is a fixed-width bar stretched with `scaleX`, so only transforms animate. */
 const BOLT_WIDTH = 100;
 const BOLT_THICKNESS = 3;
-
-function addToFx(fx: HTMLElement, style: Partial<CSSStyleDeclaration>): HTMLDivElement {
-  const el = document.createElement("div");
-  Object.assign(el.style, { position: "absolute", left: "0", top: "0", opacity: "0", ...style });
-  fx.append(el);
-  return el;
-}
 
 /** Wind back, snap forward, settle: the tip flares in the spell's colour on the snap. */
 export function wandFlick({ wand, tip }: StageRefs, colour: string): gsap.core.Timeline {
@@ -40,15 +33,16 @@ export function wandFlick({ wand, tip }: StageRefs, colour: string): gsap.core.T
  * catches up, and a small burst marks the impact. Positions are measured when the bolt
  * starts, so it leaves wherever the flick has put the tip.
  */
-export function bolt({ stage, tip, fx }: StageRefs, colour: string): gsap.core.Timeline {
-  const streak = addToFx(fx, {
+export function bolt(refs: StageRefs, colour: string): gsap.core.Timeline {
+  const { stage, tip } = refs;
+  const streak = addToFx(refs, {
     width: `${BOLT_WIDTH}px`,
     height: `${BOLT_THICKNESS}px`,
     borderRadius: `${BOLT_THICKNESS}px`,
     background: `linear-gradient(to right, transparent, ${colour} 55%, #fff)`,
     boxShadow: `0 0 8px ${colour}, 0 0 18px ${colour}`,
   });
-  const burst = addToFx(fx, {
+  const burst = addToFx(refs, {
     width: "56px",
     height: "56px",
     borderRadius: "50%",
@@ -106,8 +100,8 @@ export function bolt({ stage, tip, fx }: StageRefs, colour: string): gsap.core.T
 }
 
 /** Reduced motion's whole cast: the spell's colour fades up on the stage and stays. */
-export function colourFade({ fx }: StageRefs, colour: string): gsap.core.Timeline {
-  const wash = addToFx(fx, {
+export function colourFade(stage: StageRefs, colour: string): gsap.core.Timeline {
+  const wash = addToFx(stage, {
     inset: "0",
     background: `radial-gradient(circle at ${EFFECT_FOCUS.x * 100}% ${EFFECT_FOCUS.y * 100}%, ${colour}, transparent 55%)`,
   });

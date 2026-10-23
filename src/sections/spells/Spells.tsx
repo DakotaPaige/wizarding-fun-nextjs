@@ -20,9 +20,12 @@ interface SpellsProps {
   spells: ClassroomSpell[];
 }
 
-/** Exactly one of these matches in a browser (and neither in jsdom, so tests stay static). */
-const WIDE = "(min-width: 640px)";
-const NARROW = "(max-width: 639.98px)";
+/**
+ * The section pins only when it fits the viewport whole (keep in step with the CSS). Exactly
+ * one of these matches in a browser, and neither in jsdom, so tests stay static.
+ */
+const PINNED = "(min-width: 640px) and (min-height: 720px)";
+const UNPINNED = `not all and ${PINNED}`;
 
 /**
  * The stage text writes itself in: the name letter by letter, then the description word by
@@ -56,8 +59,9 @@ function WandShape() {
 /**
  * The Classroom (spec §4.2): ten spells as toggle buttons beside a stage. Casting flicks the
  * wand, fires a bolt in the spell's colour and plays the spell's signature effect while its
- * name and description write in. The first spell casts itself when the section arrives; the
- * section pins on wider screens. A new cast always replaces the one in flight.
+ * name and description write in. The first spell casts itself once the whole stage is in
+ * view; the section pins on screens big enough to show it whole. A new cast always replaces
+ * the one in flight.
  */
 export function Spells({ spells }: SpellsProps) {
   const root = useRef<HTMLElement>(null);
@@ -95,17 +99,18 @@ export function Spells({ spells }: SpellsProps) {
       });
       cast.current = castAt;
 
-      gsap.matchMedia().add({ wide: WIDE, narrow: NARROW }, (context) => {
+      gsap.matchMedia().add({ pinned: PINNED, unpinned: UNPINNED }, (context) => {
         const section = root.current;
         if (!section) return;
-        if (context.conditions?.wide) {
+        if (context.conditions?.pinned) {
           ScrollTrigger.create({ trigger: section, start: "top top", end: "+=100%", pin: true });
         }
         ScrollTrigger.create({
-          trigger: section,
-          start: "top 60%",
+          // Once the whole stage (caption included) is on screen, so the first cast is seen.
+          trigger: stage.current,
+          start: "bottom bottom",
           once: true,
-          // Crossing the breakpoint rebuilds this trigger; only a first arrival auto-casts.
+          // Crossing a breakpoint rebuilds this trigger; only a first arrival auto-casts.
           onEnter: () => {
             if (!hasCast.current) castAt(0);
           },

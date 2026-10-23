@@ -1,27 +1,25 @@
 import { gsap } from "@/animation/gsap";
 import type { SpellEffectKey } from "@/data/curated/spells";
+import { addToFx } from "./fx";
 import { EFFECT_FOCUS, type SpellEffect } from "./types";
 
 export type { SpellEffect, StageRefs } from "./types";
 export { EFFECT_FOCUS } from "./types";
+export { addToFx } from "./fx";
 
 /**
  * Temporary stand-in for every signature effect: a soft flash of the spell's colour at the
  * effect focus. Each key gets its own module in `./<key>.ts` (spec §7.3) and replaces this.
  */
-export const placeholderEffect: SpellEffect = ({ fx }, colour) => {
-  const flash = document.createElement("div");
-  Object.assign(flash.style, {
-    position: "absolute",
+export const placeholderEffect: SpellEffect = (stage, colour) => {
+  const flash = addToFx(stage, {
     left: `${EFFECT_FOCUS.x * 100}%`,
     top: `${EFFECT_FOCUS.y * 100}%`,
     width: "min(60%, 360px)",
     aspectRatio: "1",
     borderRadius: "50%",
     background: `radial-gradient(circle, ${colour} 0%, transparent 65%)`,
-    opacity: "0",
   });
-  fx.append(flash);
 
   return gsap
     .timeline()

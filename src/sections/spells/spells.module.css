@@ -225,15 +225,11 @@
   border: 0;
 }
 
-/* ---- Wider screens: list beside the stage, section fills the pinned viewport ---- */
+/* ---- Wider screens: list beside the stage ---- */
 @media (min-width: 640px) {
-  /* The pin starts at the very top, so the padding (not a scroll margin) clears the fixed
-     header and a map-nav jump lands exactly where the pin begins. */
-  .section[id] {
+  .section {
     display: flex;
-    min-height: 100svh;
-    padding-block: 88px 32px;
-    scroll-margin-top: 0;
+    padding-block: 40px;
   }
 
   .inner {
@@ -295,5 +291,48 @@
   .description {
     max-width: 48ch;
     font-size: 1rem;
+  }
+}
+
+/* ---- Tall enough to pin (keep in step with PINNED in Spells.tsx): the section fills the
+   viewport. The pin starts at the very top, so the padding (not a scroll margin) clears the
+   fixed header and a map-nav jump lands exactly where the pin begins. ---- */
+@media (min-width: 640px) and (min-height: 720px) {
+  .section[id] {
+    min-height: 100svh;
+    padding-block: 88px 32px;
+    scroll-margin-top: 0;
+  }
+}
+
+/* ---- Wide but short (e.g. a 1366 × 768 laptop): no pin, and a compact layout that still
+   fits below the header — 44 px targets, tighter gaps. ---- */
+@media (min-width: 640px) and (max-height: 719.98px) {
+  .section {
+    padding-block: 8px 16px;
+  }
+
+  .inner {
+    gap: 16px;
+  }
+
+  .header {
+    gap: 4px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .list {
+    gap: 4px;
+  }
+
+  .stage {
+    min-height: 476px; /* the list's height: 10 × 44 px + 9 × 4 px */
+  }
+
+  .caption {
+    bottom: 24px;
   }
 }
