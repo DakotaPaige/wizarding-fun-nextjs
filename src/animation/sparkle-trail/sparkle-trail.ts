@@ -1,13 +1,15 @@
 import { gsap } from "@/animation/gsap";
 import { createParticlePool } from "./particle-pool";
+import { createTrailEmitter } from "./trail-emitter";
 
 export interface SparkleTrailOptions {
   poolSize: number;
   /**
    * Whether the wand tip should be drawn at the mouse position — i.e. the system cursor is
-   * hidden. Checked on each mouse move. Defaults to always.
+   * hidden there. Checked on each mouse move with the element under the pointer. Defaults
+   * to always.
    */
-  showWandTip?: () => boolean;
+  showWandTip?: (target: EventTarget | null) => boolean;
 }
 
 export interface SparkleTrail {
@@ -57,7 +59,11 @@ export function createSparkleTrail(
   const pool = createParticlePool(poolSize);
   // Indexed by `Particle.tint`.
   const sprites = [createGlowSprite(GOLD), createGlowSprite(WHITE)] as const;
-  const tip = { x: 0, y: 0, visible: false, last: { x: 0, y: 0, set: false } };
+  const emitter = createTrailEmitter((x, y) => pool.spawn(x, y), {
+    spacing: SPAWN_SPACING,
+    maxPerMove: MAX_SPAWN_PER_EVENT,
+  });
+  const tip = { x: 0, y: 0, visible: false };
   let rect = canvas.getBoundingClientRect();
   let rectStale = false;
   let dirty = true;
@@ -83,22 +89,8 @@ export function createSparkleTrail(
     return { x: clientX - rect.left, y: clientY - rect.top };
   };
 
-  /** Scatters sparkles along the segment since the last input so fast moves leave no gaps. */
   const trailTo = (x: number, y: number) => {
-    const { last } = tip;
-    if (!last.set) {
-      pool.spawn(x, y);
-    } else {
-      const distance = Math.hypot(x - last.x, y - last.y);
-      const count = Math.min(MAX_SPAWN_PER_EVENT, Math.floor(distance / SPAWN_SPACING));
-      for (let i = 1; i <= count; i++) {
-        const t = i / count;
-        pool.spawn(last.x + (x - last.x) * t, last.y + (y - last.y) * t);
-      }
-    }
-    last.x = x;
-    last.y = y;
-    last.set = true;
+    emitter.moveTo(x, y);
     dirty = true;
   };
 
@@ -107,24 +99,22 @@ export function createSparkleTrail(
     const { x, y } = toLocal(event.clientX, event.clientY);
     tip.x = x;
     tip.y = y;
-    tip.visible = showWandTip();
+    tip.visible = showWandTip(event.target);
     trailTo(x, y);
   };
   const onPointerLeave = () => {
     tip.visible = false;
-    tip.last.set = false;
+    emitter.lift();
     dirty = true;
   };
   const onTouch = (event: TouchEvent) => {
     const touch = event.touches[0];
     if (!touch) return;
-    if (event.type === "touchstart") tip.last.set = false;
+    if (event.type === "touchstart") emitter.lift();
     const { x, y } = toLocal(touch.clientX, touch.clientY);
     trailTo(x, y);
   };
-  const onTouchEnd = () => {
-    tip.last.set = false;
-  };
+  const onTouchEnd = () => emitter.lift();
   const markRectStale = () => {
     rectStale = true;
   };

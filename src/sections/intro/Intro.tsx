@@ -8,7 +8,7 @@ import { Art } from "@/components/Art";
 import { getArt } from "@/data/art-manifest";
 import { createRng } from "@/quiz/rng";
 import { buildIntroTimeline } from "./intro-timeline";
-import { createParallax, requestTiltPermission, type ParallaxLayer } from "./parallax";
+import { createParallax, requestTiltAccess, type ParallaxLayer } from "./parallax";
 import styles from "./intro.module.css";
 
 interface IntroProps {
@@ -20,6 +20,7 @@ interface IntroProps {
 const DEPTH = { sky: 0.05, stars: 0.12, moon: 0.2, castle: 0.45, clouds: 0.8 } as const;
 
 const FINE_POINTER = "(pointer: fine)";
+const INTERACTIVE = "a, button, input, select, textarea, [tabindex]";
 
 /** A fixed, seeded star field so server and client render the same sky. */
 const STARS = (() => {
@@ -196,12 +197,21 @@ export function Intro({ title, tagline }: IntroProps) {
           const finePointer = window.matchMedia(FINE_POINTER).matches;
           parallax.setSource(finePointer ? "pointer" : "drag");
           let live = true;
+          let asking = false;
+          // Ask on the first touch. A request rejected without an answer (the touch didn't
+          // count as a user gesture, e.g. a scroll swipe on iOS) re-arms for the next touch;
+          // an answer or a missing sensor is final. Drag stays the source until granted.
           const askForTilt = () => {
-            void requestTiltPermission().then((granted) => {
-              if (granted && live) parallax.setSource("tilt");
+            if (asking) return;
+            asking = true;
+            void requestTiltAccess().then((access) => {
+              asking = false;
+              if (!live || access === "failed") return;
+              section.removeEventListener("touchend", askForTilt);
+              if (access === "granted") parallax.setSource("tilt");
             });
           };
-          if (!finePointer) section.addEventListener("touchend", askForTilt, { once: true, passive: true });
+          if (!finePointer) section.addEventListener("touchend", askForTilt, { passive: true });
 
           setWand(true);
           return () => {
@@ -226,8 +236,12 @@ export function Intro({ title, tagline }: IntroProps) {
       const finePointer = window.matchMedia(FINE_POINTER);
       const trail = createSparkleTrail(canvas.current, {
         poolSize: 120,
-        // Keyboard users keep the system cursor (see the CSS), so no wand tip is drawn then.
-        showWandTip: () => finePointer.matches && !root.current?.matches(":has(:focus-visible)"),
+        // One cursor at a time: keyboard focus keeps the system cursor (see the CSS), and so
+        // do links and buttons, whose own cursor wins over the inherited `cursor: none`.
+        showWandTip: (target) =>
+          finePointer.matches &&
+          !root.current?.matches(":has(:focus-visible)") &&
+          !(target instanceof Element && target.closest(INTERACTIVE)),
       });
       trail.start();
       return () => trail.destroy();

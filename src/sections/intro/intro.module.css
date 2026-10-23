@@ -13,10 +13,15 @@
 }
 
 /* The wand tip replaces the cursor for mouse users only, and never while a keyboard user
-   has focus inside the intro. */
+   has focus inside the intro. Links and buttons keep the system pointer as their hover
+   affordance; the trail stops drawing the tip over them, so one cursor shows at a time. */
 @media (pointer: fine) {
   .intro[data-wand]:not(:has(:focus-visible)) {
     cursor: none;
+  }
+
+  .intro[data-wand] :is(a, button) {
+    cursor: pointer;
   }
 }
 

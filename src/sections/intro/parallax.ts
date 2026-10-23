@@ -25,19 +25,32 @@ type DeviceOrientationWithPermission = typeof DeviceOrientationEvent & {
 };
 
 /**
- * Asks for motion-sensor access where the browser requires it (iOS Safari). It must be
- * called from a user gesture. Resolves `false` — quietly, never throwing — when the
- * sensor API is missing or the user declines, so callers can fall back to dragging.
+ * - `granted` / `denied`: the user's answer (or no prompt needed: granted).
+ * - `unsupported`: no orientation sensor API.
+ * - `failed`: the prompt was rejected without an answer — typically because the gesture
+ *   didn't count as user activation (e.g. a scroll swipe on iOS) — so asking again on a
+ *   later gesture may work.
  */
-export async function requestTiltPermission(): Promise<boolean> {
-  if (typeof DeviceOrientationEvent === "undefined") return false;
+export type TiltAccess = "granted" | "denied" | "unsupported" | "failed";
+
+/**
+ * Asks for motion-sensor access where the browser requires it (iOS Safari). It must be
+ * called from a user gesture. Never throws or logs.
+ */
+export async function requestTiltAccess(): Promise<TiltAccess> {
+  if (typeof DeviceOrientationEvent === "undefined") return "unsupported";
   const { requestPermission } = DeviceOrientationEvent as DeviceOrientationWithPermission;
-  if (typeof requestPermission !== "function") return true;
+  if (typeof requestPermission !== "function") return "granted";
   try {
-    return (await requestPermission()) === "granted";
+    return (await requestPermission()) === "granted" ? "granted" : "denied";
   } catch {
-    return false;
+    return "failed";
   }
+}
+
+/** `requestTiltAccess` as a yes/no: `false` means fall back to dragging. */
+export async function requestTiltPermission(): Promise<boolean> {
+  return (await requestTiltAccess()) === "granted";
 }
 
 /**
