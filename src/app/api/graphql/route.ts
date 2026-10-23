@@ -9,4 +9,7 @@ const { handleRequest } = createYoga({
   fetchAPI: { Response },
 });
 
-export { handleRequest as GET, handleRequest as POST };
+// Next passes `{ params }` as the second argument, which yoga's server context type does not accept.
+const handler = (request: Request) => handleRequest(request, {});
+
+export { handler as GET, handler as POST };
