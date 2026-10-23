@@ -21,6 +21,7 @@ import type { GreatHallCharacter } from "./CharacterCard";
 import { crossfade, dropSheet, growFromCard, settleSheet, shrinkIntoCard, swapCharacter, type DetailParts } from "./detail-motion";
 import { formatDate, formatField, formatWand, UNKNOWN } from "./format";
 import { useFocusTrap } from "./useFocusTrap";
+import { WandIllustration } from "./WandIllustration";
 import styles from "./detail.module.css";
 
 interface CharacterDetailProps {
@@ -299,12 +300,14 @@ export function CharacterDetail({ character, house, prevName, nextName, onClose,
             <Field term="Status">{character.alive ? "Alive" : "Deceased"}</Field>
           </dl>
 
-          <dl className={styles.wand}>
-            <Field term="Wand">
-              <Value text={formatWand(character.wand)} />
-            </Field>
-            {/* Task 19 (stretch): the illustrated wand, drawn to length on a 0–15 in scale, goes here. */}
-          </dl>
+          <div className={styles.wand}>
+            <dl className={styles.wandFact}>
+              <Field term="Wand">
+                <Value text={formatWand(character.wand)} />
+              </Field>
+            </dl>
+            {character.wand && <WandIllustration wand={character.wand} />}
+          </div>
 
           <nav className={styles.walk} aria-label="Roster">
             <button

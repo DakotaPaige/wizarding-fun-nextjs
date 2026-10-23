@@ -68,6 +68,16 @@ describe("CharacterDetail", () => {
     expect(within(dialog()).queryByText("Unknown")).toBeNull();
   });
 
+  it("draws the wand only when the character has one with a length", () => {
+    renderDetail(HERMIONE);
+    expect(within(dialog()).getByRole("img", { name: "Vine · dragon heartstring · 10¾ in" })).toBeInTheDocument();
+  });
+
+  it("draws no wand for a character without one", () => {
+    renderDetail(MYRTLE);
+    expect(within(dialog()).queryByRole("img", { name: /in$/ })).toBeNull();
+  });
+
   it("calls onNext and onPrev from the roster buttons", async () => {
     const user = userEvent.setup();
     const { onNext, onPrev } = renderDetail();

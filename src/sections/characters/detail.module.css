@@ -198,6 +198,10 @@
   border-radius: 12px;
 }
 
+.wandFact {
+  margin: 0;
+}
+
 .walk {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

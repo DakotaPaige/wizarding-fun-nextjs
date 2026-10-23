@@ -1,0 +1,48 @@
+.wand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.core {
+  stroke: #fff3c9;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+.baseline {
+  stroke: #474b55;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .core {
+    animation: glow 3.2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes glow {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
