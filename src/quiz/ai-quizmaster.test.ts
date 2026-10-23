@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { VERDICT_SYSTEM_PROMPT, POSE_QUESTION_TOOL } from "./ai-prompt";
 import { AiQuizmasterError, createAiQuizmaster } from "./ai-quizmaster";
 import type { GameState, PlayStats, Topic } from "./types";
 
@@ -166,6 +167,14 @@ describe("createAiQuizmaster nextTurn", () => {
   });
 });
 
+describe("pose_question schema", () => {
+  it("has no maxLength (unsupported in strict mode) and states the limit in the description", () => {
+    const hat = POSE_QUESTION_TOOL.input_schema.properties.hat_line;
+    expect(JSON.stringify(POSE_QUESTION_TOOL)).not.toMatch(/maxLength|minLength/);
+    expect(hat.description).toMatch(/160/);
+  });
+});
+
 describe("createAiQuizmaster verdict", () => {
   it("returns trimmed text from a tool-less call", async () => {
     const { qm, create, onUsage } = setup(vi.fn().mockResolvedValue(textResponse("  Ravenclaw it is.  ")));
@@ -176,6 +185,7 @@ describe("createAiQuizmaster verdict", () => {
       max_tokens: 300,
       output_config: { effort: "low" },
     });
+    expect(params.system).toBe(VERDICT_SYSTEM_PROMPT);
     expect(params.tools).toBeUndefined();
     expect(options).toEqual({ timeout: 6000, maxRetries: 0 });
     expect(onUsage).toHaveBeenCalledWith(70);

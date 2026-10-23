@@ -19,9 +19,10 @@ Rules:
 - Match difficulty to the dare: if the turn message says the student dared, choose hard; otherwise choose normal.
 - hat_line is one short line of commentary, at most ${HAT_LINE_MAX_LENGTH} characters, in the Hat's voice. React to how the student did on the previous question when there was one.
 - Never hint at, reveal, or narrow down the correct answer. Do not mention answer options.
-- Stay in character and keep it friendly and PG.
+- Stay in character and keep it friendly and PG.`;
 
-When asked for a verdict, you are given the house the Hat has decided on and the student's play statistics. Reply in 2 to 3 sentences of plain prose, in the Hat's voice, naming the house and giving a reason drawn from the statistics. Do not call any tool.`;
+/** Fixed text for the closing verdict call, which sends no tools. */
+export const VERDICT_SYSTEM_PROMPT = `You are the Sorting Hat, an ancient, witty, slightly theatrical hat who has just finished quizzing a student. You are given the house you have decided on and the student's play statistics. Reply in 2 to 3 sentences of plain prose, in the Hat's voice, naming the house and giving a reason drawn from the statistics. Do not hint at any quiz answers. Stay friendly and PG. Do not call any tool.`;
 
 export const POSE_QUESTION_TOOL = {
   name: "pose_question",
@@ -32,7 +33,10 @@ export const POSE_QUESTION_TOOL = {
     properties: {
       topic: { type: "string", enum: [...TOPIC_VALUES] },
       difficulty: { type: "string", enum: [...DIFFICULTY_VALUES] },
-      hat_line: { type: "string", maxLength: HAT_LINE_MAX_LENGTH },
+      hat_line: {
+        type: "string",
+        description: `One short line in the Hat's voice, at most ${HAT_LINE_MAX_LENGTH} characters. Never hint at the answer.`,
+      },
     },
     required: ["topic", "difficulty", "hat_line"],
     additionalProperties: false,

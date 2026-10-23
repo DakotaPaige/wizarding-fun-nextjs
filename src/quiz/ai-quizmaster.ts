@@ -6,6 +6,7 @@ import {
   HAT_LINE_MAX_LENGTH,
   POSE_QUESTION_TOOL,
   SYSTEM_PROMPT,
+  VERDICT_SYSTEM_PROMPT,
   TOPIC_VALUES,
   buildTurnMessage,
 } from "./ai-prompt";
@@ -36,13 +37,12 @@ const poseQuestionInput = z.object({
 });
 
 export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
-  async function send(params: Omit<Anthropic.MessageCreateParamsNonStreaming, "model" | "system" | "output_config">) {
+  async function send(params: Omit<Anthropic.MessageCreateParamsNonStreaming, "model" | "output_config">) {
     let response: Anthropic.Message;
     try {
       response = await deps.client.messages.create(
         {
           model: deps.model,
-          system: SYSTEM_PROMPT,
           output_config: { effort: "low" },
           ...params,
         },
@@ -71,6 +71,7 @@ export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
 
     async nextTurn(state, dared) {
       const response = await send({
+        system: SYSTEM_PROMPT,
         max_tokens: TURN_MAX_TOKENS,
         tools: [POSE_QUESTION_TOOL],
         tool_choice: { type: "auto" },
@@ -97,6 +98,7 @@ export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
 
     async verdict(stats: PlayStats, house: HouseName) {
       const response = await send({
+        system: VERDICT_SYSTEM_PROMPT,
         max_tokens: VERDICT_MAX_TOKENS,
         messages: [
           {
