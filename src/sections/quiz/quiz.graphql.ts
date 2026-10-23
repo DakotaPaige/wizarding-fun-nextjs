@@ -79,10 +79,13 @@ export function toWireState(state: GameState): GameStateInput {
   return {
     seed: state.seed,
     mode: toWire(state.mode),
-    turns: state.turns.map((turn) => ({
-      ...turn,
-      topic: toWire(turn.topic),
-      difficulty: toWire(turn.difficulty),
+    // Field by field, so a client-only field on TurnRecord can never reach the server's input type.
+    turns: state.turns.map(({ topic, difficulty, dared, correct, msToAnswer }) => ({
+      topic: toWire(topic),
+      difficulty: toWire(difficulty),
+      dared,
+      correct,
+      msToAnswer,
     })),
   };
 }

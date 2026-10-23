@@ -79,7 +79,7 @@ export function Quiz({ fetchTurn = fetchQuizTurn, fetchVerdict = fetchQuizVerdic
             </div>
 
             <div className={styles.layout}>
-              <HatVoice line={game.hatLine} />
+              <HatVoice line={game.hatLine} lineId={game.hatLineId} />
 
               <div className={styles.play}>
                 {phase === "intro" && (

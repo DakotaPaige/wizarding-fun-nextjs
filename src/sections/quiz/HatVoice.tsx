@@ -26,13 +26,15 @@ export function typeHatLine(visual: HTMLElement): gsap.core.Tween {
 
 interface HatVoiceProps {
   line: string;
+  /** Changes with every new line (even a repeated one), which re-types and re-announces it. */
+  lineId: number;
 }
 
 /**
  * The Sorting Hat as a voice: its latest line as a quote with the attribution. Hat art shows
  * only when the `quiz.hat` slot is registered. New lines are announced politely.
  */
-export function HatVoice({ line }: HatVoiceProps) {
+export function HatVoice({ line, lineId }: HatVoiceProps) {
   const root = useRef<HTMLElement>(null);
   const visual = useRef<HTMLSpanElement>(null);
   const attribution = useId();
@@ -49,19 +51,19 @@ export function HatVoice({ line }: HatVoiceProps) {
         },
       );
     },
-    { dependencies: [line], scope: root, revertOnUpdate: true },
+    { dependencies: [lineId], scope: root, revertOnUpdate: true },
   );
 
   return (
     <figure ref={root} className={styles.hat} aria-labelledby={attribution}>
       <blockquote className={styles.hatQuote}>
-        {/* Keyed per line so React swaps whole elements and never edits text SplitText has split. */}
+        {/* Keyed per line id so React swaps whole elements and never edits text SplitText has split. */}
         <span aria-live="polite">
-          <span key={`sr-${line}`} className={styles.srOnly}>
+          <span key={`sr-${lineId}`} className={styles.srOnly}>
             {line}
           </span>
         </span>
-        <span key={`visual-${line}`} ref={visual} aria-hidden="true">
+        <span key={`visual-${lineId}`} ref={visual} aria-hidden="true">
           “{line}”
         </span>
       </blockquote>

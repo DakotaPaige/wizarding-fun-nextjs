@@ -3,7 +3,7 @@ import type { HouseName } from "@/data/types";
 import { HAT_LINES } from "@/quiz/hat-lines";
 import { createRng } from "@/quiz/rng";
 import { computePlayStats, type HouseScores } from "@/quiz/sorting";
-import type { GameState, Question, QuizMode } from "@/quiz/types";
+import type { GameState, Question, QuizMode, TurnRecord } from "@/quiz/types";
 import type {
   FetchTurn,
   FetchVerdict,
@@ -44,6 +44,8 @@ interface Game {
   /** When the current question was shown (ms, from `now`). */
   shownAt: number;
   hatLine: string;
+  /** Bumped whenever a line is set, so a repeated line is still typed and announced anew. */
+  hatLineId: number;
   result: QuizResult | null;
   /** The request in flight, or the one that failed while `phase` is "error". */
   pending: Pending | null;
@@ -70,7 +72,7 @@ function newSeed(previous?: number): number {
   return seed;
 }
 
-function freshGame(seed: number): Game {
+function freshGame(seed: number, hatLineId = 0): Game {
   return {
     phase: "intro",
     state: { seed, mode: "ai", turns: [] },
@@ -79,6 +81,7 @@ function freshGame(seed: number): Game {
     chosenOptionId: null,
     shownAt: 0,
     hatLine: INVITATION,
+    hatLineId,
     result: null,
     pending: null,
   };
@@ -88,11 +91,35 @@ function freshGame(seed: number): Game {
 const stickyMode = (current: QuizMode, reported: QuizMode): QuizMode =>
   current === "classic" ? "classic" : reported;
 
+/** Keeps the reaction's pick independent of the choice line's at the same turn. */
+const REACTION_RNG_OFFSET = 0x7a11;
+
+/** A deterministic pick, so the same game always hears the same lines. */
+function pickLine(lines: readonly string[], seed: number): string {
+  return lines[Math.floor(createRng(seed)() * lines.length)]!;
+}
+
 /** The Hat's reaction to the Safe/Dare choice, shown while the question loads. */
 function choiceLine(state: GameState, dared: boolean): string {
-  const lines = dared ? HAT_LINES.daring : HAT_LINES.safe;
-  return lines[Math.floor(createRng(state.seed + state.turns.length)() * lines.length)]!;
+  return pickLine(dared ? HAT_LINES.daring : HAT_LINES.safe, state.seed + state.turns.length);
 }
+
+/** The Hat's reaction to the turn just answered, shown at once. */
+function reactionLine(state: GameState, turn: TurnRecord): string {
+  const lines = turn.dared
+    ? turn.correct
+      ? HAT_LINES.daredRight
+      : HAT_LINES.daredWrong
+    : turn.correct
+      ? HAT_LINES.safeRight
+      : HAT_LINES.safeWrong;
+  return pickLine(lines, state.seed + state.turns.length + REACTION_RNG_OFFSET);
+}
+
+const say = (game: Game, hatLine: string): Pick<Game, "hatLine" | "hatLineId"> => ({
+  hatLine,
+  hatLineId: game.hatLineId + 1,
+});
 
 function reduce(game: Game, action: Action): Game {
   switch (action.type) {
@@ -103,21 +130,26 @@ function reduce(game: Game, action: Action): Game {
       const { pending } = action;
       if (pending.kind === "verdict") return { ...game, phase: "verdict-loading", pending };
       const { state, dared } = pending.request;
-      return { ...game, phase: "loading", pending, dared, hatLine: choiceLine(state, dared) };
+      return { ...game, phase: "loading", pending, dared, ...say(game, choiceLine(state, dared)) };
     }
 
     case "turn-loaded": {
       if (action.pending !== game.pending) return game; // stale: restarted meanwhile
-      const { question, hatLine, mode } = action.response;
+      const { question, hatLine, mode: reported } = action.response;
+      const mode = stickyMode(game.state.mode, reported);
+      // The server's line reacts to the previous answer, which the Hat has already reacted to
+      // on the client. Only the AI's line adds something new; on turn 0 it is the opening line.
+      // In classic mode the choice line shown while loading stays.
+      const voice = game.state.turns.length === 0 || mode === "ai" ? say(game, hatLine) : {};
       return {
         ...game,
+        ...voice,
         phase: "question",
         pending: null,
         question,
-        hatLine,
         chosenOptionId: null,
         shownAt: action.at,
-        state: { ...game.state, mode: stickyMode(game.state.mode, mode) },
+        state: { ...game.state, mode },
       };
     }
 
@@ -139,7 +171,7 @@ function reduce(game: Game, action: Action): Game {
     case "answer": {
       const { question } = game;
       if (game.phase !== "question" || !question) return game;
-      const turn = {
+      const turn: TurnRecord = {
         topic: question.topic,
         difficulty: question.difficulty,
         dared: game.dared,
@@ -148,6 +180,7 @@ function reduce(game: Game, action: Action): Game {
       };
       return {
         ...game,
+        ...say(game, reactionLine(game.state, turn)),
         phase: "answered",
         chosenOptionId: action.optionId,
         state: { ...game.state, turns: [...game.state.turns, turn] },
@@ -158,7 +191,7 @@ function reduce(game: Game, action: Action): Game {
       return game.phase === "answered" ? { ...game, phase: "dare", question: null, chosenOptionId: null } : game;
 
     case "restart":
-      return freshGame(action.seed);
+      return freshGame(action.seed, game.hatLineId + 1);
   }
 }
 
@@ -205,6 +238,7 @@ export function useQuizGame({ fetchTurn, fetchVerdict, now = Date.now, seed }: Q
     dared: game.dared,
     chosenOptionId: game.chosenOptionId,
     hatLine: game.hatLine,
+    hatLineId: game.hatLineId,
     result: game.result,
 
     start: () => dispatch({ type: "start" }),

@@ -1,5 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { HAT_LINES } from "@/quiz/hat-lines";
 import type { QuizMode } from "@/quiz/types";
 import type { FetchTurn, FetchVerdict, TurnRequest, TurnResponse, VerdictResponse } from "./quiz.graphql";
 import { ROUND_LENGTH, useQuizGame } from "./useQuizGame";
@@ -191,5 +192,79 @@ describe("useQuizGame", () => {
     // The turn that was in flight resolves after the restart; it must not leak into the new game.
     await act(async () => held[0]!());
     fresh();
+  });
+
+  describe("the Hat's voice", () => {
+    it.each([
+      [false, "a", HAT_LINES.safeRight],
+      [false, "b", HAT_LINES.safeWrong],
+      [true, "a", HAT_LINES.daredRight],
+      [true, "b", HAT_LINES.daredWrong],
+    ] as const)("reacts at once to an answer (dared %s, option %s) from the matching list", async (dared, optionId, list) => {
+      const { hook } = setup();
+      act(() => hook.result.current.start());
+      act(() => hook.result.current.choose(dared));
+      await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+      const before = hook.result.current.hatLineId;
+      act(() => hook.result.current.answer(optionId));
+      expect(list).toContain(hook.result.current.hatLine);
+      expect(hook.result.current.hatLineId).toBe(before + 1);
+    });
+
+    it("picks the reaction deterministically from the seed and turn", async () => {
+      const lines: string[] = [];
+      for (let run = 0; run < 2; run++) {
+        const { hook } = setup();
+        act(() => hook.result.current.start());
+        act(() => hook.result.current.choose(true));
+        await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+        act(() => hook.result.current.answer("a"));
+        lines.push(hook.result.current.hatLine);
+        hook.unmount();
+      }
+      expect(lines[0]).toBe(lines[1]);
+    });
+
+    it("shows the server's line on turn 0 in either mode", async () => {
+      const { hook } = setup({ fetchTurn: async (request) => turnResponse(request, "classic") });
+      act(() => hook.result.current.start());
+      act(() => hook.result.current.choose(false));
+      await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+      expect(hook.result.current.hatLine).toBe("Line 0");
+    });
+
+    it("in classic mode, shows the choice line with the next question instead of the server's", async () => {
+      const { hook } = setup({ fetchTurn: async (request) => turnResponse(request, "classic") });
+      act(() => hook.result.current.start());
+      await playTurn(hook, { dared: false, optionId: "a" });
+      act(() => hook.result.current.choose(true));
+      expect(HAT_LINES.daring).toContain(hook.result.current.hatLine);
+      const choice = hook.result.current.hatLine;
+      await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+      expect(hook.result.current.hatLine).toBe(choice);
+    });
+
+    it("in AI mode, shows the server's line with the next question", async () => {
+      const { hook } = setup();
+      act(() => hook.result.current.start());
+      await playTurn(hook, { dared: false, optionId: "a" });
+      act(() => hook.result.current.choose(false));
+      await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+      expect(hook.result.current.hatLine).toBe("Line 1");
+    });
+
+    it("gives every new line a new id, even when its text repeats", async () => {
+      const { hook } = setup({ fetchTurn: async (request) => ({ ...turnResponse(request), hatLine: "Same again." }) });
+      act(() => hook.result.current.start());
+      const ids = [hook.result.current.hatLineId];
+      for (let i = 0; i < 2; i++) {
+        act(() => hook.result.current.choose(false));
+        await waitFor(() => expect(hook.result.current.phase).toBe("question"));
+        ids.push(hook.result.current.hatLineId);
+        act(() => hook.result.current.answer("a"));
+        act(() => hook.result.current.next());
+      }
+      expect(new Set(ids).size).toBe(ids.length);
+    });
   });
 });
