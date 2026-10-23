@@ -80,14 +80,13 @@ function QuizResultStub() {
   );
 }
 
-function renderHall(onOpen = vi.fn()) {
+function renderHall() {
   render(
     <HouseSelectionProvider>
-      <Characters houses={HOUSES} onOpen={onOpen} />
+      <Characters houses={HOUSES} />
       <QuizResultStub />
     </HouseSelectionProvider>,
   );
-  return { onOpen };
 }
 
 const tab = (name: string) => screen.getByRole("tab", { name });
@@ -199,12 +198,30 @@ describe("Characters", () => {
     expect(within(card).getByText("Matthew Lewis")).toBeInTheDocument();
   });
 
-  it("opens a character when its card is clicked", async () => {
+  it("opens a character's detail panel from its card and walks the roster", async () => {
     const user = userEvent.setup();
-    const { onOpen } = renderHall();
+    renderHall();
     await user.click(within(panel()).getByRole("button", { name: /Hermione Granger/ }));
-    expect(onOpen).toHaveBeenCalledTimes(1);
-    expect(onOpen.mock.calls[0]![0]).toMatchObject({ id: "hermione-granger", name: "Hermione Granger" });
+    expect(screen.getByRole("dialog")).toHaveAccessibleName("Hermione Granger");
+
+    await user.click(screen.getByRole("button", { name: "Next: Ron Weasley" }));
+    expect(screen.getByRole("dialog")).toHaveAccessibleName("Ron Weasley");
+    // Previous from the first member wraps to the last.
+    await user.click(screen.getByRole("button", { name: "Previous: Hermione Granger" }));
+    await user.click(screen.getByRole("button", { name: "Previous: Harry Potter" }));
+    expect(screen.getByRole("dialog")).toHaveAccessibleName("Harry Potter");
+    expect(screen.getByRole("button", { name: "Previous: Neville Longbottom" })).toBeInTheDocument();
+  });
+
+  it("closes on Esc and returns focus to the card of the character last shown", async () => {
+    const user = userEvent.setup();
+    renderHall();
+    await user.click(within(panel()).getByRole("button", { name: /Hermione Granger/ }));
+    await user.click(screen.getByRole("button", { name: "Next: Ron Weasley" }));
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(within(panel()).getByRole("button", { name: /Ron Weasley/ })).toHaveFocus();
   });
 
   it("keeps the section landmark and heading order", () => {

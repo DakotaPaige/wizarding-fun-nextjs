@@ -9,6 +9,7 @@ import { getHouseInfo } from "@/data/curated/houses";
 import type { HouseName } from "@/data/types";
 import type { PageDataQuery } from "@/graphql/generated/graphql";
 import { CharacterCard, type GreatHallCharacter } from "./CharacterCard";
+import { CharacterDetail } from "./CharacterDetail";
 import { paletteVars, tweenPalette } from "./palette";
 import { swapRoster } from "./roster-swap";
 import styles from "./characters.module.css";
@@ -18,13 +19,10 @@ export type GreatHallHouse = PageDataQuery["houses"][number];
 
 interface CharactersProps {
   houses: GreatHallHouse[];
-  /** Opens a character's detail panel (Task 16). */
-  onOpen?(character: GreatHallCharacter): void;
 }
 
 const PANEL_ID = `${GREAT_HALL_ID}-panel`;
 const tabId = (house: HouseName) => `${GREAT_HALL_ID}-tab-${house.toLowerCase()}`;
-const noop = () => {};
 
 /** Where each tab key moves the selection, wrapping at the ends (ARIA tabs pattern). */
 function targetIndex(key: string, index: number, count: number): number | null {
@@ -52,8 +50,11 @@ function targetIndex(key: string, index: number, count: number): number | null {
  * completes; a switch mid-swap kills the one in flight, keeps any layers still leaving (so they
  * sweep on from where they are) and deals in the newest house. Without full motion there is no
  * outgoing layer: the roster and palette swap instantly (a short fade under reduced motion).
+ *
+ * A card opens that character's detail panel; previous/next walk the current house's roster
+ * (wrapping at the ends) without closing it.
  */
-export function Characters({ houses, onOpen = noop }: CharactersProps) {
+export function Characters({ houses }: CharactersProps) {
   const root = useRef<HTMLElement>(null);
   const banner = useRef<HTMLDivElement>(null);
   const tabs = useRef(new Map<HouseName, HTMLButtonElement>());
@@ -107,6 +108,12 @@ export function Characters({ houses, onOpen = noop }: CharactersProps) {
 
   const current = houses.find((h) => h.name === house);
   const info = getHouseInfo(house);
+
+  const [openId, setOpenId] = useState<string | null>(null);
+  const roster = current?.members ?? [];
+  const openIndex = roster.findIndex((m) => m.id === openId);
+  const neighbour = (step: 1 | -1) => roster[(openIndex + step + roster.length) % roster.length]!;
+  const openCharacter = (character: GreatHallCharacter) => setOpenId(character.id);
 
   function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const next = targetIndex(event.key, index, houses.length);
@@ -193,7 +200,7 @@ export function Characters({ houses, onOpen = noop }: CharactersProps) {
                   >
                     {h.members.map((member) => (
                       <li key={member.id} className={styles.rosterItem}>
-                        <CharacterCard character={member} onOpen={onOpen} />
+                        <CharacterCard character={member} onOpen={openCharacter} />
                       </li>
                     ))}
                   </ul>
@@ -203,6 +210,18 @@ export function Characters({ houses, onOpen = noop }: CharactersProps) {
           </div>
         )}
       </div>
+
+      {openIndex >= 0 && (
+        <CharacterDetail
+          character={roster[openIndex]!}
+          house={house}
+          prevName={neighbour(-1).name}
+          nextName={neighbour(1).name}
+          onClose={() => setOpenId(null)}
+          onPrev={() => setOpenId(neighbour(-1).id)}
+          onNext={() => setOpenId(neighbour(1).id)}
+        />
+      )}
     </section>
   );
 }
