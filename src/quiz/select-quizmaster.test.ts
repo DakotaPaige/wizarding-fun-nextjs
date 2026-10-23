@@ -56,10 +56,10 @@ describe("selectQuizmaster", () => {
     expect(await select(over)).toBe(classic);
   });
 
-  it("returns classic on turn 0 when the per-IP limit is reached, hashing the IP", async () => {
+  it("returns classic on turn 0 when the per-IP limit is reached, hashing the IP and passing the seed", async () => {
     const g = guard({ tryStartGame: vi.fn().mockResolvedValue(false) });
-    expect(await select({ guard: g })).toBe(classic);
-    expect(g.tryStartGame).toHaveBeenCalledWith(hashIp("1.2.3.4", "salt"), NOW);
+    expect(await select({ guard: g, state: state({ seed: 99 }) })).toBe(classic);
+    expect(g.tryStartGame).toHaveBeenCalledWith(hashIp("1.2.3.4", "salt"), NOW, 99);
   });
 
   it("returns classic when the daily budget is spent", async () => {

@@ -10,6 +10,8 @@ export function getRedis(): RedisLike | null {
   const client = new Redis({ url, token });
   return {
     get: (key) => client.get<number | string | null>(key),
+    set: async (key, value, { nx, ex }) =>
+      (await client.set(key, value, nx ? { nx: true, ex } : { ex })) === "OK" ? "OK" : null,
     incrby: (key, by) => client.incrby(key, by),
     expire: (key, seconds) => client.expire(key, seconds),
   };

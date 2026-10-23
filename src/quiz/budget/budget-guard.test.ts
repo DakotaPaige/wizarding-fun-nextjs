@@ -3,15 +3,22 @@ import { createBudgetGuard, type RedisLike } from "./budget-guard";
 import { hashIp } from "./hash-ip";
 
 function fakeRedis() {
-  const store = new Map<string, number>();
+  const store = new Map<string, number | string>();
   const calls: Array<{ op: "incrby" | "expire"; key: string; arg: number }> = [];
+  const markers: Array<{ key: string; value: string; nx: boolean; ex: number }> = [];
   const redis: RedisLike = {
     async get(key) {
       return store.get(key) ?? null;
     },
+    async set(key, value, { nx = false, ex }) {
+      markers.push({ key, value, nx, ex });
+      if (nx && store.has(key)) return null;
+      store.set(key, value);
+      return "OK";
+    },
     async incrby(key, by) {
       calls.push({ op: "incrby", key, arg: by });
-      const next = (store.get(key) ?? 0) + by;
+      const next = Number(store.get(key) ?? 0) + by;
       store.set(key, next);
       return next;
     },
@@ -20,7 +27,7 @@ function fakeRedis() {
       return 1;
     },
   };
-  return { redis, store, calls };
+  return { redis, store, calls, markers };
 }
 
 const day1 = new Date("2026-10-22T23:59:59Z");
@@ -31,16 +38,40 @@ describe("createBudgetGuard", () => {
     const { redis } = fakeRedis();
     const guard = createBudgetGuard({ redis, dailyTokenBudget: 200_000, gamesPerIpPerDay: 3 });
     const results = [];
-    for (let i = 0; i < 4; i++) results.push(await guard.tryStartGame("abc", day1));
+    for (let i = 0; i < 4; i++) results.push(await guard.tryStartGame("abc", day1, i));
     expect(results).toEqual([true, true, true, false]);
+  });
+
+  it("counts a game once however often its first turn is retried, and gives the same answer", async () => {
+    const { redis, store } = fakeRedis();
+    const guard = createBudgetGuard({ redis, dailyTokenBudget: 200_000, gamesPerIpPerDay: 1 });
+    expect(await guard.tryStartGame("abc", day1, 7)).toBe(true);
+    expect(await guard.tryStartGame("abc", day1, 7)).toBe(true);
+    expect(store.get("ai:games:abc:2026-10-22")).toBe(1);
+
+    expect(await guard.tryStartGame("abc", day1, 8)).toBe(false);
+    expect(await guard.tryStartGame("abc", day1, 8)).toBe(false);
+    expect(store.get("ai:games:abc:2026-10-22")).toBe(2);
+    // The first game's retry still gets its original answer after the limit is reached.
+    expect(await guard.tryStartGame("abc", day1, 7)).toBe(true);
+  });
+
+  it("marks each game with SET NX and a 172800s TTL, keyed by hash, seed and UTC day", async () => {
+    const { redis, markers } = fakeRedis();
+    const guard = createBudgetGuard({ redis, dailyTokenBudget: 200_000, gamesPerIpPerDay: 3 });
+    await guard.tryStartGame("abc", day1, 42);
+    expect(markers[0]).toEqual({ key: "ai:game:abc:42:2026-10-22", value: "allowed", nx: true, ex: 172800 });
   });
 
   it("uses different keys on either side of UTC midnight", async () => {
     const { redis, store } = fakeRedis();
     const guard = createBudgetGuard({ redis, dailyTokenBudget: 200_000, gamesPerIpPerDay: 1 });
-    expect(await guard.tryStartGame("abc", day1)).toBe(true);
-    expect(await guard.tryStartGame("abc", day2)).toBe(true);
-    expect([...store.keys()].sort()).toEqual(["ai:games:abc:2026-10-22", "ai:games:abc:2026-10-23"]);
+    expect(await guard.tryStartGame("abc", day1, 1)).toBe(true);
+    expect(await guard.tryStartGame("abc", day2, 1)).toBe(true);
+    expect([...store.keys()].filter((k) => k.startsWith("ai:games:")).sort()).toEqual([
+      "ai:games:abc:2026-10-22",
+      "ai:games:abc:2026-10-23",
+    ]);
   });
 
   it("reports no budget once recorded tokens reach the daily budget", async () => {
@@ -58,7 +89,7 @@ describe("createBudgetGuard", () => {
   it("sets a 172800s TTL after every incrby", async () => {
     const { redis, calls } = fakeRedis();
     const guard = createBudgetGuard({ redis, dailyTokenBudget: 200_000, gamesPerIpPerDay: 3 });
-    await guard.tryStartGame("abc", day1);
+    await guard.tryStartGame("abc", day1, 1);
     await guard.recordUsage(500, day1);
     expect(calls).toEqual([
       { op: "incrby", key: "ai:games:abc:2026-10-22", arg: 1 },

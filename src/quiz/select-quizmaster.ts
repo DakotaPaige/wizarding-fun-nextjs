@@ -20,8 +20,11 @@ export async function selectQuizmaster(args: {
   if (state.mode === "classic") return classic;
   if (!config.apiKey || !guard || !ip || !config.ipSalt) return classic;
   try {
-    // A game is counted once, when it starts; later turns and the verdict only check the budget.
-    if (state.turns.length === 0 && !(await guard.tryStartGame(hashIp(ip, config.ipSalt), now))) return classic;
+    // A game is counted once, when it starts (a retried first turn counts the same seed again,
+    // which the guard ignores); later turns and the verdict only check the budget.
+    if (state.turns.length === 0 && !(await guard.tryStartGame(hashIp(ip, config.ipSalt), now, state.seed))) {
+      return classic;
+    }
     if (!(await guard.hasBudget(now))) return classic;
     return makeAi();
   } catch {
