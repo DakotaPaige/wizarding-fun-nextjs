@@ -1,0 +1,315 @@
+/*
+ * The Great Hall: house tabs, a banner and the roster. Everything house-coloured is painted
+ * from --house-accent / --house-accent-2, which GSAP tweens on the section root, so the glow,
+ * banner and selected tab blend together on a switch. Tints stay light (≤ 16 % of the accent
+ * over the dark surfaces) so body and muted text keep ≥ 4.5:1. Motion is transform/opacity only.
+ */
+.section {
+  position: relative;
+  isolation: isolate;
+  padding: 56px clamp(16px, 4vw, 48px) 72px;
+  background:
+    radial-gradient(ellipse 70% 42% at 50% 0%, color-mix(in srgb, var(--house-accent) 14%, transparent), transparent 72%),
+    radial-gradient(ellipse 50% 36% at 85% 100%, color-mix(in srgb, var(--house-accent-2) 7%, transparent), transparent 70%),
+    var(--bg);
+}
+
+.inner {
+  max-width: 1184px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* ---- Tabs: a row of four at every width ---- */
+.tablist {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 76px;
+  padding: 8px 4px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: 500 0.75rem/1.2 var(--font-body), system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.tab::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 2px solid var(--tab-accent);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--tab-accent) 28%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab:hover {
+  border-color: var(--border-hover);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--surface-3);
+}
+
+.tab[aria-selected="true"]::after {
+  opacity: 1;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.tabEmblem {
+  display: flex;
+  line-height: 0;
+}
+
+.tabEmblem svg {
+  width: 30px;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tab::after {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* ---- Panel: banner over roster ---- */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-top: 5px solid var(--house-accent);
+  border-radius: 12px;
+  background:
+    linear-gradient(110deg, color-mix(in srgb, var(--house-accent) 16%, transparent), transparent 60%),
+    var(--surface);
+}
+
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.bannerTitle {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.traits {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-soft);
+}
+
+.bannerEmblem {
+  display: flex;
+  flex-shrink: 0;
+  line-height: 0;
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--house-accent) 35%, transparent));
+}
+
+.bannerEmblem svg {
+  width: 56px;
+  height: auto;
+}
+
+/* ---- Roster: 2-up on phones, a responsive grid wider up ---- */
+.rosterArea {
+  position: relative;
+}
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The outgoing roster sweeps over the incoming one, then is removed. */
+.leaving {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.rosterItem {
+  display: flex;
+}
+
+.card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.portrait {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.portrait img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 4px 4px;
+}
+
+.cardName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cardActor {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    transition: border-color 0.2s ease;
+  }
+}
+
+/* ---- Wider screens ---- */
+@media (min-width: 640px) {
+  .tablist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .tab {
+    flex-direction: row;
+    gap: 12px;
+    min-height: 64px;
+    padding: 8px 18px 8px 10px;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .tabEmblem svg {
+    width: 40px;
+  }
+
+  .banner {
+    gap: 24px;
+    padding: 28px 32px;
+    border-top-width: 6px;
+    border-radius: 16px;
+  }
+
+  .bannerText {
+    gap: 10px;
+  }
+
+  .bannerTitle {
+    font-size: 2rem;
+  }
+
+  .traits {
+    font-size: 0.9375rem;
+  }
+
+  .bannerEmblem svg {
+    width: 96px;
+  }
+
+  .roster {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .cardName {
+    font-size: 0.9375rem;
+  }
+}

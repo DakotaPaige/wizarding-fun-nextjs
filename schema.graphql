@@ -1,0 +1,163 @@
+type Art {
+  alt: String!
+  height: Int!
+  src: String!
+  width: Int!
+}
+
+type Character {
+  actor: String
+  alive: Boolean!
+  alternateNames: [String!]!
+  ancestry: String
+  dateOfBirth: String
+  eyeColour: String
+  hairColour: String
+  house: HouseName
+  id: ID!
+  initials: String!
+  name: String!
+  patronus: String
+  portrait: Art
+  wand: Wand
+}
+
+enum Difficulty {
+  HARD
+  NORMAL
+}
+
+input GameStateInput {
+  mode: QuizMode!
+  seed: Int!
+  turns: [TurnRecordInput!]!
+}
+
+type House {
+  displayName: String!
+
+  """Curated roster, in display order."""
+  members: [Character!]!
+  name: HouseName!
+  traits: [String!]!
+}
+
+enum HouseName {
+  GRYFFINDOR
+  HUFFLEPUFF
+  RAVENCLAW
+  SLYTHERIN
+}
+
+type HouseScores {
+  gryffindor: Float!
+  hufflepuff: Float!
+  ravenclaw: Float!
+  slytherin: Float!
+}
+
+type Mutation {
+  quizTurn(input: QuizTurnInput!): QuizTurn!
+  quizVerdict(input: QuizVerdictInput!): QuizVerdict!
+}
+
+type Query {
+  character(id: ID!): Character
+  house(name: HouseName!): House
+  houses: [House!]!
+
+  """
+  The curated spells, in display order. Spells missing from the API data are omitted.
+  """
+  spells: [Spell!]!
+}
+
+enum QuizMode {
+  AI
+  CLASSIC
+}
+
+type QuizOption {
+  id: ID!
+  label: String!
+}
+
+"""Includes the correct option; the client scores locally."""
+type QuizQuestion {
+  artSlot: String
+  correctOptionId: ID!
+  difficulty: Difficulty!
+  id: ID!
+  options: [QuizOption!]!
+  prompt: String!
+  topic: Topic!
+}
+
+type QuizTurn {
+  hatLine: String!
+  mode: QuizMode!
+  question: QuizQuestion!
+}
+
+input QuizTurnInput {
+  dared: Boolean!
+  state: GameStateInput!
+}
+
+type QuizVerdict {
+  house: HouseName!
+  mode: QuizMode!
+  scores: HouseScores!
+  verdict: String!
+}
+
+input QuizVerdictInput {
+  state: GameStateInput!
+}
+
+type Spell {
+  """Hex colour for the bolt and glow."""
+  colour: String!
+
+  """Config override if present, else API text."""
+  description: String!
+  effect: SpellEffectKey!
+  id: ID!
+  name: String!
+}
+
+enum SpellEffectKey {
+  ACCIO
+  ALOHOMORA
+  EXPELLIARMUS
+  INCENDIO
+  LEVIOSA
+  LUMOS
+  PATRONUS
+  PROTEGO
+  REPARO
+  STUPEFY
+}
+
+enum Topic {
+  ACTOR
+  HOUSE
+  PATRONUS
+  PORTRAIT
+  SPELL
+  WAND
+}
+
+input TurnRecordInput {
+  correct: Boolean!
+  dared: Boolean!
+  difficulty: Difficulty!
+  msToAnswer: Int!
+  topic: Topic!
+}
+
+type Wand {
+  core: String
+  lengthInches: Float
+  wood: String
+}
