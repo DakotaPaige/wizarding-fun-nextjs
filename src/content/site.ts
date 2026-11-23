@@ -14,7 +14,7 @@ export const SITE: SiteContent = {
   title: "Lumos",
   tagline: "A small, magical tour of the wizarding world",
   owner: "Dakota",
-  links: { github: null, portfolio: null },
+  links: { github: "https://github.com/DakotaPaige/", portfolio: "https://dakotamauza.com/" },
 };
 
 /** Map navigation targets, in scroll order (shared by the header and the footer). */
