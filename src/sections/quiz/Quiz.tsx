@@ -28,7 +28,8 @@ interface QuizProps {
 
 /**
  * The Sorting Ceremony (spec §4.4): ten dare-then-answer questions from the Hat, then its
- * verdict. The mode badge follows the server silently (classic is a fallback, not an error);
+ * verdict. The mode badge appears with the first response and follows the server silently
+ * (classic is a fallback, not an error);
  * only a failed request shows an error, with a Retry that keeps the game.
  *
  * Each step's main element carries `data-autofocus`; when the step changes, focus moves there
@@ -59,9 +60,14 @@ export function Quiz({ fetchTurn = fetchQuizTurn, fetchVerdict = fetchQuizVerdic
               Let the Hat test you
             </h2>
           </div>
-          <p className={styles.badge} data-mode={game.mode}>
-            {BADGE[game.mode]}
-          </p>
+          {game.reportedMode ? (
+            <p className={styles.badge} data-mode={game.reportedMode}>
+              {BADGE[game.reportedMode]}
+            </p>
+          ) : (
+            // Holds the badge's place until the server says which mode it runs in.
+            <span className={styles.badge} data-mode="pending" aria-hidden="true" />
+          )}
         </header>
 
         {phase === "result" && game.result ? (

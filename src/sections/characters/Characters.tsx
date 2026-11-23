@@ -4,7 +4,7 @@ import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react"
 import { gsap, useGSAP } from "@/animation/gsap";
 import { prefersFullMotion, prefersReducedMotion } from "@/animation/motion";
 import { HouseEmblem } from "@/components/HouseEmblem";
-import { GREAT_HALL_ID, useHouseSelection } from "@/components/house-selection";
+import { GREAT_HALL_ID, houseTabId as tabId, useHouseSelection } from "@/components/house-selection";
 import { getHouseInfo } from "@/data/curated/houses";
 import type { HouseName } from "@/data/types";
 import type { PageDataQuery } from "@/graphql/generated/graphql";
@@ -22,7 +22,6 @@ interface CharactersProps {
 }
 
 const PANEL_ID = `${GREAT_HALL_ID}-panel`;
-const tabId = (house: HouseName) => `${GREAT_HALL_ID}-tab-${house.toLowerCase()}`;
 
 /** Where each tab key moves the selection, wrapping at the ends (ARIA tabs pattern). */
 function targetIndex(key: string, index: number, count: number): number | null {
@@ -107,7 +106,6 @@ export function Characters({ houses }: CharactersProps) {
   );
 
   const current = houses.find((h) => h.name === house);
-  const info = getHouseInfo(house);
 
   const [openId, setOpenId] = useState<string | null>(null);
   const roster = current?.members ?? [];
@@ -176,7 +174,6 @@ export function Characters({ houses }: CharactersProps) {
               <div ref={banner} key={house} className={styles.bannerText}>
                 <h3 className={styles.bannerTitle}>{current.displayName}</h3>
                 <p className={styles.traits}>{current.traits.join(" · ")}</p>
-                <p className={styles.palette}>Colours: {info.palette}</p>
               </div>
               <span key={`emblem-${house}`} className={styles.bannerEmblem}>
                 <HouseEmblem house={house} size={96} />

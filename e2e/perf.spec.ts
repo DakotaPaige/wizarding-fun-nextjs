@@ -16,6 +16,6 @@ test("the intro entrance causes no meaningful layout shift (CLS < 0.1)", async (
   await page.waitForTimeout(4000);
 
   const cls = await page.evaluate(() => (window as unknown as { __cls: number }).__cls);
-  console.log(`CLS (${test.info().project.name}): ${cls}`);
+  test.info().annotations.push({ type: "CLS", description: `${test.info().project.name}: ${cls}` });
   expect(cls).toBeLessThan(0.1);
 });

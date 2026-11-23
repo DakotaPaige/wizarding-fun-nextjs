@@ -20,7 +20,7 @@
 }
 
 .baseline {
-  stroke: #474b55;
+  stroke: var(--border-strong);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }

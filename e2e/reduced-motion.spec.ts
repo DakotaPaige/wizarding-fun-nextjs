@@ -26,8 +26,14 @@ test.describe("reduced motion", () => {
     await expect(classroom.getByRole("heading", { level: 3, name })).toHaveCSS("opacity", "1");
   });
 
-  test("the footer sign-off is readable without scrolling in", async ({ page }) => {
+  test("the footer sign-off is plain text, never split into hidden letters", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: "Mischief managed." })).toHaveCSS("opacity", "1");
+    const heading = page.getByRole("heading", { name: "Mischief managed." });
+    await heading.scrollIntoViewIfNeeded();
+    await expect(heading).toHaveCSS("opacity", "1");
+    // With full motion SplitText wraps every letter in its own element (starting at opacity 0);
+    // reduced motion must leave the heading as a bare text node.
+    await expect(heading.locator("*")).toHaveCount(0);
+    await expect(heading).toHaveText("Mischief managed.");
   });
 });

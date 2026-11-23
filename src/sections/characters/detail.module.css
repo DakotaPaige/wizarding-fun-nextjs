@@ -31,7 +31,7 @@
 .surface {
   position: absolute;
   inset: 0;
-  border: 1px solid #474b55;
+  border: 1px solid var(--border-strong);
   border-bottom: none;
   border-radius: 20px 20px 0 0;
   background:
@@ -60,7 +60,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid #474b55;
+  border: 1px solid var(--border-strong);
   border-radius: 50%;
   background: var(--surface-2);
   color: var(--text);
@@ -75,7 +75,7 @@
 }
 
 .close:hover {
-  border-color: #6b6f7a;
+  border-color: var(--border-hover);
 }
 
 .close:focus-visible,
@@ -101,7 +101,7 @@
   height: 4px;
   margin-bottom: 4px;
   border-radius: 2px;
-  background: #6b6f7a;
+  background: var(--border-hover);
 }
 
 .portrait {
@@ -150,10 +150,10 @@
 
 .alias {
   padding: 3px 10px;
-  border: 1px solid #474b55;
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   font-size: 0.75rem;
-  color: #c9cbd1;
+  color: var(--text-soft);
 }
 
 .facts {
@@ -194,7 +194,7 @@
 .wand {
   margin: 0;
   padding: 14px 16px;
-  border: 1px dashed #474b55;
+  border: 1px dashed var(--border-strong);
   border-radius: 12px;
 }
 
@@ -216,7 +216,7 @@
   min-width: 0;
   min-height: 44px;
   padding: 0 14px;
-  border: 1px solid #474b55;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   background: transparent;
   color: var(--text);
@@ -225,7 +225,7 @@
 }
 
 .walkButton:hover {
-  border-color: #6b6f7a;
+  border-color: var(--border-hover);
 }
 
 @media (prefers-reduced-motion: no-preference) {

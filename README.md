@@ -30,7 +30,7 @@ The site runs with no environment variables at all: the quiz simply uses classic
 | `corepack pnpm codegen`       | Regenerate typed GraphQL documents from `schema.graphql`                     |
 | `corepack pnpm schema:print`  | Print the GraphQL schema to `schema.graphql`                                 |
 
-The e2e web server blanks every AI/Redis variable and points HP-API at an unreachable port, so tests always run in classic mode on snapshot data and never spend API money, even if `.env.local` holds a real key.
+The e2e web server blanks every AI/Redis variable and points HP-API at an unreachable port, so tests always run in classic mode on snapshot data and never spend API money, even if `.env.local` holds a real key. Playwright always builds and starts its own server on port 3100 (`reuseExistingServer: false`) and never reuses a running `pnpm dev`, which would have loaded `.env.local`; a dev server on port 3000 can stay up while e2e runs.
 
 ## Environment variables
 

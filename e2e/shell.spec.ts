@@ -47,4 +47,33 @@ test.describe("page shell", () => {
     await expect(page).toHaveURL(/#sorting-ceremony$/);
     await expect(page.locator("section#sorting-ceremony")).toBeInViewport();
   });
+
+  test("the footer writes in when reached, even after the quiz changes the page height", async ({ page }) => {
+    await page.goto("/");
+    const heading = page.getByRole("heading", { name: "Mischief managed." });
+    const letters = heading.locator("*");
+    await expect(letters.first()).toHaveCSS("opacity", "0");
+
+    // Where the write-in trigger was first placed: footer top at 85% of the viewport.
+    const oldStart = await page.evaluate(() => {
+      const footer = document.querySelector("footer")!;
+      return footer.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.85;
+    });
+    // Grow the quiz section, as a quiz phase change does.
+    await page.evaluate(() => {
+      const spacer = document.createElement("div");
+      spacer.style.height = "1500px";
+      document.querySelector("section#sorting-ceremony")!.append(spacer);
+    });
+    await page.waitForTimeout(400);
+
+    // Past the stale start position, the footer is still far below: nothing may have written in.
+    await page.evaluate((y) => window.scrollTo({ top: y + 200, behavior: "instant" }), oldStart);
+    await page.waitForTimeout(600);
+    await expect(page.locator("footer")).not.toBeInViewport();
+    await expect(letters.first()).toHaveCSS("opacity", "0");
+
+    await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
+    await expect(letters.last()).toHaveCSS("opacity", "1");
+  });
 });

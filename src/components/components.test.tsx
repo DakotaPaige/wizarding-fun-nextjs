@@ -1,7 +1,7 @@
 import { act, render, renderHook, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Art } from "@/components/Art";
 import { FallbackCard } from "@/components/FallbackCard";
 import { HouseEmblem } from "@/components/HouseEmblem";
@@ -64,6 +64,32 @@ describe("useHouseSelection", () => {
     expect(result.current.house).toBe("GRYFFINDOR");
     act(() => result.current.selectHouse("SLYTHERIN"));
     expect(result.current.house).toBe("SLYTHERIN");
+  });
+
+  it("moves focus to the selected house tab, without a second scroll, when it scrolls", () => {
+    const hall = document.createElement("section");
+    hall.id = "great-hall";
+    const calls: string[] = [];
+    hall.scrollIntoView = () => calls.push("scroll");
+    const tabs = (["GRYFFINDOR", "HUFFLEPUFF"] as const).map((house) => {
+      const tab = document.createElement("button");
+      tab.id = `great-hall-tab-${house.toLowerCase()}`;
+      hall.append(tab);
+      return tab;
+    });
+    const focus = vi.spyOn(tabs[1]!, "focus");
+    document.body.append(hall);
+    try {
+      const { result } = renderHook(() => useHouseSelection(), { wrapper });
+      act(() => result.current.selectHouse("HUFFLEPUFF"));
+      expect(focus).not.toHaveBeenCalled();
+      act(() => result.current.selectHouse("HUFFLEPUFF", { scroll: true }));
+      expect(document.activeElement).toBe(tabs[1]);
+      expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+      expect(calls).toEqual(["scroll"]);
+    } finally {
+      hall.remove();
+    }
   });
 
   it("scrolls the Great Hall into view when asked to", () => {

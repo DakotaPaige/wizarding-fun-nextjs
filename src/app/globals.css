@@ -7,6 +7,13 @@
   --text: #e8e8ea;
   --text-muted: #a3a6ae;
   --gold: #f5c451;
+  /* Shared by several sections: raised controls, softer body text, borders and answer states. */
+  --surface-3: #2c2f36;
+  --text-soft: #c9cbd1;
+  --border-strong: #474b55;
+  --border-hover: #6b6f7a;
+  --success: #7ee081;
+  --danger: #ff8a7a;
   /* Re-pointed per house by the Great Hall (CSS custom properties tweened by GSAP). */
   --house-accent: var(--gold);
   --house-accent-2: var(--gold);

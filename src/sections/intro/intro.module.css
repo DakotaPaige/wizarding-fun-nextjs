@@ -295,6 +295,14 @@
   text-shadow: 0 1px 10px rgb(4 5 13 / 90%);
 }
 
+/* On narrow screens the castle fills the bottom of the view; lift the cue above its spires so it
+   never sits over a lit window. */
+@media (max-width: 640px) {
+  .cue {
+    bottom: calc(clamp(180px, 30vw + 120px, 440px) + 12px);
+  }
+}
+
 .cue:hover {
   color: var(--gold);
 }

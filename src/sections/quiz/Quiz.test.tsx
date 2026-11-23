@@ -71,11 +71,23 @@ describe("Quiz", () => {
   it.each([
     ["ai", AWAKE],
     ["classic", RESTING],
-  ] as const)("shows the exact badge copy once the server reports %s mode", async (mode, copy) => {
-    const { user } = renderQuiz({ mode });
-    expect(screen.getByText(AWAKE)).toBeInTheDocument();
+  ] as const)("shows the exact badge copy once the server reports %s mode, and none before", async (mode, copy) => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    const { user } = renderQuiz({
+      fetchTurn: async (request) => {
+        await gate;
+        return turnResponse(request, mode);
+      },
+    });
+    // No claim about the Hat before the server has said which mode it runs in.
+    expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
+    expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
     await begin(user);
     await user.click(screen.getByRole("button", { name: /Play it safe/ }));
+    expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
+    expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
+    release();
     await screen.findByRole("heading", { name: "Whose Patronus is an otter?" });
     expect(screen.getByText(copy)).toBeInTheDocument();
     expect(screen.queryByText(mode === "ai" ? RESTING : AWAKE)).not.toBeInTheDocument();
@@ -128,11 +140,13 @@ describe("Quiz", () => {
     await begin(user);
     await user.click(screen.getByRole("button", { name: /Play it safe/ }));
     expect(await screen.findByRole("alert")).toHaveTextContent("The Hat lost its train of thought — try again");
-    // Falling back to classic is silent; an error is the only thing that shows one.
-    expect(screen.getByText(AWAKE)).toBeInTheDocument();
+    // A failed request reports no mode, so there is still no badge.
+    expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
+    expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Retry" }));
     await screen.findByRole("heading", { name: "Whose Patronus is an otter?" });
+    expect(screen.getByText(RESTING)).toBeInTheDocument();
     expect(fetchTurn.mock.calls[1]).toEqual(fetchTurn.mock.calls[0]);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
@@ -149,8 +163,11 @@ describe("Quiz", () => {
     expect(fetchVerdict).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Final score: 15")).toBeInTheDocument();
 
+    expect(screen.getByText(RESTING)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Play again" }));
     expect(screen.getByRole("button", { name: "Put on the Hat" })).toBeInTheDocument();
+    // A new game has not heard from the server yet.
+    expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
   });
 });
 

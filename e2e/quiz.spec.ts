@@ -19,6 +19,8 @@ test.describe("the Sorting Ceremony", () => {
     await page.goto("/");
     const quiz = page.locator("section#sorting-ceremony");
     await quiz.scrollIntoViewIfNeeded();
+    // No mode is claimed before the server has reported one.
+    await expect(quiz.getByText(/The Hat is (awake|resting)/)).toHaveCount(0);
     await quiz.getByRole("button", { name: "Put on the Hat" }).click();
 
     for (let turn = 1; turn <= 10; turn++) {
@@ -52,6 +54,7 @@ test.describe("the Sorting Ceremony", () => {
     await quiz.getByRole("button", { name: "Meet your housemates" }).click();
     await expect(page.locator("section#great-hall")).toBeInViewport();
     await expect(page.getByRole("tab", { name: house })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("tab", { name: house })).toBeFocused();
 
     await quiz.getByRole("button", { name: "Play again" }).click();
     await expect(quiz.getByRole("button", { name: "Put on the Hat" })).toBeVisible();

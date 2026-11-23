@@ -3,11 +3,16 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/animation/gsap";
 import { withMotion } from "@/animation/motion";
+import { refreshOnLayoutChange } from "@/animation/refresh-on-layout";
 import { MAP_SECTIONS, SITE } from "@/content/site";
 import styles from "./footer.module.css";
 
-/** "Mischief managed." writes in letter by letter, once, as the footer scrolls into view. */
-function createWriteIn(heading: HTMLElement, trigger: HTMLElement): void {
+/**
+ * "Mischief managed." writes in letter by letter, once, as the footer scrolls into view.
+ * The quiz above changes height between phases, so triggers are refreshed whenever the page
+ * height settles; otherwise the write-in would fire at a stale scroll position. Returns a cleanup.
+ */
+function createWriteIn(heading: HTMLElement, trigger: HTMLElement): () => void {
   const letters = SplitText.create(heading, { type: "chars", aria: "auto" }).chars;
   const write = gsap.fromTo(
     letters,
@@ -15,6 +20,7 @@ function createWriteIn(heading: HTMLElement, trigger: HTMLElement): void {
     { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, ease: "power2.out", paused: true },
   );
   ScrollTrigger.create({ trigger, start: "top 85%", once: true, onEnter: () => void write.play() });
+  return refreshOnLayoutChange(document.body);
 }
 
 /** The inked footer (spec §4.5): sign-off, repeated map, credit and disclaimer. */

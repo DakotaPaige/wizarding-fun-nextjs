@@ -6,8 +6,14 @@ import { prefersReducedMotion } from "@/animation/motion";
 
 export const GREAT_HALL_ID = "great-hall";
 
+/** The id of a house's tab in the Great Hall. */
+export const houseTabId = (house: HouseName) => `${GREAT_HALL_ID}-tab-${house.toLowerCase()}`;
+
 interface SelectHouseOptions {
-  /** Also bring the Great Hall into view (e.g. "Meet your housemates"). */
+  /**
+   * Also bring the Great Hall into view and move focus to the house's tab, so keyboard and
+   * screen-reader users arrive with the scroll (e.g. "Meet your housemates").
+   */
   scroll?: boolean;
 }
 
@@ -25,6 +31,8 @@ export function HouseSelectionProvider({ children }: { children: ReactNode }) {
   const selectHouse = useCallback((next: HouseName, { scroll = false }: SelectHouseOptions = {}) => {
     setHouse(next);
     if (scroll) {
+      // Focus without its own scroll jump; the one scroll below does the moving.
+      document.getElementById(houseTabId(next))?.focus({ preventScroll: true });
       document.getElementById(GREAT_HALL_ID)?.scrollIntoView({
         behavior: prefersReducedMotion() ? "auto" : "smooth",
         block: "start",

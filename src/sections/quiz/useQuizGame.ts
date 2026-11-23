@@ -49,6 +49,8 @@ interface Game {
   result: QuizResult | null;
   /** The request in flight, or the one that failed while `phase` is "error". */
   pending: Pending | null;
+  /** Whether the server has reported a mode for this game yet (`state.mode` starts as a request). */
+  modeReported: boolean;
 }
 
 type Action =
@@ -84,6 +86,7 @@ function freshGame(seed: number, hatLineId = 0): Game {
     hatLineId,
     result: null,
     pending: null,
+    modeReported: false,
   };
 }
 
@@ -149,6 +152,7 @@ function reduce(game: Game, action: Action): Game {
         question,
         chosenOptionId: null,
         shownAt: action.at,
+        modeReported: true,
         state: { ...game.state, mode },
       };
     }
@@ -161,6 +165,7 @@ function reduce(game: Game, action: Action): Game {
         phase: "result",
         pending: null,
         result: { house, scores, verdict },
+        modeReported: true,
         state: { ...game.state, mode: stickyMode(game.state.mode, mode) },
       };
     }
@@ -231,6 +236,8 @@ export function useQuizGame({ fetchTurn, fetchVerdict, now = Date.now, seed }: Q
     phase,
     state,
     mode: state.mode,
+    /** The mode the server reported for this game, or null before its first response. */
+    reportedMode: game.modeReported ? state.mode : null,
     score: computePlayStats(state.turns).totalPoints,
     /** 1-based number of the question being chosen, asked or just answered. */
     questionNumber: Math.min(ROUND_LENGTH, state.turns.length + (phase === "answered" ? 0 : 1)),
