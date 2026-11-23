@@ -59,10 +59,23 @@
   line-height: 1.3;
 }
 
-/* Same box as a badge, without content or border, so the header does not shift when it arrives. */
+/* Before the server names a mode: a faint, slowly breathing badge that claims neither. */
 .badge[data-mode="pending"] {
-  min-height: calc(0.8125rem * 1.3 + 16px);
-  min-width: 1px;
+  border: 1px dotted var(--border-hover);
+  color: var(--text-muted);
+  animation: stirring 2.4s ease-in-out infinite;
+}
+
+@keyframes stirring {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge[data-mode="pending"] {
+    animation: none;
+  }
 }
 
 .badge[data-mode="ai"] {

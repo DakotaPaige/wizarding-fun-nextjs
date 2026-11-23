@@ -16,6 +16,7 @@ beforeEach(() => selectHouse.mockReset());
 
 const AWAKE = "The Hat is awake · AI quizmaster";
 const RESTING = "The Hat is resting · classic mode";
+const STIRRING = "The Hat is stirring…";
 
 function turnResponse(request: TurnRequest, mode: QuizMode): TurnResponse {
   return {
@@ -71,7 +72,7 @@ describe("Quiz", () => {
   it.each([
     ["ai", AWAKE],
     ["classic", RESTING],
-  ] as const)("shows the exact badge copy once the server reports %s mode, and none before", async (mode, copy) => {
+  ] as const)("shows the exact badge copy once the server reports %s mode, and only stirring before", async (mode, copy) => {
     let release!: () => void;
     const gate = new Promise<void>((resolve) => (release = resolve));
     const { user } = renderQuiz({
@@ -80,11 +81,13 @@ describe("Quiz", () => {
         return turnResponse(request, mode);
       },
     });
-    // No claim about the Hat before the server has said which mode it runs in.
+    // No claim about the Hat before the server has said which mode it runs in, only that it stirs.
+    expect(screen.getByText(STIRRING)).toBeInTheDocument();
     expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
     expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
     await begin(user);
     await user.click(screen.getByRole("button", { name: /Play it safe/ }));
+    expect(screen.getByText(STIRRING)).toBeInTheDocument();
     expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
     expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
     release();
@@ -140,13 +143,15 @@ describe("Quiz", () => {
     await begin(user);
     await user.click(screen.getByRole("button", { name: /Play it safe/ }));
     expect(await screen.findByRole("alert")).toHaveTextContent("The Hat lost its train of thought — try again");
-    // A failed request reports no mode, so there is still no badge.
+    // A failed request reports no mode, so the Hat is still only stirring.
+    expect(screen.getByText(STIRRING)).toBeInTheDocument();
     expect(screen.queryByText(AWAKE)).not.toBeInTheDocument();
     expect(screen.queryByText(RESTING)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Retry" }));
     await screen.findByRole("heading", { name: "Whose Patronus is an otter?" });
     expect(screen.getByText(RESTING)).toBeInTheDocument();
+    expect(screen.queryByText(STIRRING)).not.toBeInTheDocument();
     expect(fetchTurn.mock.calls[1]).toEqual(fetchTurn.mock.calls[0]);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });

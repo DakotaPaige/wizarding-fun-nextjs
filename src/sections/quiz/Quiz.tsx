@@ -18,6 +18,9 @@ const BADGE: Record<QuizMode, string> = {
   classic: "The Hat is resting · classic mode",
 };
 
+/** Shown until the server reports a mode: true in either mode, so nothing has to be taken back. */
+const PENDING_BADGE = "The Hat is stirring…";
+
 export const ERROR_COPY = "The Hat lost its train of thought — try again";
 
 interface QuizProps {
@@ -28,9 +31,9 @@ interface QuizProps {
 
 /**
  * The Sorting Ceremony (spec §4.4): ten dare-then-answer questions from the Hat, then its
- * verdict. The mode badge appears with the first response and follows the server silently
- * (classic is a fallback, not an error);
- * only a failed request shows an error, with a Retry that keeps the game.
+ * verdict. The badge reads "stirring" until the first response names the mode, then follows the
+ * server silently (classic is a fallback, not an error); only a failed request shows an error,
+ * with a Retry that keeps the game.
  *
  * Each step's main element carries `data-autofocus`; when the step changes, focus moves there
  * so keyboard and screen-reader users follow the round without hunting for it.
@@ -65,8 +68,9 @@ export function Quiz({ fetchTurn = fetchQuizTurn, fetchVerdict = fetchQuizVerdic
               {BADGE[game.reportedMode]}
             </p>
           ) : (
-            // Holds the badge's place until the server says which mode it runs in.
-            <span className={styles.badge} data-mode="pending" aria-hidden="true" />
+            <p className={styles.badge} data-mode="pending">
+              {PENDING_BADGE}
+            </p>
           )}
         </header>
 

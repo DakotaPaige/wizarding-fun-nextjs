@@ -19,7 +19,8 @@ test.describe("the Sorting Ceremony", () => {
     await page.goto("/");
     const quiz = page.locator("section#sorting-ceremony");
     await quiz.scrollIntoViewIfNeeded();
-    // No mode is claimed before the server has reported one.
+    // No mode is claimed before the server has reported one; the Hat only stirs.
+    await expect(quiz.getByText("The Hat is stirring…")).toBeVisible();
     await expect(quiz.getByText(/The Hat is (awake|resting)/)).toHaveCount(0);
     await quiz.getByRole("button", { name: "Put on the Hat" }).click();
 
