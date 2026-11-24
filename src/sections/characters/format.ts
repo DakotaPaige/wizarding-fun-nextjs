@@ -1,6 +1,6 @@
 import type { Wand } from "@/data/types";
 
-/** What the detail panel shows for a value HP-API doesn't record. */
+/** What the detail panel shows for a value the snapshot doesn't record. */
 export const UNKNOWN = "Unknown";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

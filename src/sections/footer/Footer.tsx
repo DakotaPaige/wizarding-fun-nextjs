@@ -63,8 +63,8 @@ export function Footer() {
 
         <div className={styles.colophon}>
           <p className={styles.disclaimer}>
-            Character and spell data from HP-API (hp-api.onrender.com). A fan project — not affiliated with or
-            endorsed by Warner Bros. or J.K. Rowling.
+            Character and spell data from Potter DB (potterdb.com), drawn from the Harry Potter Wiki (CC BY-SA);
+            actor names from HP-API. A fan project — not affiliated with or endorsed by Warner Bros. or J.K. Rowling.
           </p>
           <ul className={styles.credit}>
             <li>Built by {SITE.owner}</li>

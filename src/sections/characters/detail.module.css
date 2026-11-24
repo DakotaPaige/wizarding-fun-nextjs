@@ -180,7 +180,7 @@
   overflow-wrap: anywhere;
 }
 
-/* HP-API values are lower-case ("otter", "brown"); show them as sentences. */
+/* Some values are stored lower-case (patronus: "otter", wand wood); show them as sentences. */
 .value::first-letter {
   text-transform: uppercase;
 }

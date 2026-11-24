@@ -11,7 +11,7 @@ describe("aiTimeoutFor", () => {
 
   it("shrinks to what is left of the 8.5 s deadline", () => {
     expect(aiTimeoutFor(2501)).toBe(5999);
-    // HP-API cold start: the data load waited its full 4 s.
+    // A slow data load that used a full 4 s of the budget.
     expect(aiTimeoutFor(4000)).toBe(4500);
     expect(aiTimeoutFor(7000)).toBe(MIN_AI_TIMEOUT_MS);
   });

@@ -44,6 +44,13 @@ test.describe("page shell", () => {
     await expect(page.locator("section#sorting-ceremony")).toBeInViewport();
   });
 
+  test("the footer credits Potter DB and the Harry Potter Wiki licence", async ({ page }) => {
+    await page.goto("/");
+    const colophon = page.locator("footer");
+    await expect(colophon).toContainText("Potter DB");
+    await expect(colophon).toContainText("CC BY-SA");
+  });
+
   test("the footer writes in when reached, even after the quiz changes the page height", async ({ page }) => {
     await page.goto("/");
     const heading = page.getByRole("heading", { name: "Mischief managed." });
