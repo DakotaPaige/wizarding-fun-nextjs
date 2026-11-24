@@ -36,7 +36,7 @@ The e2e web server blanks every AI/Redis variable, so tests always run in classi
 
 Character and spell data is a committed, normalised snapshot (`src/data/snapshot/characters.json` and `spells.json`); the site reads only these files, so pages are fully static. `corepack pnpm snapshot` rebuilds them:
 
-- It fetches characters, spells and wands from Potter DB (`api.potterdb.com`), which allows 15 requests per minute per IP. Requests are spaced 4.1 s apart (429 and 5xx responses are retried with backoff), so a run takes about 4 minutes.
+- It fetches characters and spells from Potter DB (`api.potterdb.com`; wand details are parsed from the character records), which allows 15 requests per minute per IP. Requests are spaced 4.1 s apart (429 and 5xx responses are retried with backoff), so a run takes about 4 minutes.
 - It fetches actor names from HP-API and joins them onto the featured characters in `src/data/curated/featured.ts`. HP-API is currently suspended by its owner; while it is down the script warns and keeps the actor names already in the committed `characters.json`.
 - Files are written only if every Potter DB fetch succeeds, so a failed run leaves the snapshot untouched.
 
