@@ -3,6 +3,7 @@ import { builder, HOUSE_NAMES, HouseNameEnum } from "@/graphql/builder";
 import type { GraphQLContext } from "@/graphql/context";
 import { availableTopics, generateQuestion } from "@/quiz/generators/index";
 import { createRng } from "@/quiz/rng";
+import { topicsFor } from "@/quiz/topic-rules";
 import { selectQuizmaster } from "@/quiz/select-quizmaster";
 import { computePlayStats, sortIntoHouse, type HouseScores } from "@/quiz/sorting";
 import type {
@@ -170,7 +171,11 @@ function generateWithFallback(
 ): Question {
   const rng = createRng(state.seed + state.turns.length + QUESTION_RNG_OFFSET);
   const asked = new Set(state.turns.map((t) => t.questionId).filter(Boolean));
-  const topics = [spec.topic, ...availableTopics(ctx.data).filter((t) => t !== spec.topic)];
+  // The quizmaster's topic first if the rules allow it (the AI may ask for a disallowed one).
+  const available = availableTopics(ctx.data);
+  const ruled = topicsFor(available, state.turns, spec.difficulty);
+  const allowed = ruled.length > 0 ? ruled : available;
+  const topics = allowed.includes(spec.topic) ? [spec.topic, ...allowed.filter((t) => t !== spec.topic)] : allowed;
   let repeat: Question | null = null;
   for (const topic of topics) {
     for (let draw = 0; draw < MAX_DRAWS_PER_TOPIC; draw++) {
@@ -202,7 +207,12 @@ builder.mutationField("quizTurn", (t) =>
         mode = "classic" as QuizMode;
         turn = await ctx.quiz.classic.nextTurn(state, input.dared);
       }
-      return { question: generateWithFallback(turn.spec, state, ctx), hatLine: turn.hatLine, mode };
+      let { spec } = turn;
+      if (!topicsFor(availableTopics(ctx.data), state.turns, spec.difficulty).includes(spec.topic)) {
+        // The AI asked for a topic the rules forbid here: take the classic pick, keep the AI's line.
+        ({ spec } = await ctx.quiz.classic.nextTurn(state, input.dared));
+      }
+      return { question: generateWithFallback(spec, state, ctx), hatLine: turn.hatLine, mode };
     },
   }),
 );

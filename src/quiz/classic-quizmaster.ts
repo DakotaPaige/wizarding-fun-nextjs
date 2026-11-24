@@ -1,5 +1,6 @@
 import { createRng } from "./rng";
 import { CLASSIC_VERDICTS, HAT_LINES } from "./hat-lines";
+import { topicsFor } from "./topic-rules";
 import type { GameState, Quizmaster, Topic } from "./types";
 
 const UNSEEN_ACCURACY = 0.5;
@@ -21,15 +22,17 @@ function hatLineFor(state: GameState, rng: () => number): string {
   return pick(last.correct ? HAT_LINES.safeRight : HAT_LINES.safeWrong, rng);
 }
 
-/** Rule-based quizmaster: favours weak topics, never repeats the previous one. */
+/** Rule-based quizmaster: favours weak topics, never repeats the previous one, follows `topicsFor`. */
 export function createClassicQuizmaster(opts: { topics: Topic[] }): Quizmaster {
   return {
     mode: "classic",
     async nextTurn(state, dared) {
       const rng = createRng(state.seed + state.turns.length);
       const previous = state.turns[state.turns.length - 1]?.topic;
-      const without = opts.topics.filter((t) => t !== previous);
-      const candidates = without.length > 0 ? without : opts.topics;
+      const ruled = topicsFor(opts.topics, state.turns, dared ? "hard" : "normal");
+      const allowed = ruled.length > 0 ? ruled : opts.topics;
+      const without = allowed.filter((t) => t !== previous);
+      const candidates = without.length > 0 ? without : allowed;
 
       const weights = candidates.map((t) => 2 - accuracyFor(t, state));
       let roll = rng() * weights.reduce((a, b) => a + b, 0);

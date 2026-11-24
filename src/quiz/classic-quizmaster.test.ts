@@ -107,4 +107,21 @@ describe("hat lines", () => {
     for (const lines of Object.values(HAT_LINES)) expect(lines.length).toBeGreaterThanOrEqual(3);
     expect(Object.keys(CLASSIC_VERDICTS).sort()).toEqual(["GRYFFINDOR", "HUFFLEPUFF", "RAVENCLAW", "SLYTHERIN"]);
   });
+
+  it("asks wand only on dared turns, and at most once per round", async () => {
+    const qm = createClassicQuizmaster({ topics: TOPICS });
+    for (let seed = 1; seed <= 200; seed++) {
+      const turns: TurnRecord[] = [];
+      for (let i = 0; i < 10; i++) {
+        const dared = (seed + i) % 2 === 0;
+        const { spec } = await qm.nextTurn(state(seed, turns), dared);
+        if (spec.topic === "wand") {
+          expect(dared, `seed ${seed} turn ${i}`).toBe(true);
+          expect(turns.some((t) => t.topic === "wand"), `seed ${seed} turn ${i}`).toBe(false);
+        }
+        turns.push(turn(spec.topic, i % 2 === 0, dared));
+      }
+    }
+  });
 });
+
