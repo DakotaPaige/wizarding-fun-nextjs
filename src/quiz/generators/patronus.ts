@@ -1,5 +1,6 @@
 import type { CharacterRecord } from "@/data/types";
 import { buildQuestion, pick } from "@/quiz/generators/build";
+import { featuredOnly } from "@/quiz/generators/featured";
 import type { QuestionGenerator } from "@/quiz/types";
 
 function hasPatronus(c: CharacterRecord): boolean {
@@ -15,7 +16,8 @@ function withArticle(word: string): string {
 }
 
 export const generatePatronus: QuestionGenerator = (difficulty, data, rng) => {
-  const pool = data.characters.filter(hasPatronus);
+  const candidates = difficulty === "hard" ? data.characters : featuredOnly(data.characters);
+  const pool = candidates.filter(hasPatronus);
   if (pool.length === 0) return null;
   const answer = pick(pool, rng);
   const others = pool.filter((c) => c.id !== answer.id);

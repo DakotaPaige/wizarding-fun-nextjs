@@ -1,5 +1,6 @@
 import type { CharacterRecord } from "@/data/types";
 import { buildQuestion, capitalise, pick } from "@/quiz/generators/build";
+import { featuredOnly } from "@/quiz/generators/featured";
 import type { QuestionGenerator } from "@/quiz/types";
 
 function hasFullWand(c: CharacterRecord): boolean {
@@ -16,7 +17,8 @@ function sameWand(a: CharacterRecord, b: CharacterRecord): boolean {
 }
 
 export const generateWand: QuestionGenerator = (difficulty, data, rng) => {
-  const pool = data.characters.filter(hasFullWand);
+  const candidates = difficulty === "hard" ? data.characters : featuredOnly(data.characters);
+  const pool = candidates.filter(hasFullWand);
   if (pool.length === 0) return null;
   const answer = pick(pool, rng);
   const wand = answer.wand!;

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
 import spellsSnapshot from "@/data/snapshot/spells.json";
+import { FEATURED } from "@/data/curated/featured";
 import { CURATED_SPELLS } from "@/data/curated/spells";
 import type { CharacterRecord, SpellRecord } from "@/data/types";
 import { availableTopics, generateQuestion } from "@/quiz/generators";
@@ -118,7 +119,7 @@ describe("question generators", () => {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 400; seed++) {
           const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
-          // A house question whose namesakes cover every other house cannot be formed; skip those seeds.
+          expect(q, `${topic}/${difficulty}/${seed}`).not.toBeNull();
           if (q === null) continue;
           const fit = labelsThatFit(q);
           const fitting = q.options.filter((o) => fit.has(o.label));
@@ -138,7 +139,7 @@ describe("question generators", () => {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 300; seed++) {
           const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
-          // A house question whose namesakes cover every other house cannot be formed; skip those seeds.
+          expect(q, `${topic}/${difficulty}/${seed}`).not.toBeNull();
           if (q === null) continue;
           const looks = `${q.topic}|${q.prompt}|${q.artSlot}`;
           expect(byId.get(q.id) ?? looks, q.id).toBe(looks);
@@ -148,5 +149,45 @@ describe("question generators", () => {
     }
     const looks = [...byId.values()];
     expect(new Set(looks).size).toBe(looks.length);
+  });
+
+  it("asks normal questions about featured characters only", () => {
+    const featured = data.characters.filter((c) => Object.hasOwn(FEATURED, c.id));
+    const names = new Set(featured.map((c) => c.name));
+    const actors = new Set(featured.map((c) => c.actor).filter((a) => a !== null));
+    const patronusOf = new Set(featured.map((c) => c.patronus?.toLowerCase()));
+    for (const topic of ["patronus", "house", "actor", "wand"] as const) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const q = generateQuestion({ topic, difficulty: "normal" }, data, createRng(seed));
+        expect(q, `${topic}/${seed}`).not.toBeNull();
+        const labels = q!.options.map((o) => o.label);
+        const correct = q!.options.find((o) => o.id === q!.correctOptionId)!.label;
+        if (topic === "patronus" || topic === "wand") {
+          expect(names.has(correct), `${q!.prompt} → ${correct}`).toBe(true);
+          expect(labels.every((l) => names.has(l)), q!.prompt).toBe(true);
+        }
+        if (topic === "patronus") {
+          expect(patronusOf.has(q!.prompt.match(/^Whose Patronus is an? (.+)\?$/)![1]!.toLowerCase())).toBe(true);
+        }
+        if (topic === "house") {
+          const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+          expect(names.has(who), q!.prompt).toBe(true);
+        }
+        if (topic === "actor") {
+          const who = q!.prompt.match(/^Who played (.+)\?$/)![1]!;
+          expect(names.has(who), q!.prompt).toBe(true);
+          expect(labels.every((l) => actors.has(l)), q!.prompt).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("never returns null for a hard house question, and its name identifies one character", () => {
+    for (let seed = 1; seed <= 400; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, data, createRng(seed));
+      expect(q, `seed ${seed}`).not.toBeNull();
+      const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+      expect(data.characters.filter((c) => c.name === who && c.house !== null), who).toHaveLength(1);
+    }
   });
 });
