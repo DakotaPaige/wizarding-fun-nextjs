@@ -79,11 +79,16 @@ export function buildSnapshot(input: SnapshotInput): {
   const featured = input.featured ?? FEATURED;
   const overrides = input.actorOverrides ?? ACTOR_OVERRIDES;
 
+  // HP-API records are matched by name; records from a previous snapshot (the fallback source)
+  // carry the featured slug as their id, which also survives ACTOR_OVERRIDES.
   const actorsByName = new Map<string, string>();
+  const actorsById = new Map<string, string>();
   for (const raw of input.hpCharacters) {
     const parsed = RawCharacterSchema.safeParse(raw);
     const actor = parsed.success ? parsed.data.actor?.trim() : undefined;
-    if (parsed.success && actor) actorsByName.set(parsed.data.name.trim().toLowerCase(), actor);
+    if (!parsed.success || !actor) continue;
+    actorsByName.set(parsed.data.name.trim().toLowerCase(), actor);
+    actorsById.set(parsed.data.id, actor);
   }
 
   let invalidCharacters = 0;
@@ -100,7 +105,8 @@ export function buildSnapshot(input: SnapshotInput): {
     if (!isFeatured && !record.house && !record.patronus && !hasParsedWand(record)) continue;
     if (isFeatured) {
       const hpName = overrides[record.id] ?? record.name;
-      record.actor = actorsByName.get(hpName.trim().toLowerCase()) ?? null;
+      record.actor =
+        actorsById.get(record.id) ?? actorsByName.get(hpName.trim().toLowerCase()) ?? null;
     }
     characters.push(record);
   }

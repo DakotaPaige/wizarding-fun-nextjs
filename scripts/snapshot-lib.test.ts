@@ -154,4 +154,18 @@ describe("buildSnapshot", () => {
     });
     expect(spells.map((s) => s.id)).toEqual(["a-spell", "b-spell"]);
   });
+
+  it("keeps override actors when its own output is the actor source", () => {
+    const input = {
+      potterCharacters: [character("viktor-krum", "Viktor Krum")],
+      potterSpells: [],
+      hpCharacters: [{ id: "1", name: "Victor Krum", actor: "Stanislav Ianevski" }],
+      featured: { "viktor-krum": "Viktor Krum" },
+      actorOverrides: { "viktor-krum": "Victor Krum" },
+    };
+    const first = buildSnapshot(input);
+    expect(first.characters[0]?.actor).toBe("Stanislav Ianevski");
+    const second = buildSnapshot({ ...input, hpCharacters: first.characters });
+    expect(second.characters[0]?.actor).toBe("Stanislav Ianevski");
+  });
 });
