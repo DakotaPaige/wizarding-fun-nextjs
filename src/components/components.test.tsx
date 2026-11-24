@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Art } from "@/components/Art";
+import { ExternalLink } from "@/components/ExternalLink";
 import { FallbackCard } from "@/components/FallbackCard";
 import { HouseEmblem } from "@/components/HouseEmblem";
 import { HouseSelectionProvider, useHouseSelection } from "@/components/house-selection";
@@ -14,6 +15,16 @@ describe("HouseEmblem", () => {
     const svg = container.querySelector("svg");
     expect(svg).toHaveAttribute("aria-hidden", "true");
     expect(svg).toHaveTextContent("R");
+  });
+});
+
+describe("ExternalLink", () => {
+  it("opens in a new tab without giving the page access to its opener, and says so", () => {
+    render(<ExternalLink href="https://example.com/">Portfolio</ExternalLink>);
+    const link = screen.getByRole("link", { name: "Portfolio (opens in a new tab)" });
+    expect(link).toHaveAttribute("href", "https://example.com/");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 });
 

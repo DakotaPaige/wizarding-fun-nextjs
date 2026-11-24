@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap, ScrollTrigger, SplitText, useGSAP } from "@/animation/gsap";
 import { withMotion } from "@/animation/motion";
+import { ExternalLink } from "@/components/ExternalLink";
 import { refreshOnLayoutChange } from "@/animation/refresh-on-layout";
 import { MAP_SECTIONS, SITE } from "@/content/site";
 import styles from "./footer.module.css";
@@ -69,12 +70,12 @@ export function Footer() {
             <li>Built by {SITE.owner}</li>
             {github && (
               <li>
-                <a href={github}>GitHub</a>
+                <ExternalLink href={github}>GitHub</ExternalLink>
               </li>
             )}
             {portfolio && (
               <li>
-                <a href={portfolio}>Portfolio</a>
+                <ExternalLink href={portfolio}>Portfolio</ExternalLink>
               </li>
             )}
           </ul>
