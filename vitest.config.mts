@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.ts"],
     css: false,
     // Keep output to results: the startup-cost hints suggest a vm pool (which splits the `graphql`
     // realm) or isolate: false (which leaks module state between files); both are deliberate here.

@@ -82,6 +82,8 @@ describe("parseWand", () => {
     expect(parseWand("Unknown length, wood and core")).toBeNull();
     expect(parseWand("Unknown length, unknown wood, unknown core")).toBeNull();
     expect(parseWand("")).toBeNull();
+    expect(parseWand("Unknown length, wood and core")).toBeNull();
+    expect(parseWand("Unknown length, wood, and core (formerly)")).toBeNull();
   });
 
   it("tolerates plain numbers and other length marks", () => {

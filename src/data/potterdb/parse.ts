@@ -31,7 +31,7 @@ function stripTrailingParentheticals(text: string): string {
 
 function knownPart(part: string | undefined): string | null {
   const text = textOrNull(part);
-  return text && !/^unknown\b/i.test(text) ? text : null;
+  return text && !/^(unknown|wood|length|core|and core)\b/i.test(text) ? text : null;
 }
 
 function parseLength(part: string | undefined): number | null {
@@ -41,14 +41,21 @@ function parseLength(part: string | undefined): number | null {
   return Number(match[1] ?? 0) + (match[2] ? FRACTIONS[match[2]]! : 0);
 }
 
+/** The core is the third part only; PotterDB appends notes ("core", ", quite rigid") or wand lists. */
+function parseCore(part: string | undefined): string | null {
+  const text = knownPart(part)?.replace(/\s+core$/i, "");
+  if (!text || /\d|^(and unknown|previously)\b/i.test(text)) return null;
+  return text.toLowerCase();
+}
+
 /** Parses "11', Holly, phoenix feather". Unknown parts become null; all unknown gives null. */
 export function parseWand(text: string): Wand | null {
   const parts = stripTrailingParentheticals(text).split(",");
   if (parts.length < 3) return null;
-  const [length, wood, ...core] = parts;
+  const [length, wood, core] = parts;
   const wand: Wand = {
     wood: knownPart(wood)?.toLowerCase() ?? null,
-    core: knownPart(core.join(","))?.toLowerCase() ?? null,
+    core: parseCore(core),
     lengthInches: parseLength(length),
   };
   return wand.wood === null && wand.core === null && wand.lengthInches === null ? null : wand;
