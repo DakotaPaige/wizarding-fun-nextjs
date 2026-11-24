@@ -1,3 +1,5 @@
+import type { Wand } from "@/data/types";
+
 /** Featured characters: PotterDB slug -> display name. Normal quiz questions draw their answers from these. */
 export const FEATURED: Readonly<Record<string, string>> = {
   "harry-potter": "Harry Potter",
@@ -61,6 +63,14 @@ export const FEATURED: Readonly<Record<string, string>> = {
   "rolanda-hooch": "Rolanda Hooch",
   "aberforth-dumbledore": "Aberforth Dumbledore",
   "fenrir-greyback": "Fenrir Greyback",
+};
+
+/**
+ * Slug -> the wand to show instead of the first permanent wand PotterDB lists. Ron's first entry is
+ * Charlie's hand-me-down; the wand he is known for is the one he bought in his third year.
+ */
+export const WAND_OVERRIDES: Readonly<Record<string, Wand>> = {
+  "ronald-weasley": { wood: "willow", core: "unicorn hair", lengthInches: 14 },
 };
 
 /** Slug -> the HP-API character name to match, where it differs from the featured display name. */

@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { displayName, parseBorn, parseWand, toCharacterRecord, toSpellRecord } from "./parse";
+import {
+  displayName,
+  parseBorn,
+  parsePatronus,
+  parseWand,
+  toCharacterRecord,
+  toSpellRecord,
+} from "./parse";
 import { PotterCharacterSchema, PotterSpellSchema } from "./schemas";
 
 const harryItem = {
@@ -82,7 +89,6 @@ describe("parseWand", () => {
     expect(parseWand("Unknown length, wood and core")).toBeNull();
     expect(parseWand("Unknown length, unknown wood, unknown core")).toBeNull();
     expect(parseWand("")).toBeNull();
-    expect(parseWand("Unknown length, wood and core")).toBeNull();
     expect(parseWand("Unknown length, wood, and core (formerly)")).toBeNull();
   });
 
@@ -91,6 +97,46 @@ describe("parseWand", () => {
     expect(parseWand("10.5, Holly, phoenix feather")?.lengthInches).toBe(10.5);
     expect(parseWand('11", Holly, phoenix feather')?.lengthInches).toBe(11);
     expect(parseWand("11′, Holly, phoenix feather")?.lengthInches).toBe(11);
+  });
+});
+
+describe("parseWand cores", () => {
+  const core = (text: string) => parseWand(`11', Holly, ${text}`)?.core;
+
+  it("strips a trailing ' core'", () => {
+    expect(core("phoenix feather core")).toBe("phoenix feather");
+  });
+
+  it("nulls cores that carry digits or notes instead of a material", () => {
+    expect(core("dragon heartstring 12")).toBeNull();
+    expect(core("previously unicorn hair")).toBeNull();
+    expect(core("and unknown core")).toBeNull();
+  });
+});
+
+describe("parsePatronus", () => {
+  it("lowercases a creature and drops trailing parentheticals", () => {
+    expect(parsePatronus("Jack Russell terrier")).toBe("jack russell terrier");
+    expect(parsePatronus("Otter (corporeal)")).toBe("otter");
+  });
+
+  it("nulls missing, unknown and non-corporeal values", () => {
+    for (const text of [null, "", "None", "Unknown", "Unknown form; giant-sized", "Non-corporeal", "Corporeal"]) {
+      expect(parsePatronus(text), String(text)).toBeNull();
+    }
+  });
+
+  it("nulls guesses, lists and vague words that make no species prompt", () => {
+    for (const text of [
+      "Either a bat, buffalo, or squirrel",
+      "Something with horns",
+      "Raven or Crow",
+      "Rabbit or hare",
+      "Jack Rabbit (c. 1986), Wolf (1995-1998)",
+      "Bird",
+    ]) {
+      expect(parsePatronus(text), text).toBeNull();
+    }
   });
 });
 
@@ -184,6 +230,34 @@ describe("toCharacterRecord", () => {
   });
 });
 
+describe("toCharacterRecord aliases", () => {
+  const aliasesOf = (alias_names: string[], featured: Record<string, string> = {}) =>
+    toCharacterRecord(
+      PotterCharacterSchema.parse({ ...harryItem, attributes: { ...harryItem.attributes, alias_names } }),
+      featured,
+    ).alternateNames;
+
+  it("drops disguises, strips parentheticals and drops the display name", () => {
+    expect(
+      aliasesOf(
+        [
+          "Harry Potter (self-proclaimed)",
+          "Gregory Goyle (under disguise of Polyjuice Potion)",
+          "Barny Weasley (Polyjuice)",
+          "Vernon Dudley (the name he used to disguise his identity)",
+          "Potty (by Peeves and Slytherins)",
+          "The Chosen One",
+        ],
+        { "harry-potter": "Harry Potter" },
+      ),
+    ).toEqual(["Potty", "The Chosen One"]);
+  });
+
+  it("dedupes case-insensitively, first wins, and keeps at most five", () => {
+    expect(aliasesOf(["Ron", "RON (by family)", "A", "B", "C", "D", "E"])).toEqual(["Ron", "A", "B", "C", "D"]);
+  });
+});
+
 describe("toSpellRecord", () => {
   it("uses the incantation without its pronunciation as the name", () => {
     expect(toSpellRecord(PotterSpellSchema.parse(spellItem))).toEqual({
@@ -199,6 +273,28 @@ describe("toSpellRecord", () => {
       attributes: { ...spellItem.attributes, incantation: null },
     });
     expect(toSpellRecord(item)?.name).toBe("Disarming Charm");
+  });
+
+  const named = (incantation: string | null, name = "Disarming Charm") =>
+    toSpellRecord(
+      PotterSpellSchema.parse({ ...spellItem, attributes: { ...spellItem.attributes, incantation, name } }),
+    )?.name;
+
+  it("treats placeholder incantations as missing", () => {
+    expect(named("Unknown")).toBe("Disarming Charm");
+    expect(named("none")).toBe("Disarming Charm");
+  });
+
+  it("strips every pronunciation and stray end quotes", () => {
+    expect(named("Finite(fi-NEE-tay), Finite Incantatem'(fi-NEE-tay in-can-TAH-tem)")).toBe(
+      "Finite, Finite Incantatem",
+    );
+  });
+
+  it("falls back to the name when the incantation is still garbled", () => {
+    expect(
+      named("For the Charm: Geminio(juh-MIN-ee-oh)For the Curse: Gemino(juh-MIN-oh)", "Doubling Charm"),
+    ).toBe("Doubling Charm");
   });
 
   it("drops spells without an effect", () => {

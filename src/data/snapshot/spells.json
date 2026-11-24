@@ -76,7 +76,7 @@
   },
   {
     "id": "apparition",
-    "name": "None",
+    "name": "Apparition/Disapparition",
     "description": "Instantly teleports user"
   },
   {
@@ -171,7 +171,7 @@
   },
   {
     "id": "bluebell-flames",
-    "name": "Unknown",
+    "name": "Bluebell Flames",
     "description": "Conjures bluebell flames"
   },
   {
@@ -391,7 +391,7 @@
   },
   {
     "id": "doubling-charm",
-    "name": "For the Charm: Geminio(juh-MIN-ee-oh)For the Curse: Gemino",
+    "name": "Doubling Charm",
     "description": "Duplicated an object"
   },
   {
@@ -626,7 +626,7 @@
   },
   {
     "id": "general-counter-spell",
-    "name": "Finite(fi-NEE-tay), Finite Incantatem'",
+    "name": "Finite, Finite Incantatem",
     "description": "Terminates all spell effects"
   },
   {
@@ -676,7 +676,7 @@
   },
   {
     "id": "gytrash-conjuring-spell",
-    "name": "Unknown",
+    "name": "Gytrash-conjuring spell",
     "description": "Conjured Gytrashes"
   },
   {
@@ -1496,7 +1496,7 @@
   },
   {
     "id": "terrifying-charm",
-    "name": "Unknown",
+    "name": "Terrifying Charm",
     "description": "Terrifies someone (possibly)"
   },
   {
@@ -1551,7 +1551,7 @@
   },
   {
     "id": "uninviting-charm",
-    "name": "Unknown",
+    "name": "Uninviting Charm",
     "description": "Univites an individual (possibly)"
   },
   {

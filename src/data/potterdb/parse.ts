@@ -81,6 +81,49 @@ export function displayName(
   return apiName.replace(/\s*\([^()]*\)/g, "").trim() || apiName;
 }
 
+/** Single words that name no particular creature, so "Whose Patronus is a bird?" has no fair answer. */
+const VAGUE_PATRONUSES = new Set(["animal", "bird", "creature"]);
+
+/**
+ * A lowercase creature name, or null. PotterDB also fills the field with placeholders ("None",
+ * "Non-corporeal"), guesses ("Either a bat, ...", "Something with horns", "Raven or Crow") and
+ * dated lists ("Jack Rabbit (c. 1986), Wolf (1995-1998)"); none of those makes a quiz prompt.
+ */
+export function parsePatronus(text: string | null | undefined): string | null {
+  const raw = textOrNull(text);
+  if (!raw) return null;
+  const value = stripTrailingParentheticals(raw).toLowerCase();
+  const rejected =
+    /^(none|unknown|either|something)\b/.test(value) ||
+    value.includes("corporeal") ||
+    / or |,|\(/.test(value) ||
+    VAGUE_PATRONUSES.has(value) ||
+    !/^[a-z][a-z' -]*$/.test(value);
+  return rejected ? null : value;
+}
+
+/** The roster shows these as chips; more than a handful is clutter. */
+const MAX_ALIASES = 5;
+
+/**
+ * Nicknames without the "(by Peeves and Slytherins)" notes: Polyjuice disguises are not names,
+ * the display name is not an alias, and duplicates (case-insensitive) keep their first spelling.
+ */
+function cleanAliases(aliases: readonly string[], name: string): string[] {
+  const seen = new Set([name.toLowerCase()]);
+  const kept: string[] = [];
+  for (const alias of aliases) {
+    if (kept.length === MAX_ALIASES) break;
+    if (/\([^()]*(disguise|polyjuice)[^()]*\)/i.test(alias)) continue;
+    const text = alias.replace(/\s*\([^()]*\)/g, "").trim();
+    const key = text.toLowerCase();
+    if (!text || text.includes("(") || seen.has(key)) continue;
+    seen.add(key);
+    kept.push(text);
+  }
+  return kept;
+}
+
 function normaliseHouse(value: string | null | undefined): HouseName | null {
   const upper = textOrNull(value)?.toUpperCase();
   return HOUSES.find((house) => house === upper) ?? null;
@@ -100,13 +143,14 @@ export function toCharacterRecord(
   featured: Readonly<Record<string, string>>,
 ): CharacterRecord {
   const a = item.attributes;
+  const name = displayName(a.slug, a.name, featured);
   return {
     id: a.slug,
-    name: displayName(a.slug, a.name, featured),
-    alternateNames: a.alias_names ?? [],
+    name,
+    alternateNames: cleanAliases(a.alias_names ?? [], name),
     house: normaliseHouse(a.house),
     ancestry: textOrNull(a.blood_status),
-    patronus: textOrNull(a.patronus)?.toLowerCase() ?? null,
+    patronus: parsePatronus(a.patronus),
     actor: null,
     dateOfBirth: parseBorn(a.born ?? null),
     alive: a.died == null,
@@ -116,11 +160,27 @@ export function toCharacterRecord(
   };
 }
 
+/**
+ * The incantation without its pronunciation guides ("Expelliarmus(ex-PEL-lee-ar-muss)") or stray end
+ * quotes. Placeholders ("Unknown", "None") and text that is still garbled after cleaning (two
+ * incantations run together as "For the Charm: ...For the Curse: ...") count as missing.
+ */
+function cleanIncantation(text: string | null | undefined): string | null {
+  const cleaned = textOrNull(
+    text
+      ?.replace(/\s*\([^()]*\)/g, "")
+      .trim()
+      .replace(/^['"‘’“”]+|['"‘’“”]+$/g, ""),
+  );
+  if (!cleaned || /^(unknown|none)$/i.test(cleaned) || /[:(]/.test(cleaned)) return null;
+  return cleaned;
+}
+
 /** Spells without an effect are dropped (null). */
 export function toSpellRecord(item: PotterSpell): SpellRecord | null {
   const a = item.attributes;
   const description = textOrNull(a.effect);
   if (!description) return null;
-  const incantation = textOrNull(a.incantation?.replace(/\s*\([^()]*\)\s*$/, ""));
-  return { id: a.slug, name: incantation ?? a.name, description };
+  const name = cleanIncantation(a.incantation) ?? (a.name.replace(/\s*\([^()]*\)/g, "").trim() || a.name);
+  return { id: a.slug, name, description };
 }

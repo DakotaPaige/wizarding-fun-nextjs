@@ -353,9 +353,8 @@
     "id": "albus-potter",
     "name": "Albus Severus Potter",
     "alternateNames": [
-      "Al (by Harry Potter)",
-      "Slytherin Squib (by Karl Jenkins)",
-      "Ronald Weasley (under disguise of Polyjuice Potion)"
+      "Al",
+      "Slytherin Squib"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Half-blood",
@@ -825,7 +824,7 @@
     "id": "andromeda-tonks",
     "name": "Andromeda Tonks",
     "alternateNames": [
-      "Dromeda (by Edward Tonks)"
+      "Dromeda"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood",
@@ -1089,8 +1088,8 @@
     "id": "argus-filch",
     "name": "Argus Filch",
     "alternateNames": [
-      "Filchy (by Peeves)",
-      "Zilch (by Peeves)"
+      "Filchy",
+      "Zilch"
     ],
     "house": null,
     "ancestry": "Squib",
@@ -1204,7 +1203,7 @@
     "id": "arthur-weasley",
     "name": "Arthur Weasley",
     "alternateNames": [
-      "Arnold Weasley (by Rita Skeeter in the Daily Prophet)"
+      "Arnold Weasley"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -1504,7 +1503,7 @@
     "id": "beatrice-haywood",
     "name": "Beatrice Haywood",
     "alternateNames": [
-      "Bea (by Penny)"
+      "Bea"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Half-blood",
@@ -1534,7 +1533,7 @@
     "id": "bellatrix-lestrange",
     "name": "Bellatrix Lestrange",
     "alternateNames": [
-      "Bella (by Narcissa Malfoy, Lord Voldemort, Lucius Malfoy, Kreacher & Severus Snape)"
+      "Bella"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood",
@@ -1569,7 +1568,7 @@
     "name": "Ben Copper",
     "alternateNames": [
       "Muggle Celestina Warbeck",
-      "Flat Face (By Fred and George Weasley)"
+      "Flat Face"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Muggle-born",
@@ -1725,7 +1724,7 @@
     "id": "bloody-baron",
     "name": "The Bloody Baron",
     "alternateNames": [
-      "Mr Baron (by Ben Copper)"
+      "Mr Baron"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood or half-blood (most likely)",
@@ -2095,7 +2094,7 @@
     "id": "cassandra-vole",
     "name": "Cassandra Vole",
     "alternateNames": [
-      "Cass (by Winifred Warrington and unidentified Muggle-born Hogwarts student)"
+      "Cass"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Half-breed (one-eighth-Veela)",
@@ -2199,7 +2198,7 @@
     "id": "cedric-diggory",
     "name": "Cedric Diggory",
     "alternateNames": [
-      "Ced (by Amos Diggory)"
+      "Ced"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Pure-blood (possibly)",
@@ -2309,7 +2308,7 @@
     "id": "charles-weasley",
     "name": "Charles Weasley",
     "alternateNames": [
-      "Charlie (by family and friends)"
+      "Charlie"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -2385,7 +2384,7 @@
     "id": "chiara-lobosca",
     "name": "Chiara Lobosca",
     "alternateNames": [
-      "Grandma Chiara (by Muggle children)"
+      "Grandma Chiara"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Pure-blood or half-blood",
@@ -2675,7 +2674,7 @@
     "id": "cormac-mclaggen",
     "name": "Cormac McLaggen",
     "alternateNames": [
-      "King Slug (by Ron Weasley)"
+      "King Slug"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood or half-blood",
@@ -2691,8 +2690,8 @@
     "id": "cornelius-fudge",
     "name": "Cornelius Fudge",
     "alternateNames": [
-      "Goblin-Crusher (by Xenophilius Lovegood in The Quibbler)",
-      "The Other Minister (by the Muggle Prime Minister)"
+      "Goblin-Crusher",
+      "The Other Minister"
     ],
     "house": null,
     "ancestry": "Pure-blood or half-blood (most likely)",
@@ -2749,9 +2748,7 @@
   {
     "id": "cressida-blume",
     "name": "Cressida Blume",
-    "alternateNames": [
-      "Broom (by the new fifth-year student disguised as Phineas Nigellus Black)"
-    ],
+    "alternateNames": [],
     "house": "GRYFFINDOR",
     "ancestry": null,
     "patronus": null,
@@ -3255,7 +3252,7 @@
     "id": "draco-malfoy",
     "name": "Draco Malfoy",
     "alternateNames": [
-      "The Amazing Bouncing Ferret (by some Hogwarts students after Draco was transfigured into a ferret)"
+      "The Amazing Bouncing Ferret"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood",
@@ -3445,7 +3442,7 @@
     "id": "edward-lupin",
     "name": "Edward Remus Lupin",
     "alternateNames": [
-      "Teddy (by family and friends)",
+      "Teddy",
       "Ted"
     ],
     "house": "HUFFLEPUFF",
@@ -3642,7 +3639,7 @@
     ],
     "house": "GRYFFINDOR",
     "ancestry": null,
-    "patronus": "raven or crow",
+    "patronus": null,
     "actor": null,
     "dateOfBirth": null,
     "alive": true,
@@ -3840,7 +3837,7 @@
     "id": "ernest-macmillan",
     "name": "Ernie Macmillan",
     "alternateNames": [
-      "Ernie (by friends)"
+      "Ernie"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Pure-blood",
@@ -3856,8 +3853,8 @@
     "id": "ernest-prang",
     "name": "Ernest Prang",
     "alternateNames": [
-      "Ernie (by Dre Head)",
-      "Ern (by Stan Shunpike)"
+      "Ernie",
+      "Ern"
     ],
     "house": "GRYFFINDOR",
     "ancestry": null,
@@ -4230,20 +4227,6 @@
     }
   },
   {
-    "id": "flavius-belby",
-    "name": "Flavius Belby",
-    "alternateNames": [],
-    "house": null,
-    "ancestry": null,
-    "patronus": "something with horns",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": false,
-    "eyeColour": null,
-    "hairColour": "Brown (formerly), White",
-    "wand": null
-  },
-  {
     "id": "fleamont-potter",
     "name": "Fleamont Potter",
     "alternateNames": [],
@@ -4261,8 +4244,7 @@
     "id": "fleur-delacour",
     "name": "Fleur Delacour",
     "alternateNames": [
-      "Phlegm (by Ginevra Potter)",
-      "Harry Potter (under disguise of Polyjuice Potion)"
+      "Phlegm"
     ],
     "house": null,
     "ancestry": "Half-breed (quarter-Veela)",
@@ -4324,11 +4306,10 @@
     "id": "fred-weasley",
     "name": "Fred Weasley",
     "alternateNames": [
-      "Rodent (Potterwatch)",
-      "Rapier (Potterwatch)",
+      "Rodent",
+      "Rapier",
       "Forge",
-      "Harry Potter (under disguise of Polyjuice Potion)",
-      "Freddie (by Bellatrix Lestrange and George Weasley)"
+      "Freddie"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -4489,7 +4470,7 @@
     "name": "Gellert Grindelwald",
     "alternateNames": [
       "Percival Graves",
-      "Abernathy (briefly)"
+      "Abernathy"
     ],
     "house": null,
     "ancestry": "Pure-blood",
@@ -4608,9 +4589,8 @@
     "name": "George Weasley",
     "alternateNames": [
       "Gred",
-      "Georgie (by Molly Weasley)",
-      "Harry Potter (under disguise of Polyjuice Potion)",
-      "Tentacula (Potterwatch)"
+      "Georgie",
+      "Tentacula"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -4774,9 +4754,9 @@
     "id": "ginevra-weasley",
     "name": "Ginny Weasley",
     "alternateNames": [
-      "Ginny (by family & friends)",
-      "Gin (by Harry Potter)",
-      "Skinny Ginny (by Ronald Weasley)"
+      "Ginny",
+      "Gin",
+      "Skinny Ginny"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -5068,7 +5048,7 @@
     "id": "grim-fawley",
     "name": "Grim Marshall Fawley",
     "alternateNames": [
-      "Barghest (possibly)"
+      "Barghest"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Pure-blood or half-blood (most likely)",
@@ -5324,7 +5304,7 @@
     "id": "hanae-kato",
     "name": "Hanae Katō",
     "alternateNames": [
-      "Hanae-chan (by Yumi Ito)"
+      "Hanae-chan"
     ],
     "house": null,
     "ancestry": null,
@@ -5401,18 +5381,10 @@
     "name": "Harry Potter",
     "alternateNames": [
       "The Boy Who Lived",
-      "Gregory Goyle (under disguise of Polyjuice Potion)",
-      "Neville Longbottom (the name he told Stanley Shunpike in his third year)",
-      "Potty (by Peeves and Slytherins)",
-      "Perkins (by Cuthbert Binns)",
-      "The Boy Who Lied (by the Daily Prophet)",
-      "The Chosen One",
-      "Barny Weasley (under disguise of Polyjuice Potion)",
-      "Undesirable No. 1",
-      "Lightning (by Potterwatch)",
-      "Plotter (by the Daily Prophet)",
-      "Albert Runcorn (under disguise of Polyjuice Potion)",
-      "Vernon Dudley (the name he used to disguise his identity from Snatchers)"
+      "Neville Longbottom",
+      "Potty",
+      "Perkins",
+      "The Boy Who Lied"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Half-blood",
@@ -5735,12 +5707,9 @@
     "id": "hermione-granger",
     "name": "Hermione Granger",
     "alternateNames": [
-      "Hermy (by Grawp)",
-      "Grant (by Cuthbert Binns)",
-      "Harry Potter (under disguise of Polyjuice Potion)",
-      "Mafalda Hopkirk (under disguise of Polyjuice Potion)",
-      "Penelope Clearwater (false name provided to Snatchers)",
-      "Bellatrix Lestrange (under disguise of Polyjuice Potion)"
+      "Hermy",
+      "Grant",
+      "Penelope Clearwater"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Muggle-born",
@@ -5830,7 +5799,7 @@
     "id": "horace-slughorn",
     "name": "Horace Slughorn",
     "alternateNames": [
-      "Old Sluggy (by Cormac McLaggen and Hermione Granger)"
+      "Old Sluggy"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood (most likely)",
@@ -6275,38 +6244,6 @@
     }
   },
   {
-    "id": "jacob-s-sibling",
-    "name": "Jacob's sibling",
-    "alternateNames": [
-      "Cursed kid (by unidentified sixth-year Gryffindor)",
-      "The Hero of Hogwarts (by Penny Haywood and The Quibbler)",
-      "The Clobberer of Curses (by Bill Weasley)",
-      "The Pulverizer of Polar Platemail (by Bill Weasley)",
-      "Curse-Breaker (by many including Andre Egwu, Skye Parkin and Patricia Rakepick)",
-      "New Fan (formerly by Face Paint Kid)",
-      "Breaker of Records (by Orion Amari)",
-      "Helpful elf (by Bilton Bilmes)",
-      "Coach (by Murphy McNully)",
-      "Severus Snape/Felix Rosier (under disguise of Polyjuice Potion)",
-      "Pip (by Jacob)",
-      "Assistant Thunderbird Investigator",
-      "Hero of Slytherin (by the Bloody Baron)"
-    ],
-    "house": null,
-    "ancestry": "Pure-blood or half-blood",
-    "patronus": "either a white stallion, unicorn, abraxan, tiger, cheetah, leopard, spotted hare, mountain hare, or lop-eared rabbit",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": true,
-    "eyeColour": null,
-    "hairColour": null,
-    "wand": {
-      "wood": "acacia",
-      "core": null,
-      "lengthInches": null
-    }
-  },
-  {
     "id": "jada-angela",
     "name": "Jada Angela",
     "alternateNames": [],
@@ -6352,7 +6289,7 @@
     "id": "james-potter-i",
     "name": "James Potter",
     "alternateNames": [
-      "Prongs (by Marauders)"
+      "Prongs"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -6956,7 +6893,7 @@
     "id": "kenji-kobayashi",
     "name": "Kenji Kobayashi",
     "alternateNames": [
-      "Kobayashi-kun (by Yumi Ito)"
+      "Kobayashi-kun"
     ],
     "house": null,
     "ancestry": null,
@@ -7080,7 +7017,7 @@
     "id": "kingsley-shacklebolt",
     "name": "Kingsley Shacklebolt",
     "alternateNames": [
-      "Royal (Potterwatch)"
+      "Royal"
     ],
     "house": null,
     "ancestry": "Pure-blood",
@@ -7208,8 +7145,8 @@
     "id": "lavender-brown",
     "name": "Lavender Brown",
     "alternateNames": [
-      "Lav-Lav (by Harry Potter)",
-      "Lav (by Ron Weasley)"
+      "Lav-Lav",
+      "Lav"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -7253,9 +7190,9 @@
     "id": "leah-lee",
     "name": "Leah Lee",
     "alternateNames": [
-      "Aunt Leah (by Barnaby Lee)",
-      "Miss Lee (by Jacob's sibling)",
-      "Professor Lee (by Hogwarts students)"
+      "Aunt Leah",
+      "Miss Lee",
+      "Professor Lee"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood or half-blood",
@@ -7299,7 +7236,7 @@
     "id": "lee-jordan",
     "name": "Lee Jordan",
     "alternateNames": [
-      "River (Potterwatch)"
+      "River"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood or half-blood",
@@ -7758,7 +7695,7 @@
     "id": "luna-lovegood",
     "name": "Luna Lovegood",
     "alternateNames": [
-      "Loony Lovegood (by Hogwarts students)"
+      "Loony Lovegood"
     ],
     "house": "RAVENCLAW",
     "ancestry": "Pure-blood or half-blood",
@@ -8522,14 +8459,11 @@
     "id": "merula-snyde",
     "name": "Merula Snyde",
     "alternateNames": [
-      "The Most Powerful Witch at Hogwarts (by herself)",
-      "Murtrula (by Rowan Khanna)",
-      "The Most Powerful Stirrer at Hogwarts (by herself)",
-      "The Most Delicious Witch at Hogwarts (by herself)",
-      "The Most Powerful Snyde (by herself)",
-      "The Most Powerful Puffskein at Hogwarts (by Jacob's sibling)",
-      "Merula Goldenhands",
-      "The Creature from the Black Lake"
+      "The Most Powerful Witch at Hogwarts",
+      "Murtrula",
+      "The Most Powerful Stirrer at Hogwarts",
+      "The Most Delicious Witch at Hogwarts",
+      "The Most Powerful Snyde"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood or half-blood",
@@ -8879,7 +8813,7 @@
     "id": "molly-weasley",
     "name": "Molly Weasley",
     "alternateNames": [
-      "Mollywobbles (by Arthur Weasley)"
+      "Mollywobbles"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -8982,9 +8916,7 @@
   {
     "id": "myrtle-warren",
     "name": "Moaning Myrtle",
-    "alternateNames": [
-      "Moaning Myrtle"
-    ],
+    "alternateNames": [],
     "house": "RAVENCLAW",
     "ancestry": "Muggle-born",
     "patronus": null,
@@ -9041,7 +8973,7 @@
     "id": "narcissa-malfoy",
     "name": "Narcissa Malfoy",
     "alternateNames": [
-      "Cissy (by Bellatrix Lestrange and Kreacher)"
+      "Cissy"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood",
@@ -9128,7 +9060,7 @@
     "name": "Natsai Onai",
     "alternateNames": [
       "Natty",
-      "My little gazelle (by Mudiwa Onai)"
+      "My little gazelle"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood or half-blood",
@@ -9274,8 +9206,7 @@
     "id": "newton-scamander",
     "name": "Newt Scamander",
     "alternateNames": [
-      "Newt (by friends & family)",
-      "Theseus Scamander (under disguise of Polyjuice)"
+      "Newt"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Pure-blood or half-blood",
@@ -9306,7 +9237,7 @@
     "name": "Nicholas de Mimsy-Porpington",
     "alternateNames": [
       "Nearly Headless Nick",
-      "Sir Nicholas (preferred)",
+      "Sir Nicholas",
       "Nick",
       "Sir Nick"
     ],
@@ -9508,12 +9439,12 @@
     "id": "nymphadora-tonks",
     "name": "Nymphadora Tonks",
     "alternateNames": [
-      "Dora (by Andromeda Tonks, Edward Tonks and Remus Lupin)",
-      "Tonks (by friends)"
+      "Dora",
+      "Tonks"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Half-blood",
-    "patronus": "jack rabbit (c. 1986), wolf (1995-1998)",
+    "patronus": null,
     "actor": "Natalia Tena",
     "dateOfBirth": null,
     "alive": false,
@@ -9539,7 +9470,7 @@
     "id": "olivia-green",
     "name": "Olivia Mehira Green",
     "alternateNames": [
-      "Liv (by Jacob)"
+      "Liv"
     ],
     "house": "RAVENCLAW",
     "ancestry": null,
@@ -9737,7 +9668,7 @@
     "id": "parvati-patil",
     "name": "Parvati Patil",
     "alternateNames": [
-      "Miss Pennyfeather (by Cuthbert Binns)"
+      "Miss Pennyfeather"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood or half-blood",
@@ -9823,7 +9754,7 @@
     "id": "penelope-clearwater",
     "name": "Penelope Clearwater",
     "alternateNames": [
-      "Penny (by Percy Weasley)"
+      "Penny"
     ],
     "house": "RAVENCLAW",
     "ancestry": "Muggle-born or half-blood (likely)",
@@ -9859,7 +9790,7 @@
     "id": "penny-haywood",
     "name": "Penny Haywood",
     "alternateNames": [
-      "Miss Chirpy (by Ismelda Murk)"
+      "Miss Chirpy"
     ],
     "house": "HUFFLEPUFF",
     "ancestry": "Half-blood",
@@ -9893,8 +9824,8 @@
     "id": "percy-weasley",
     "name": "Percy Weasley",
     "alternateNames": [
-      "Perce (by family)",
-      "Weatherby (By Bartemius Crouch Senior and Fred Weasley)"
+      "Perce",
+      "Weatherby"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -9905,26 +9836,6 @@
     "eyeColour": null,
     "hairColour": "Red, greying and balding (as of 2014)",
     "wand": null
-  },
-  {
-    "id": "peregrine",
-    "name": "Peregrine",
-    "alternateNames": [
-      "R"
-    ],
-    "house": null,
-    "ancestry": null,
-    "patronus": "corporeal",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": true,
-    "eyeColour": null,
-    "hairColour": "Black",
-    "wand": {
-      "wood": "hornbeam",
-      "core": "dragon heartstring",
-      "lengthInches": null
-    }
   },
   {
     "id": "peregrine-derrick",
@@ -10014,9 +9925,9 @@
     "id": "peter-pettigrew",
     "name": "Peter Pettigrew",
     "alternateNames": [
-      "Wormtail (by Marauders, Harry Potter, and Lord Voldemort)",
-      "Scabbers (by Weasley family and others in Animagus rat form)",
-      "Wormy (by Lily Potter)"
+      "Wormtail",
+      "Scabbers",
+      "Wormy"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood or half-blood",
@@ -10616,8 +10527,8 @@
     "id": "remus-lupin",
     "name": "Remus Lupin",
     "alternateNames": [
-      "Moony (by Marauders)",
-      "Romulus (Potterwatch)"
+      "Moony",
+      "Romulus"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Half-blood",
@@ -11025,18 +10936,11 @@
     "id": "ronald-weasley",
     "name": "Ron Weasley",
     "alternateNames": [
-      "Ron (by family & friends)",
-      "Ickle Ronniekins (by Fred and George Weasley)",
-      "Wheezy (by Dobby)",
-      "Weasel (by Draco Malfoy)",
-      "Vincent Crabbe (under disguise of Polyjuice Potion)",
-      "Roonil Wazlib (due to a typo caused by a faulty quill pen)",
-      "Won-Won (by Lavender Brown)",
-      "Harry Potter (under disguise of Polyjuice Potion)",
-      "Reg Cattermole (under disguise of Polyjuice Potion)",
-      "Stan Shunpike",
-      "Barny Weasley",
-      "Dragomir Despard"
+      "Ron",
+      "Ickle Ronniekins",
+      "Wheezy",
+      "Weasel",
+      "Roonil Wazlib"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -11047,9 +10951,9 @@
     "eyeColour": "Blue",
     "hairColour": "Red",
     "wand": {
-      "wood": "ash",
-      "core": "unicorn tail hair",
-      "lengthInches": 12
+      "wood": "willow",
+      "core": "unicorn hair",
+      "lengthInches": 14
     }
   },
   {
@@ -11070,7 +10974,7 @@
     "id": "rose-granger-weasley",
     "name": "Rose Granger-Weasley",
     "alternateNames": [
-      "Rosie (by Ronald Weasley)"
+      "Rosie"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Half-blood",
@@ -11156,9 +11060,9 @@
     "id": "rubeus-hagrid",
     "name": "Rubeus Hagrid",
     "alternateNames": [
-      "Hagger (by Grawp)",
-      "Hagrid (by the Trio and the teachers of Hogwarts)",
-      "Haggard (by Lucius Malfoy)"
+      "Hagger",
+      "Hagrid",
+      "Haggard"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Half-breed (half-giant)",
@@ -11538,10 +11442,9 @@
     "id": "scorpius-malfoy",
     "name": "Scorpius Hyperion Malfoy",
     "alternateNames": [
-      "Malfoy the Unanxious (by himself)",
-      "Scorpius the Dreadless (by himself)",
-      "Scorpion King (by Rose Granger-Weasley and other Hogwarts students in an alternate timeline)",
-      "Harry Potter (under disguise of Polyjuice Potion)"
+      "Malfoy the Unanxious",
+      "Scorpius the Dreadless",
+      "Scorpion King"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood",
@@ -11575,7 +11478,7 @@
     "id": "seamus-finnigan",
     "name": "Seamus Finnigan",
     "alternateNames": [
-      "O'Flaherty (by Cuthbert Binns)"
+      "O'Flaherty"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Half-blood",
@@ -11647,7 +11550,7 @@
     "id": "sebastian-sallow",
     "name": "Sebastian Sallow",
     "alternateNames": [
-      "Your father's son (by Solomon Sallow)"
+      "Your father's son"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Pure-blood or half-blood",
@@ -11734,9 +11637,9 @@
     "name": "Severus Snape",
     "alternateNames": [
       "Half-Blood Prince",
-      "Snivellus/Snivelly (by the Marauders and Lily Potter)",
-      "Sev (by Lily)",
-      "Slytherus (Potterwatch)",
+      "Snivellus/Snivelly",
+      "Sev",
+      "Slytherus",
       "The Potions Master"
     ],
     "house": "SLYTHERIN",
@@ -11911,9 +11814,9 @@
     "id": "sirius-black",
     "name": "Sirius Black",
     "alternateNames": [
-      "Padfoot (by Marauders and the trio)",
-      "Snuffles (by the trio)",
-      "Stubby Boardman (by The Quibbler)"
+      "Padfoot",
+      "Snuffles",
+      "Stubby Boardman"
     ],
     "house": "GRYFFINDOR",
     "ancestry": "Pure-blood",
@@ -12363,7 +12266,7 @@
     "id": "sybill-trelawney",
     "name": "Sybill Trelawney",
     "alternateNames": [
-      "The False Prophet (by Lenny Pindlebrook)"
+      "The False Prophet"
     ],
     "house": "RAVENCLAW",
     "ancestry": "Half-blood",
@@ -12688,20 +12591,6 @@
     "wand": null
   },
   {
-    "id": "tiburon-merriweather-s-great-grandchild",
-    "name": "Tiburon Merriweather's great-grandchild",
-    "alternateNames": [],
-    "house": null,
-    "ancestry": "Muggle-born",
-    "patronus": "either a bat, buffalo, dolphin, eagle, ferret, fire-dwelling salamander, fox, fox terrier, hare, hedgehog, hummingbird, magpie, mink, owl, panda, or squirrel",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": true,
-    "eyeColour": null,
-    "hairColour": null,
-    "wand": null
-  },
-  {
     "id": "timothy-justin",
     "name": "Timothy Justin",
     "alternateNames": [],
@@ -12803,12 +12692,11 @@
     "id": "tom-riddle",
     "name": "Lord Voldemort",
     "alternateNames": [
-      "Lord Voldemort (self-proclaimed title and chosen name)",
-      "You-Know-Who (by wizarding community)",
-      "He-Who-Must-Not-Be-Named (by wizarding community)",
+      "You-Know-Who",
+      "He-Who-Must-Not-Be-Named",
       "Heir of Slytherin",
-      "The Dark Lord (by Death Eaters)",
-      "Chief Death Eater (by Lee Jordan)"
+      "The Dark Lord",
+      "Chief Death Eater"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Half-blood",
@@ -12996,7 +12884,7 @@
     "id": "tulip-karasu",
     "name": "Tulip Karasu",
     "alternateNames": [
-      "Little Sproutling (by Mary and Rosa Karasu)"
+      "Little Sproutling"
     ],
     "house": "RAVENCLAW",
     "ancestry": "Pure-blood or half-blood",
@@ -13779,20 +13667,6 @@
     "wand": null
   },
   {
-    "id": "unidentified-quidditch-player",
-    "name": "Unidentified Quidditch player",
-    "alternateNames": [],
-    "house": null,
-    "ancestry": null,
-    "patronus": "rabbit or hare",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": true,
-    "eyeColour": null,
-    "hairColour": null,
-    "wand": null
-  },
-  {
     "id": "unidentified-ravenclaw-black-girl-during-the-battle-of-hogwarts",
     "name": "Ravenclaw girl",
     "alternateNames": [],
@@ -14367,20 +14241,6 @@
     "wand": null
   },
   {
-    "id": "victor-gridley",
-    "name": "Victor Gridley",
-    "alternateNames": [],
-    "house": null,
-    "ancestry": null,
-    "patronus": "bird",
-    "actor": null,
-    "dateOfBirth": null,
-    "alive": true,
-    "eyeColour": "Black",
-    "hairColour": "Black",
-    "wand": null
-  },
-  {
     "id": "victor-ketsueki",
     "name": "Victor Ketsueki",
     "alternateNames": [
@@ -14446,10 +14306,10 @@
     "id": "viktor-krum",
     "name": "Viktor Krum",
     "alternateNames": [
-      "Vicky (by Ron Weasley)",
-      "Dumb Krum (by Fred and George Weasley)",
-      "Bulgarian Bonbon (by Rita Skeeter)",
-      "Viktor Krazy Krum (by Ludo Bagman and Triwizard Tournament attendees)"
+      "Vicky",
+      "Dumb Krum",
+      "Bulgarian Bonbon",
+      "Viktor Krazy Krum"
     ],
     "house": null,
     "ancestry": "Pure-blood",
@@ -14511,7 +14371,7 @@
     "id": "violet-williams",
     "name": "Violet Quentin Williams",
     "alternateNames": [
-      "Vi (by friends)"
+      "Vi"
     ],
     "house": null,
     "ancestry": null,
@@ -14531,7 +14391,7 @@
     "id": "virgil-fowler",
     "name": "Virgil Fowler",
     "alternateNames": [
-      "Mr Gloomy (by Rhys Maybury)"
+      "Mr Gloomy"
     ],
     "house": "RAVENCLAW",
     "ancestry": "Pure-blood or half-blood",
@@ -14698,7 +14558,7 @@
     "id": "winifred-warrington",
     "name": "Winifred Warrington",
     "alternateNames": [
-      "Winnie (by Ivy and Cassandra Vole)"
+      "Winnie"
     ],
     "house": "SLYTHERIN",
     "ancestry": "Half-blood",

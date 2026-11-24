@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { buildSnapshot, fetchAllPages } from "./snapshot-lib";
 
 const BASE = "https://api.potterdb.com";
@@ -70,6 +70,7 @@ function character(slug: string, name: string, attrs: Record<string, unknown> = 
 describe("buildSnapshot", () => {
   const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
   afterEach(() => spy.mockClear());
+  afterAll(() => spy.mockRestore());
 
   const potterCharacters = [
     character("zed-plain", "Zed Plain"),
@@ -77,6 +78,7 @@ describe("buildSnapshot", () => {
     character("pat-stag", "Pat Stag", { patronus: "Stag" }),
     character("wanda-wand", "Wanda Wand", { wands: ["11', Holly, phoenix feather"] }),
     character("no-patronus", "No Patronus", { patronus: "None" }),
+    character("vague-patronus", "Vague Patronus", { patronus: "Something with horns" }),
     character("half-wand", "Half Wand", { wands: ["11', Holly, unknown core"] }),
     character("luna-lovegood", "Luna Scamander (née Lovegood)"),
     character("harry-potter", "Harry James Potter"),
@@ -167,5 +169,19 @@ describe("buildSnapshot", () => {
     expect(first.characters[0]?.actor).toBe("Stanislav Ianevski");
     const second = buildSnapshot({ ...input, hpCharacters: first.characters });
     expect(second.characters[0]?.actor).toBe("Stanislav Ianevski");
+  });
+
+  it("applies a wand override over the first listed wand", () => {
+    const { characters } = buildSnapshot({
+      potterCharacters: [
+        character("ronald-weasley", "Ronald Bilius Weasley", { wands: ["12', Ash, unicorn tail hair"] }),
+      ],
+      potterSpells: [],
+      hpCharacters: [],
+      featured: { "ronald-weasley": "Ron Weasley" },
+      actorOverrides: {},
+      wandOverrides: { "ronald-weasley": { wood: "willow", core: "unicorn hair", lengthInches: 14 } },
+    });
+    expect(characters[0]?.wand).toEqual({ wood: "willow", core: "unicorn hair", lengthInches: 14 });
   });
 });

@@ -1,8 +1,8 @@
-import { ACTOR_OVERRIDES, FEATURED } from "../src/data/curated/featured";
+import { ACTOR_OVERRIDES, FEATURED, WAND_OVERRIDES } from "../src/data/curated/featured";
 import { RawCharacterSchema } from "../src/data/hp-api/schemas";
 import { toCharacterRecord, toSpellRecord } from "../src/data/potterdb/parse";
 import { PotterCharacterSchema, PotterSpellSchema } from "../src/data/potterdb/schemas";
-import type { CharacterRecord, SpellRecord } from "../src/data/types";
+import type { CharacterRecord, SpellRecord, Wand } from "../src/data/types";
 
 export const POTTERDB_BASE_URL = "https://api.potterdb.com";
 export const HP_API_URL = "https://hp-api.onrender.com/api/characters";
@@ -54,6 +54,7 @@ export interface SnapshotInput {
   hpCharacters: unknown[];
   featured?: Readonly<Record<string, string>>;
   actorOverrides?: Readonly<Record<string, string>>;
+  wandOverrides?: Readonly<Record<string, Wand>>;
 }
 
 function byId<T extends { id: string }>(a: T, b: T): number {
@@ -63,9 +64,6 @@ function byId<T extends { id: string }>(a: T, b: T): number {
 function warnInvalid(kind: string, count: number): void {
   if (count > 0) console.warn(`snapshot: dropped ${count} invalid ${kind}`);
 }
-
-/** PotterDB fills `patronus` with "None", "Unknown" and "Non-corporeal"; none of those is a creature. */
-const NO_PATRONUS = /^(none|unknown|non-corporeal)\b/;
 
 function hasParsedWand(record: CharacterRecord): boolean {
   const wand = record.wand;
@@ -78,6 +76,7 @@ export function buildSnapshot(input: SnapshotInput): {
 } {
   const featured = input.featured ?? FEATURED;
   const overrides = input.actorOverrides ?? ACTOR_OVERRIDES;
+  const wandOverrides = input.wandOverrides ?? WAND_OVERRIDES;
 
   // HP-API records are matched by name; records from a previous snapshot (the fallback source)
   // carry the featured slug as their id, which also survives ACTOR_OVERRIDES.
@@ -100,7 +99,7 @@ export function buildSnapshot(input: SnapshotInput): {
       continue;
     }
     const record = toCharacterRecord(parsed.data, featured);
-    if (record.patronus !== null && NO_PATRONUS.test(record.patronus)) record.patronus = null;
+    if (Object.hasOwn(wandOverrides, record.id)) record.wand = { ...wandOverrides[record.id]! };
     const isFeatured = Object.hasOwn(featured, record.id);
     if (!isFeatured && !record.house && !record.patronus && !hasParsedWand(record)) continue;
     if (isFeatured) {

@@ -21,14 +21,39 @@ export interface CuratedSpell {
 /** The spells featured on the Spells board, in display order. */
 export const CURATED_SPELLS: readonly CuratedSpell[] = [
   { slug: "wand-lighting-charm", colour: "#FFF1C1", effect: "lumos" },
-  { slug: "levitation-charm", colour: "#C9B8FF", effect: "leviosa" },
-  { slug: "fire-making-spell", colour: "#FF8A3D", effect: "incendio" },
+  {
+    slug: "levitation-charm",
+    colour: "#C9B8FF",
+    effect: "leviosa",
+    descriptionOverride: "Lifts objects into the air and keeps them floating",
+  },
+  { slug: "fire-making-spell", colour: "#FF8A3D", effect: "incendio", descriptionOverride: "Conjures flames" },
   { slug: "disarming-charm", colour: "#FF5C5C", effect: "expelliarmus" },
-  { slug: "stunning-spell", colour: "#E5484D", effect: "stupefy" },
-  { slug: "shield-charm", colour: "#6CB6FF", effect: "protego" },
-  { slug: "summoning-charm", colour: "#4FD1C5", effect: "accio" },
-  { slug: "unlocking-charm", colour: "#F5C451", effect: "alohomora" },
-  { slug: "mending-charm", colour: "#7EE081", effect: "reparo" },
+  {
+    slug: "stunning-spell",
+    colour: "#E5484D",
+    effect: "stupefy",
+    descriptionOverride: "Knocks the target unconscious",
+  },
+  {
+    slug: "shield-charm",
+    colour: "#6CB6FF",
+    effect: "protego",
+    descriptionOverride: "Raises an invisible shield that deflects spells and blocks blows",
+  },
+  {
+    slug: "summoning-charm",
+    colour: "#4FD1C5",
+    effect: "accio",
+    descriptionOverride: "Brings an object flying to the caster",
+  },
+  {
+    slug: "unlocking-charm",
+    colour: "#F5C451",
+    effect: "alohomora",
+    descriptionOverride: "Opens locked doors and windows",
+  },
+  { slug: "mending-charm", colour: "#7EE081", effect: "reparo", descriptionOverride: "Repairs broken objects" },
   {
     slug: "patronus-charm",
     colour: "#DDE6F0",
