@@ -9,9 +9,6 @@ import { QuizSection } from "@/sections/quiz";
 import { FooterSection } from "@/sections/footer";
 import { PageDataQuery } from "./page.query";
 
-/** HP-API data changes rarely; rebuild the page at most once a day. */
-export const revalidate = 86400;
-
 export default async function Home() {
   const { houses, spells } = await executeQuery(PageDataQuery);
   return (

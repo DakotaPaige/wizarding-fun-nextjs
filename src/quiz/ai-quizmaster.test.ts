@@ -75,6 +75,18 @@ describe("createAiQuizmaster nextTurn", () => {
     expect(options).toEqual({ timeout: 6000, maxRetries: 0 });
   });
 
+  it("offers wand to the model only on a dared turn", async () => {
+    const { qm, create } = setup(vi.fn().mockResolvedValue(toolResponse(VALID)));
+    const allowed = () => {
+      const [params] = create.mock.calls.at(-1) as [{ messages: { content: string }[] }];
+      return params.messages[0]!.content.match(/^Allowed topics: (.+)\.$/m)![1]!.split(", ");
+    };
+    await qm.nextTurn(STATE, false);
+    expect(allowed()).not.toContain("wand");
+    await qm.nextTurn(STATE, true);
+    expect(allowed()).toContain("wand");
+  });
+
   it("forces hard difficulty when the player dared", async () => {
     const { qm } = setup(vi.fn().mockResolvedValue(toolResponse(VALID)));
     const result = await qm.nextTurn(STATE, true);

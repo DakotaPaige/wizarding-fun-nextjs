@@ -2,16 +2,15 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
-import { RawCharacterSchema } from "@/data/hp-api/schemas";
-import { normaliseCharacter } from "@/data/normalise";
+import type { CharacterRecord } from "@/data/types";
 import type { GreatHallCharacter } from "./CharacterCard";
 import { CharacterDetail } from "./CharacterDetail";
 
-/** A roster member built from the HP-API snapshot, as the page query would return it. */
+/** A roster member built from the snapshot, as the page query would return it. */
 function fromSnapshot(name: string, initials: string): GreatHallCharacter {
   const raw = charactersSnapshot.find((c) => c.name === name);
   if (!raw) throw new Error(`${name} is not in the snapshot`);
-  return { ...normaliseCharacter(RawCharacterSchema.parse(raw)), initials, portrait: null };
+  return { ...(raw as CharacterRecord), initials, portrait: null };
 }
 
 const MYRTLE = fromSnapshot("Moaning Myrtle", "MM");
@@ -56,7 +55,6 @@ describe("CharacterDetail", () => {
     expect(within(dialog()).getByRole("img", { name: "Moaning Myrtle", hidden: true })).toBeInTheDocument();
     expect(field("Played by")).toHaveTextContent("Shirley Henderson");
     expect(field("Status")).toHaveTextContent("Deceased");
-    expect(within(dialog()).getByText("Myrtle Elizabeth Warren")).toBeInTheDocument();
   });
 
   it("shows a complete record without any Unknown", () => {

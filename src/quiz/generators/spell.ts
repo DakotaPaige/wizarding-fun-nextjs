@@ -11,7 +11,7 @@ interface SpellEntry {
 function curatedPool(data: QuizData): SpellEntry[] {
   const entries: SpellEntry[] = [];
   for (const curated of CURATED_SPELLS) {
-    const spell = data.spells.find((s) => s.name === curated.apiName);
+    const spell = data.spells.find((s) => s.id === curated.slug);
     const description = curated.descriptionOverride ?? spell?.description ?? "";
     if (spell && description) entries.push({ id: spell.id, name: spell.name, description });
   }

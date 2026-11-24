@@ -14,7 +14,6 @@ const roster = (page: Page) => hall(page).getByRole("tabpanel");
 
 test.describe("the Great Hall", () => {
   test.beforeEach(async ({ page }) => {
-    await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
     await page.goto("/");
   });
 

@@ -8,6 +8,10 @@ import { refreshOnLayoutChange } from "@/animation/refresh-on-layout";
 import { MAP_SECTIONS, SITE } from "@/content/site";
 import styles from "./footer.module.css";
 
+const POTTER_DB_URL = "https://potterdb.com";
+/** The Harry Potter Wiki's text licence, which Potter DB's data (and so the snapshot) carries. */
+const CC_BY_SA_URL = "https://creativecommons.org/licenses/by-sa/4.0/";
+
 /**
  * "Mischief managed." writes in letter by letter, once, as the footer scrolls into view.
  * The quiz above changes height between phases, so triggers are refreshed whenever the page
@@ -63,8 +67,9 @@ export function Footer() {
 
         <div className={styles.colophon}>
           <p className={styles.disclaimer}>
-            Character and spell data from HP-API (hp-api.onrender.com). A fan project — not affiliated with or
-            endorsed by Warner Bros. or J.K. Rowling.
+            Character and spell data from <ExternalLink href={POTTER_DB_URL}>Potter DB</ExternalLink> (potterdb.com),
+            drawn from the Harry Potter Wiki (<ExternalLink href={CC_BY_SA_URL}>CC BY-SA</ExternalLink>); actor names
+            from HP-API. A fan project — not affiliated with or endorsed by Warner Bros. or J.K. Rowling.
           </p>
           <ul className={styles.credit}>
             <li>Built by {SITE.owner}</li>

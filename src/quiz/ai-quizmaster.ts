@@ -1,6 +1,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import type { HouseName } from "@/data/types";
+import { topicsFor } from "./topic-rules";
 import {
   DIFFICULTY_VALUES,
   HAT_LINE_MAX_LENGTH,
@@ -86,12 +87,13 @@ export function createAiQuizmaster(deps: AiQuizmasterDeps): Quizmaster {
     mode: "ai",
 
     async nextTurn(state, dared) {
+      const topics = topicsFor(deps.topics, state.turns, dared ? "hard" : "normal");
       const response = await send({
         system: SYSTEM_PROMPT,
         max_tokens: TURN_MAX_TOKENS,
         tools: [POSE_QUESTION_TOOL],
         tool_choice: { type: "auto" },
-        messages: [{ role: "user", content: buildTurnMessage(state, dared, deps.topics) }],
+        messages: [{ role: "user", content: buildTurnMessage(state, dared, topics) }],
       });
       requireStopReason(response, "tool_use");
 

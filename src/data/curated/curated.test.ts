@@ -1,16 +1,14 @@
 import { describe, expect, it } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
 import spellsSnapshot from "@/data/snapshot/spells.json";
-import { RawCharacterSchema, RawSpellSchema } from "@/data/hp-api/schemas";
-import { normaliseCharacter, normaliseSpell } from "@/data/normalise";
-import type { HouseName } from "@/data/types";
+import type { CharacterRecord, HouseName, SpellRecord } from "@/data/types";
 import { getArt } from "@/data/art-manifest";
 import { HOUSES } from "@/data/curated/houses";
 import { ROSTER } from "@/data/curated/roster";
 import { CURATED_SPELLS } from "@/data/curated/spells";
 
-const characters = charactersSnapshot.map((raw) => normaliseCharacter(RawCharacterSchema.parse(raw)));
-const spells = spellsSnapshot.map((raw) => normaliseSpell(RawSpellSchema.parse(raw)));
+const characters = charactersSnapshot as CharacterRecord[];
+const spells = spellsSnapshot as SpellRecord[];
 const charactersById = new Map(characters.map((character) => [character.id, character]));
 
 const EXPECTED_ROSTER: Record<HouseName, string[]> = {
@@ -49,9 +47,9 @@ const EXPECTED_ROSTER: Record<HouseName, string[]> = {
 };
 
 describe("CURATED_SPELLS", () => {
-  it("only references spells present in the snapshot (case-sensitive)", () => {
-    const names = new Set(spells.map((spell) => spell.name));
-    for (const spell of CURATED_SPELLS) expect(names.has(spell.apiName), spell.apiName).toBe(true);
+  it("only references spells present in the snapshot, by slug", () => {
+    const ids = new Set(spells.map((spell) => spell.id));
+    for (const spell of CURATED_SPELLS) expect(ids.has(spell.slug), spell.slug).toBe(true);
   });
 
   it("has exactly 10 spells with 10 distinct effect keys", () => {

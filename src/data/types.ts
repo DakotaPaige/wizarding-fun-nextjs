@@ -31,5 +31,4 @@ export interface SpellRecord {
 export interface WizardingData {
   characters: CharacterRecord[];
   spells: SpellRecord[];
-  source: "live" | "snapshot";
 }

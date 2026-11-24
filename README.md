@@ -4,7 +4,7 @@ A fan-made, single-page Harry Potter site built as a portfolio piece: a GSAP-ani
 
 Next.js 16 (App Router) · React 19 · GSAP (ScrollTrigger, SplitText, Flip) · GraphQL (Pothos + Yoga) · Anthropic SDK · Upstash Redis · Vitest · Playwright.
 
-> Fan project. Not affiliated with or endorsed by Warner Bros. or J.K. Rowling. Character and spell data comes from [HP-API](https://hp-api.onrender.com). No official artwork is shipped: every art slot has an original CSS/SVG fallback.
+> Fan project. Not affiliated with or endorsed by Warner Bros. or J.K. Rowling. Character and spell data comes from [Potter DB](https://potterdb.com), which draws on the [Harry Potter Wiki](https://harrypotter.fandom.com) (CC BY-SA), so the committed data snapshot is CC BY-SA too; actor names come from [HP-API](https://hp-api.onrender.com). No official artwork is shipped: every art slot has an original CSS/SVG fallback.
 
 ## Quick start
 
@@ -15,7 +15,7 @@ corepack pnpm install
 corepack pnpm dev        # http://localhost:3000
 ```
 
-The site runs with no environment variables at all: the quiz simply uses classic mode, and character/spell data falls back to the committed snapshot whenever HP-API is slow or down.
+The site runs with no environment variables at all: the quiz simply uses classic mode, and character and spell data is read from the committed snapshot. The running site never calls Potter DB or HP-API.
 
 | Script                        | What it does                                                                 |
 | ----------------------------- | ---------------------------------------------------------------------------- |
@@ -26,11 +26,21 @@ The site runs with no environment variables at all: the quiz simply uses classic
 | `corepack pnpm typecheck`     | `tsc --noEmit`                                                               |
 | `corepack pnpm test`          | Vitest unit and component tests                                              |
 | `corepack pnpm test:e2e`      | Playwright (desktop and mobile projects; builds and serves the site itself)  |
-| `corepack pnpm snapshot`      | Refresh `src/data/snapshot/` from HP-API (the free host can take 30-50 s to wake) |
+| `corepack pnpm snapshot`      | Refresh `src/data/snapshot/` from Potter DB and HP-API (about 4 minutes; see below) |
 | `corepack pnpm codegen`       | Regenerate typed GraphQL documents from `schema.graphql`                     |
 | `corepack pnpm schema:print`  | Print the GraphQL schema to `schema.graphql`                                 |
 
-The e2e web server blanks every AI/Redis variable and points HP-API at an unreachable port, so tests always run in classic mode on snapshot data and never spend API money, even if `.env.local` holds a real key. Playwright always builds and starts its own server on port 3100 (`reuseExistingServer: false`) and never reuses a running `pnpm dev`, which would have loaded `.env.local`; a dev server on port 3000 can stay up while e2e runs.
+The e2e web server blanks every AI/Redis variable, so tests always run in classic mode on snapshot data and never spend API money, even if `.env.local` holds a real key. Playwright always builds and starts its own server on port 3100 (`reuseExistingServer: false`) and never reuses a running `pnpm dev`, which would have loaded `.env.local`; a dev server on port 3000 can stay up while e2e runs.
+
+## Data snapshot
+
+Character and spell data is a committed, normalised snapshot (`src/data/snapshot/characters.json` and `spells.json`); the site reads only these files, so pages are fully static. `corepack pnpm snapshot` rebuilds them:
+
+- It fetches characters and spells from Potter DB (`api.potterdb.com`; wand details are parsed from the character records), which allows 15 requests per minute per IP. Requests are spaced 4.1 s apart (429 and 5xx responses are retried with backoff), so a run takes about 4 minutes.
+- It fetches actor names from HP-API and joins them onto the featured characters in `src/data/curated/featured.ts`. HP-API is currently suspended by its owner; while it is down the script warns and keeps the actor names already in the committed `characters.json`.
+- Files are written only if every Potter DB fetch succeeds, so a failed run leaves the snapshot untouched.
+
+Potter DB's content comes from the Harry Potter Wiki and is licensed CC BY-SA, so the snapshot is too. No images are taken from either API.
 
 ## Environment variables
 
@@ -45,7 +55,6 @@ Copy `.env.example` to `.env.local`. All variables are optional.
 | `UPSTASH_REDIS_REST_URL`   | unset (classic mode)         | Redis REST URL for the budget and rate-limit counters          |
 | `UPSTASH_REDIS_REST_TOKEN` | unset (classic mode)         | Redis REST token                                               |
 | `IP_HASH_SALT`             | unset (classic mode)         | Random salt; IPs are hashed with it, raw IPs are never stored  |
-| `HP_API_BASE_URL`          | `https://hp-api.onrender.com`| Override the data source (e2e points it at a dead port)        |
 
 Never commit `.env.local`.
 
@@ -115,7 +124,7 @@ src/
   content/        site.ts (title, tagline, owner, links, map sections)
   animation/      gsap.ts (plugin registration), motion.ts (reduced motion), sparkle-trail/, spell-effects/
   graphql/        Pothos schema, context, in-process execute
-  data/           hp-api client, snapshot/, curated/, art-manifest.ts
+  data/           potterdb/ (schemas, parsers), hp-api/ (schemas), snapshot/, curated/, art-manifest.ts
   quiz/           generators, sorting formula, quizmasters (AI and classic), budget/
 scripts/          snapshot.ts, print-schema.ts
 e2e/              Playwright specs (shell, characters, quiz, reduced motion, CLS)

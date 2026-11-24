@@ -1,12 +1,10 @@
-import { ROSTER } from "@/data/curated/roster";
 import { buildQuestion, pick } from "@/quiz/generators/build";
+import { featuredOnly } from "@/quiz/generators/featured";
 import type { QuestionGenerator } from "@/quiz/types";
-
-const ROSTER_IDS = new Set(Object.values(ROSTER).flat());
 
 export const generateActor: QuestionGenerator = (difficulty, data, rng) => {
   const withActor = data.characters.filter((c) => c.actor !== null);
-  const pool = difficulty === "hard" ? withActor : withActor.filter((c) => ROSTER_IDS.has(c.id));
+  const pool = difficulty === "hard" ? withActor : featuredOnly(withActor);
   if (pool.length === 0) return null;
   const answer = pick(pool, rng);
   const others = pool.filter((c) => c.id !== answer.id);

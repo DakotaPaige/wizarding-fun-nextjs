@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { castSpell } from "@/animation/cast";
 import { CURATED_SPELLS } from "@/data/curated/spells";
+import spellsSnapshot from "@/data/snapshot/spells.json";
 import { Spells, type ClassroomSpell } from "./Spells";
 
 // The cast sequence is motion; these tests check the list, the stage text and how casts chain.
@@ -11,10 +12,16 @@ vi.mock("@/animation/cast", () => ({
 }));
 const cast = vi.mocked(castSpell);
 
+const nameOf = (slug: string) => {
+  const record = spellsSnapshot.find((s) => s.id === slug);
+  if (!record) throw new Error(`${slug} is not in the snapshot`);
+  return record.name;
+};
+
 const SPELLS: ClassroomSpell[] = CURATED_SPELLS.map((spell) => ({
-  id: spell.apiName.toLowerCase().replace(/\s+/g, "-"),
-  name: spell.apiName,
-  description: spell.descriptionOverride ?? `What ${spell.apiName} does.`,
+  id: spell.slug,
+  name: nameOf(spell.slug),
+  description: spell.descriptionOverride ?? `What ${spell.slug} does.`,
   colour: spell.colour,
   effect: spell.effect,
 }));
@@ -29,7 +36,7 @@ describe("Spells", () => {
   it("renders the ten spells as toggle buttons in curated order, the first pressed", () => {
     render(<Spells spells={SPELLS} />);
     const buttons = spellButtons();
-    expect(buttons.map((b) => b.textContent)).toEqual(CURATED_SPELLS.map((s) => s.apiName));
+    expect(buttons.map((b) => b.textContent)).toEqual(CURATED_SPELLS.map((s) => nameOf(s.slug)));
     expect(buttons[0]).toHaveAttribute("aria-pressed", "true");
     expect(pressed()).toHaveLength(1);
     expect(stageHeading()).toHaveAccessibleName("Lumos");

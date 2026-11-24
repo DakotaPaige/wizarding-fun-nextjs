@@ -1,20 +1,16 @@
 import { describe, expect, it } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
 import spellsSnapshot from "@/data/snapshot/spells.json";
+import { FEATURED } from "@/data/curated/featured";
 import { CURATED_SPELLS } from "@/data/curated/spells";
-import { RawCharacterSchema, RawSpellSchema } from "@/data/hp-api/schemas";
-import { normaliseCharacter, normaliseSpell } from "@/data/normalise";
+import type { CharacterRecord, SpellRecord } from "@/data/types";
 import { availableTopics, generateQuestion } from "@/quiz/generators";
 import { createRng } from "@/quiz/rng";
 import type { Difficulty, Question, QuizData, Topic } from "@/quiz/types";
 
 const data: QuizData = {
-  characters: (charactersSnapshot as unknown[])
-    .map((c) => RawCharacterSchema.safeParse(c))
-    .flatMap((r) => (r.success ? [normaliseCharacter(r.data)] : [])),
-  spells: (spellsSnapshot as unknown[])
-    .map((s) => RawSpellSchema.safeParse(s))
-    .flatMap((r) => (r.success ? [normaliseSpell(r.data)] : [])),
+  characters: charactersSnapshot as CharacterRecord[],
+  spells: spellsSnapshot as SpellRecord[],
 };
 const DIFFICULTIES: Difficulty[] = ["normal", "hard"];
 
@@ -101,8 +97,8 @@ describe("question generators", () => {
         );
       case "spell": {
         const text = m(/^Which spell: “([\s\S]+)”\?$/);
-        const override = (name: string) => CURATED_SPELLS.find((s) => s.apiName === name)?.descriptionOverride;
-        return new Set(data.spells.filter((s) => s.description === text || override(s.name) === text).map((s) => s.name));
+        const override = (slug: string) => CURATED_SPELLS.find((s) => s.slug === slug)?.descriptionOverride;
+        return new Set(data.spells.filter((s) => s.description === text || override(s.id) === text).map((s) => s.name));
       }
       case "actor": {
         const who = m(/^Who played (.+)\?$/);
@@ -122,7 +118,9 @@ describe("question generators", () => {
     for (const topic of availableTopics(data)) {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 400; seed++) {
-          const q = generateQuestion({ topic, difficulty }, data, createRng(seed))!;
+          const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
+          expect(q, `${topic}/${difficulty}/${seed}`).not.toBeNull();
+          if (q === null) continue;
           const fit = labelsThatFit(q);
           const fitting = q.options.filter((o) => fit.has(o.label));
           const correct = q.options.find((o) => o.id === q.correctOptionId)!;
@@ -140,7 +138,9 @@ describe("question generators", () => {
     for (const topic of availableTopics(data) as Topic[]) {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 300; seed++) {
-          const q = generateQuestion({ topic, difficulty }, data, createRng(seed))!;
+          const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
+          expect(q, `${topic}/${difficulty}/${seed}`).not.toBeNull();
+          if (q === null) continue;
           const looks = `${q.topic}|${q.prompt}|${q.artSlot}`;
           expect(byId.get(q.id) ?? looks, q.id).toBe(looks);
           byId.set(q.id, looks);
@@ -149,5 +149,79 @@ describe("question generators", () => {
     }
     const looks = [...byId.values()];
     expect(new Set(looks).size).toBe(looks.length);
+  });
+
+  it("asks normal questions about featured characters only", () => {
+    const featured = data.characters.filter((c) => Object.hasOwn(FEATURED, c.id));
+    const names = new Set(featured.map((c) => c.name));
+    const actors = new Set(featured.map((c) => c.actor).filter((a) => a !== null));
+    const patronusOf = new Set(featured.map((c) => c.patronus?.toLowerCase()));
+    for (const topic of ["patronus", "house", "actor", "wand"] as const) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const q = generateQuestion({ topic, difficulty: "normal" }, data, createRng(seed));
+        expect(q, `${topic}/${seed}`).not.toBeNull();
+        const labels = q!.options.map((o) => o.label);
+        const correct = q!.options.find((o) => o.id === q!.correctOptionId)!.label;
+        if (topic === "patronus" || topic === "wand") {
+          expect(names.has(correct), `${q!.prompt} → ${correct}`).toBe(true);
+          expect(labels.every((l) => names.has(l)), q!.prompt).toBe(true);
+        }
+        if (topic === "patronus") {
+          expect(patronusOf.has(q!.prompt.match(/^Whose Patronus is an? (.+)\?$/)![1]!.toLowerCase())).toBe(true);
+        }
+        if (topic === "house") {
+          const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+          expect(names.has(who), q!.prompt).toBe(true);
+        }
+        if (topic === "actor") {
+          const who = q!.prompt.match(/^Who played (.+)\?$/)![1]!;
+          expect(names.has(who), q!.prompt).toBe(true);
+          expect(labels.every((l) => actors.has(l)), q!.prompt).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("never returns null for a hard house question, and its name identifies one character", () => {
+    for (let seed = 1; seed <= 400; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, data, createRng(seed));
+      expect(q, `seed ${seed}`).not.toBeNull();
+      const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+      expect(data.characters.filter((c) => c.name === who && c.house !== null), who).toHaveLength(1);
+    }
+  });
+
+  it("never gives a hard house answer away, nor asks about a featured character", () => {
+    const featuredNames = new Set(Object.values(FEATURED));
+    for (let seed = 1; seed <= 400; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, data, createRng(seed));
+      expect(q, `seed ${seed}`).not.toBeNull();
+      const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+      expect(who).not.toMatch(/gryffindor|slytherin|ravenclaw|hufflepuff/i);
+      expect(who).not.toMatch(/^(unidentified|(boy|girl|man|woman) who)\b/i);
+      expect(featuredNames.has(who), who).toBe(false);
+    }
+  });
+
+  it("draws hard house questions only from characters with a fair, unique name", () => {
+    const base = data.characters.find((c) => c.id === "harry-potter")!;
+    const make = (id: string, name: string): CharacterRecord => ({ ...base, id, name, house: "HUFFLEPUFF" });
+    const tricky: QuizData = {
+      spells: data.spells,
+      characters: [
+        make("harry-potter", "Harry Potter"),
+        make("fat-friar", "Hufflepuff ghost"),
+        make("unidentified-boy", "Unidentified Hufflepuff boy"),
+        make("boy-who", "Boy who fell off a broom"),
+        make("woman-who", "Woman Who Laughed"),
+        make("twin-a", "Emily"),
+        make("twin-b", "Emily"),
+        make("zed-plain", "Zed Plain"),
+      ],
+    };
+    for (let seed = 1; seed <= 100; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, tricky, createRng(seed));
+      expect(q?.prompt, `seed ${seed}`).toBe("Which house was Zed Plain in?");
+    }
   });
 });

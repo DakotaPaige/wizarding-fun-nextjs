@@ -25,11 +25,11 @@ SpellRef.implement({
 builder.queryField("spells", (t) =>
   t.field({
     type: [SpellRef],
-    description: "The curated spells, in display order. Spells missing from the API data are omitted.",
+    description: "The curated spells, in display order. Spells missing from the data are omitted.",
     resolve: (_root, _args, { data }) => {
-      const { spellByName } = getLookups(data);
+      const { spellById } = getLookups(data);
       return CURATED_SPELLS.flatMap((curated) => {
-        const record = spellByName.get(curated.apiName);
+        const record = spellById.get(curated.slug);
         if (!record) return [];
         return [
           {

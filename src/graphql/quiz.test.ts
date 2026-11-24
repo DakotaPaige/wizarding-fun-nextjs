@@ -15,10 +15,8 @@ import { createClassicQuizmaster } from "@/quiz/classic-quizmaster";
 import type { Quizmaster, TurnRecord } from "@/quiz/types";
 
 let data: WizardingData;
-beforeAll(async () => {
-  const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-  data = await loadWizardingData({ fetchImpl: () => Promise.reject(new Error("offline")) });
-  warn.mockRestore();
+beforeAll(() => {
+  data = loadWizardingData();
 });
 
 interface TurnResult {
@@ -85,7 +83,7 @@ function services(over: Partial<QuizServices> & { ai?: Quizmaster } = {}): QuizS
 
 const fakeAi = (over: Partial<Quizmaster> = {}): Quizmaster => ({
   mode: "ai",
-  nextTurn: vi.fn().mockResolvedValue({ spec: { topic: "wand", difficulty: "normal" }, hatLine: "Hmm, a wand." }),
+  nextTurn: vi.fn().mockResolvedValue({ spec: { topic: "spell", difficulty: "normal" }, hatLine: "Hmm, a spell." }),
   verdict: vi.fn().mockResolvedValue("AI verdict text"),
   ...over,
 });
@@ -101,8 +99,8 @@ describe("quizTurn", () => {
   it("returns an AI question on the happy path", async () => {
     const { quizTurn } = await runTurn(services({ ai: fakeAi() }));
     expect(quizTurn.mode).toBe("AI");
-    expect(quizTurn.hatLine).toBe("Hmm, a wand.");
-    expect(quizTurn.question.topic).toBe("WAND");
+    expect(quizTurn.hatLine).toBe("Hmm, a spell.");
+    expect(quizTurn.question.topic).toBe("SPELL");
     expect(quizTurn.question.options).toHaveLength(4);
     expect(quizTurn.question.options.map((o: { id: string }) => o.id)).toContain(quizTurn.question.correctOptionId);
   });
@@ -155,10 +153,37 @@ describe("quizTurn", () => {
         );
         const { id, topic, difficulty } = quizTurn.question;
         if (asked.some((t) => t.questionId === id)) repeats.push(`seed ${seed}, turn ${i + 1}: ${id}`);
+        if (topic === "WAND" && (!dared || asked.some((t) => t.topic === "WAND"))) {
+          repeats.push(`seed ${seed}, turn ${i + 1}: disallowed wand`);
+        }
         asked.push({ topic, difficulty, dared, correct: i % 3 !== 0, msToAnswer: 1000, questionId: id });
       }
     }
     expect(repeats).toEqual([]);
+  });
+
+  it("serves another topic when the AI asks for wand on a normal turn, keeping its line", async () => {
+    const ai = fakeAi({
+      nextTurn: vi.fn().mockResolvedValue({ spec: { topic: "wand", difficulty: "normal" }, hatLine: "Hmm, a wand." }),
+    });
+    const { quizTurn } = await runTurn(services({ ai }));
+    expect(quizTurn.mode).toBe("AI");
+    expect(quizTurn.hatLine).toBe("Hmm, a wand.");
+    expect(quizTurn.question.topic).not.toBe("WAND");
+  });
+
+  it("serves another topic when the AI asks for a second wand question", async () => {
+    const ai = fakeAi({
+      nextTurn: vi.fn().mockResolvedValue({ spec: { topic: "wand", difficulty: "hard" }, hatLine: "Wands again." }),
+    });
+    const wandTurn = { topic: "WAND", difficulty: "HARD", dared: true, correct: true, msToAnswer: 900 };
+    const { quizTurn } = await executeQuery(
+      doc<TurnResult, StateVars>(TURN),
+      { input: { state: { seed: 7, mode: "AI", turns: [wandTurn] }, dared: true } },
+      { data, quiz: services({ ai }), ip: "9.9.9.9" },
+    );
+    expect(quizTurn.question.topic).not.toBe("WAND");
+    expect(quizTurn.question.difficulty).toBe("HARD");
   });
 
   it("rejects an oversized question id with BAD_INPUT", async () => {

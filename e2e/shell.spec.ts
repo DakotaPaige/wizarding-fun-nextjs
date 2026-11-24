@@ -2,10 +2,6 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("page shell", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
-  });
-
   test("renders every section without console errors or serious a11y violations", async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on("console", (message) => {
@@ -46,6 +42,20 @@ test.describe("page shell", () => {
     await nav.getByRole("link", { name: "The Sorting Ceremony" }).click();
     await expect(page).toHaveURL(/#sorting-ceremony$/);
     await expect(page.locator("section#sorting-ceremony")).toBeInViewport();
+  });
+
+  test("the footer credits Potter DB and the Harry Potter Wiki licence", async ({ page }) => {
+    await page.goto("/");
+    const colophon = page.locator("footer");
+    await expect(colophon).toContainText("Potter DB");
+    await expect(colophon).toContainText("CC BY-SA");
+
+    const potterDb = colophon.getByRole("link", { name: /^Potter DB/ });
+    await expect(potterDb).toHaveAttribute("href", "https://potterdb.com");
+    await expect(potterDb).toHaveAttribute("target", "_blank");
+    const licence = colophon.getByRole("link", { name: /^CC BY-SA/ });
+    await expect(licence).toHaveAttribute("href", "https://creativecommons.org/licenses/by-sa/4.0/");
+    await expect(licence).toHaveAttribute("rel", "noopener noreferrer");
   });
 
   test("the footer writes in when reached, even after the quiz changes the page height", async ({ page }) => {
