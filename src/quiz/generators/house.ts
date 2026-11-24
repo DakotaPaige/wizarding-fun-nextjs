@@ -1,5 +1,6 @@
 import { buildQuestion, capitalise, pick } from "@/quiz/generators/build";
-import type { HouseName } from "@/data/types";
+import { FEATURED } from "@/data/curated/featured";
+import type { CharacterRecord, HouseName } from "@/data/types";
 import { featuredOnly } from "@/quiz/generators/featured";
 import type { QuestionGenerator } from "@/quiz/types";
 
@@ -7,13 +8,36 @@ const HOUSE_NAMES: readonly HouseName[] = ["GRYFFINDOR", "SLYTHERIN", "RAVENCLAW
 
 const houseLabel = (house: HouseName) => capitalise(house.toLowerCase());
 
-export const generateHouse: QuestionGenerator = (difficulty, data, rng) => {
-  const housed = (difficulty === "hard" ? data.characters : featuredOnly(data.characters)).filter((c) => c.house !== null);
-  // Hard questions may use any kept character, but only one whose name identifies a single character
-  // (otherwise "Emily" has several houses and the other three may not be formable).
+/** "Hufflepuff ghost" names its own answer. */
+const NAMES_A_HOUSE = /gryffindor|slytherin|ravenclaw|hufflepuff/i;
+
+/** "Unidentified Slytherin boy", "Boy who ...": descriptions of someone, not names. */
+const IS_A_DESCRIPTION = /^(unidentified|(boy|girl|man|woman) who)\b/i;
+
+/**
+ * Hard questions may use any kept character, except one whose name gives the answer away or is only
+ * a description, and except the featured characters: "Which house was Harry Potter in?" is no dare.
+ * The name must also identify a single character (otherwise "Emily" has several houses and the other
+ * three may not be formable).
+ */
+function hardPool(characters: readonly CharacterRecord[]): CharacterRecord[] {
   const nameCounts = new Map<string, number>();
-  for (const c of data.characters) nameCounts.set(c.name, (nameCounts.get(c.name) ?? 0) + 1);
-  const pool = difficulty === "hard" ? housed.filter((c) => nameCounts.get(c.name) === 1) : housed;
+  for (const c of characters) nameCounts.set(c.name, (nameCounts.get(c.name) ?? 0) + 1);
+  return characters.filter(
+    (c) =>
+      c.house !== null &&
+      nameCounts.get(c.name) === 1 &&
+      !Object.hasOwn(FEATURED, c.id) &&
+      !NAMES_A_HOUSE.test(c.name) &&
+      !IS_A_DESCRIPTION.test(c.name),
+  );
+}
+
+export const generateHouse: QuestionGenerator = (difficulty, data, rng) => {
+  const pool =
+    difficulty === "hard"
+      ? hardPool(data.characters)
+      : featuredOnly(data.characters).filter((c) => c.house !== null);
   if (pool.length === 0) return null;
   const answer = pick(pool, rng);
   const others = HOUSE_NAMES.filter((h) => h !== answer.house).map(houseLabel);

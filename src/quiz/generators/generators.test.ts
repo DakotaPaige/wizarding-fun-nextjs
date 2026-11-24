@@ -190,4 +190,38 @@ describe("question generators", () => {
       expect(data.characters.filter((c) => c.name === who && c.house !== null), who).toHaveLength(1);
     }
   });
+
+  it("never gives a hard house answer away, nor asks about a featured character", () => {
+    const featuredNames = new Set(Object.values(FEATURED));
+    for (let seed = 1; seed <= 400; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, data, createRng(seed));
+      expect(q, `seed ${seed}`).not.toBeNull();
+      const who = q!.prompt.match(/^Which house was (.+) in\?$/)![1]!;
+      expect(who).not.toMatch(/gryffindor|slytherin|ravenclaw|hufflepuff/i);
+      expect(who).not.toMatch(/^(unidentified|(boy|girl|man|woman) who)\b/i);
+      expect(featuredNames.has(who), who).toBe(false);
+    }
+  });
+
+  it("draws hard house questions only from characters with a fair, unique name", () => {
+    const base = data.characters.find((c) => c.id === "harry-potter")!;
+    const make = (id: string, name: string): CharacterRecord => ({ ...base, id, name, house: "HUFFLEPUFF" });
+    const tricky: QuizData = {
+      spells: data.spells,
+      characters: [
+        make("harry-potter", "Harry Potter"),
+        make("fat-friar", "Hufflepuff ghost"),
+        make("unidentified-boy", "Unidentified Hufflepuff boy"),
+        make("boy-who", "Boy who fell off a broom"),
+        make("woman-who", "Woman Who Laughed"),
+        make("twin-a", "Emily"),
+        make("twin-b", "Emily"),
+        make("zed-plain", "Zed Plain"),
+      ],
+    };
+    for (let seed = 1; seed <= 100; seed++) {
+      const q = generateQuestion({ topic: "house", difficulty: "hard" }, tricky, createRng(seed));
+      expect(q?.prompt, `seed ${seed}`).toBe("Which house was Zed Plain in?");
+    }
+  });
 });
