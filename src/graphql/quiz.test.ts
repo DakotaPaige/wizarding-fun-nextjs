@@ -26,7 +26,9 @@ interface TurnResult {
     mode: string;
     hatLine: string;
     question: {
+      id: string;
       topic: string;
+      difficulty: string;
       options: { id: string; label: string }[];
       correctOptionId: string;
     };
@@ -137,6 +139,43 @@ describe("quizTurn", () => {
     );
     expect(quizTurn.mode).toBe("AI");
     expect(quizTurn.question.topic).not.toBe("SPELL");
+    expect(quizTurn.question.options).toHaveLength(4);
+  });
+
+  it("never asks the same question twice in a round", async () => {
+    const repeats: string[] = [];
+    for (let seed = 1; seed <= 40; seed++) {
+      const asked: { topic: string; difficulty: string; dared: boolean; correct: boolean; msToAnswer: number; questionId: string }[] = [];
+      for (let i = 0; i < 10; i++) {
+        const dared = i % 2 === 0;
+        const { quizTurn } = await executeQuery(
+          doc<TurnResult, StateVars>(TURN),
+          { input: { state: { seed, mode: "CLASSIC", turns: asked }, dared } },
+          { data, quiz: services(), ip: "9.9.9.9" },
+        );
+        const { id, topic, difficulty } = quizTurn.question;
+        if (asked.some((t) => t.questionId === id)) repeats.push(`seed ${seed}, turn ${i + 1}: ${id}`);
+        asked.push({ topic, difficulty, dared, correct: i % 3 !== 0, msToAnswer: 1000, questionId: id });
+      }
+    }
+    expect(repeats).toEqual([]);
+  });
+
+  it("rejects an oversized question id with BAD_INPUT", async () => {
+    const [first] = gqlTurns(1);
+    await expect(
+      executeQuery(
+        doc<TurnResult, StateVars>(TURN),
+        { input: { state: { seed: 7, mode: "CLASSIC", turns: [{ ...first, questionId: "x".repeat(65) }] }, dared: false } },
+        { data, quiz: services(), ip: "9.9.9.9" },
+      ),
+    ).rejects.toMatchObject({
+      errors: [expect.objectContaining({ extensions: expect.objectContaining({ code: "BAD_INPUT" }) })],
+    });
+  });
+
+  it("still accepts turns without a question id (a page loaded before this field existed)", async () => {
+    const { quizTurn } = await runTurn(services(), 3, "CLASSIC");
     expect(quizTurn.question.options).toHaveLength(4);
   });
 

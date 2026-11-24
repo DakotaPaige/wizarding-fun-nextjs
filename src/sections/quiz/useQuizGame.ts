@@ -182,6 +182,7 @@ function reduce(game: Game, action: Action): Game {
         dared: game.dared,
         correct: action.optionId === question.correctOptionId,
         msToAnswer: Math.max(0, Math.round(action.at - game.shownAt)),
+        questionId: question.id,
       };
       return {
         ...game,

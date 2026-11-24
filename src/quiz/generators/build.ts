@@ -25,21 +25,43 @@ export function capitalise(text: string): string {
 export interface QuestionDraft {
   topic: Topic;
   difficulty: Difficulty;
-  /** Stable key for the answer, used to build the question id. */
-  answerKey: string;
   prompt: string;
   artSlot?: string | null;
   answer: string;
+  /**
+   * Labels that answer the prompt just as well (e.g. both owners of a stag Patronus). They are
+   * never offered, so a question cannot have two right answers.
+   */
+  alsoCorrect?: readonly string[];
   /** Distractor labels tried first (shuffled). */
   preferred: readonly string[];
   /** Distractor labels used to top up when `preferred` has too few distinct labels. */
   fallback: readonly string[];
 }
 
+/** FNV-1a, 32-bit, in base 36: short and stable, not cryptographic. */
+function hash(text: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(36);
+}
+
+/**
+ * A question's id names what the player is asked: two questions share one exactly when they
+ * read the same (same topic, prompt and art), whatever the difficulty or which record answers it.
+ * That is what "never ask the same question twice" compares.
+ */
+export function questionId(topic: Topic, prompt: string, artSlot: string | null): string {
+  return `${topic}:${hash(`${prompt}\u0000${artSlot ?? ""}`)}`;
+}
+
 /** Assembles a shuffled 4-option question, or null if fewer than 4 distinct labels exist. */
 export function buildQuestion(draft: QuestionDraft, rng: Rng): Question | null {
   const labels = [draft.answer];
-  const seen = new Set(labels);
+  const seen = new Set([...labels, ...(draft.alsoCorrect ?? [])]);
   for (const label of [...shuffle(draft.preferred, rng), ...shuffle(draft.fallback, rng)]) {
     if (labels.length === OPTION_COUNT) break;
     if (!seen.has(label)) {
@@ -49,7 +71,8 @@ export function buildQuestion(draft: QuestionDraft, rng: Rng): Question | null {
   }
   if (labels.length < OPTION_COUNT) return null;
 
-  const id = `${draft.topic}:${draft.difficulty}:${draft.answerKey}`;
+  const artSlot = draft.artSlot ?? null;
+  const id = questionId(draft.topic, draft.prompt, artSlot);
   const options = shuffle(labels, rng).map((label, index) => ({ id: `${id}:${index}`, label }));
   const correct = options.find((option) => option.label === draft.answer);
   if (!correct) return null;
@@ -59,7 +82,7 @@ export function buildQuestion(draft: QuestionDraft, rng: Rng): Question | null {
     topic: draft.topic,
     difficulty: draft.difficulty,
     prompt: draft.prompt,
-    artSlot: draft.artSlot ?? null,
+    artSlot,
     options,
     correctOptionId: correct.id,
   };

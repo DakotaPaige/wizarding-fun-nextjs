@@ -58,6 +58,7 @@ export type TurnRecordInput = {
   dared: boolean;
   difficulty: Difficulty;
   msToAnswer: number;
+  questionId?: string | number | null | undefined;
   topic: Topic;
 };
 

@@ -20,9 +20,12 @@ export const generateHouse: QuestionGenerator = (difficulty, data, rng) => {
     {
       topic: "house",
       difficulty,
-      answerKey: answer.id,
       prompt: `Which house was ${answer.name} in?`,
       answer: houseLabel(answer.house!),
+      // Another character of the same name was in a different house.
+      alsoCorrect: data.characters
+        .filter((c) => c.id !== answer.id && c.name === answer.name && c.house !== null)
+        .map((c) => houseLabel(c.house!)),
       preferred: others,
       fallback: others,
     },

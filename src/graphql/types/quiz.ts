@@ -46,6 +46,8 @@ const TurnRecordInput = builder.inputType("TurnRecordInput", {
     dared: t.boolean({ required: true }),
     correct: t.boolean({ required: true }),
     msToAnswer: t.int({ required: true }),
+    // Optional so a page loaded before this field existed can finish its round.
+    questionId: t.id({ required: false }),
   }),
 });
 
@@ -134,9 +136,21 @@ interface StateInput {
   turns: TurnRecord[];
 }
 
+/** Question ids are short hashes (`topic:xxxxxx`); anything longer is not one of ours. */
+const MAX_QUESTION_ID_LENGTH = 64;
+
 function toGameState(input: StateInput): GameState {
-  return { seed: input.seed, mode: input.mode, turns: input.turns };
+  for (const turn of input.turns) {
+    if (turn.questionId != null && String(turn.questionId).length > MAX_QUESTION_ID_LENGTH) {
+      fail("BAD_INPUT", "Invalid question id");
+    }
+  }
+  const turns = input.turns.map((t) => ({ ...t, questionId: t.questionId == null ? null : String(t.questionId) }));
+  return { seed: input.seed, mode: input.mode, turns };
 }
+
+/** Draws per topic before moving on; topics hold far more questions than a round asks. */
+const MAX_DRAWS_PER_TOPIC = 25;
 
 function pickQuizmaster(state: GameState, ctx: GraphQLContext): Promise<Quizmaster> {
   const { config, guard, makeAi, classic, now } = ctx.quiz;
@@ -144,19 +158,29 @@ function pickQuizmaster(state: GameState, ctx: GraphQLContext): Promise<Quizmast
   return selectQuizmaster({ state, ip: ctx.ip, now, elapsedMs, config, guard, makeAi, classic });
 }
 
-/** The spec's own topic first, then the remaining available topics in order, at the requested difficulty. */
+/**
+ * A question not yet asked this round: the spec's own topic first, then the remaining available
+ * topics in order, at the requested difficulty. Deterministic for a game state. Only if every
+ * draw repeats (data far smaller than a round) is a repeat returned rather than an error.
+ */
 function generateWithFallback(
   spec: { topic: Topic; difficulty: Difficulty },
   state: GameState,
   ctx: GraphQLContext,
 ): Question {
   const rng = createRng(state.seed + state.turns.length + QUESTION_RNG_OFFSET);
+  const asked = new Set(state.turns.map((t) => t.questionId).filter(Boolean));
   const topics = [spec.topic, ...availableTopics(ctx.data).filter((t) => t !== spec.topic)];
+  let repeat: Question | null = null;
   for (const topic of topics) {
-    const question = generateQuestion({ topic, difficulty: spec.difficulty }, ctx.data, rng);
-    if (question) return question;
+    for (let draw = 0; draw < MAX_DRAWS_PER_TOPIC; draw++) {
+      const question = generateQuestion({ topic, difficulty: spec.difficulty }, ctx.data, rng);
+      if (!question) break;
+      if (!asked.has(question.id)) return question;
+      repeat ??= question;
+    }
   }
-  return fail("INTERNAL", "Could not build a question from the available data");
+  return repeat ?? fail("INTERNAL", "Could not build a question from the available data");
 }
 
 builder.mutationField("quizTurn", (t) =>

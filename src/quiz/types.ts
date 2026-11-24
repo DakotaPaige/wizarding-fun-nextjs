@@ -30,6 +30,8 @@ export interface TurnRecord {
   dared: boolean;
   correct: boolean;
   msToAnswer: number;
+  /** The question this turn answered (see `questionId`), so a round never asks it again. */
+  questionId?: string | null;
 }
 
 export interface GameState {

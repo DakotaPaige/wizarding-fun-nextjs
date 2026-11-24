@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { HAT_LINES } from "@/quiz/hat-lines";
 import type { QuizMode } from "@/quiz/types";
-import type { FetchTurn, FetchVerdict, TurnRequest, TurnResponse, VerdictResponse } from "./quiz.graphql";
+import { toWireState, type FetchTurn, type FetchVerdict, type TurnRequest, type TurnResponse, type VerdictResponse } from "./quiz.graphql";
 import { ROUND_LENGTH, useQuizGame } from "./useQuizGame";
 
 /** A question whose correct option is "a"; the id carries the turn number. */
@@ -80,7 +80,18 @@ describe("useQuizGame", () => {
     clock = 4250;
     act(() => hook.result.current.answer("a"));
     expect(hook.result.current.state.turns).toEqual([
-      { topic: "wand", difficulty: "hard", dared: true, correct: true, msToAnswer: 3250 },
+      { topic: "wand", difficulty: "hard", dared: true, correct: true, msToAnswer: 3250, questionId: "q0" },
+    ]);
+  });
+
+  it("sends each answered question's id back, so the server can avoid asking it again", () => {
+    const wire = toWireState({
+      seed: 1,
+      mode: "ai",
+      turns: [{ topic: "wand", difficulty: "hard", dared: true, correct: true, msToAnswer: 3250, questionId: "q0" }],
+    });
+    expect(wire.turns).toEqual([
+      { topic: "WAND", difficulty: "HARD", dared: true, correct: true, msToAnswer: 3250, questionId: "q0" },
     ]);
   });
 

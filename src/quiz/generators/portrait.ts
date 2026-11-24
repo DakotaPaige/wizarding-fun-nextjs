@@ -14,7 +14,6 @@ export const generatePortrait: QuestionGenerator = (difficulty, data, rng) => {
     {
       topic: "portrait",
       difficulty,
-      answerKey: answer.id,
       prompt: "Who is this?",
       artSlot: `portrait.${answer.id}`,
       answer: answer.name,

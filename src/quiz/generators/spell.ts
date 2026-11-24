@@ -23,15 +23,16 @@ export const generateSpell: QuestionGenerator = (difficulty, data, rng) => {
     difficulty === "normal" ? curatedPool(data) : data.spells.filter((s) => s.description !== "");
   if (pool.length === 0) return null;
   const answer = pick(pool, rng);
-  const names = pool.filter((s) => s.id !== answer.id).map((s) => s.name);
+  const others = pool.filter((s) => s.id !== answer.id);
+  const names = others.map((s) => s.name);
 
   return buildQuestion(
     {
       topic: "spell",
       difficulty,
-      answerKey: answer.id,
       prompt: `Which spell: “${answer.description}”?`,
       answer: answer.name,
+      alsoCorrect: others.filter((s) => s.description === answer.description).map((s) => s.name),
       preferred: names,
       fallback: names,
     },

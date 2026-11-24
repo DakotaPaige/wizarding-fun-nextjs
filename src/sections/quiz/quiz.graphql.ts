@@ -80,12 +80,13 @@ export function toWireState(state: GameState): GameStateInput {
     seed: state.seed,
     mode: toWire(state.mode),
     // Field by field, so a client-only field on TurnRecord can never reach the server's input type.
-    turns: state.turns.map(({ topic, difficulty, dared, correct, msToAnswer }) => ({
+    turns: state.turns.map(({ topic, difficulty, dared, correct, msToAnswer, questionId }) => ({
       topic: toWire(topic),
       difficulty: toWire(difficulty),
       dared,
       correct,
       msToAnswer,
+      questionId: questionId ?? null,
     })),
   };
 }

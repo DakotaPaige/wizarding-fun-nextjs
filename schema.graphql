@@ -153,6 +153,7 @@ input TurnRecordInput {
   dared: Boolean!
   difficulty: Difficulty!
   msToAnswer: Int!
+  questionId: ID
   topic: Topic!
 }
 

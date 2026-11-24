@@ -17,9 +17,10 @@ export const generateActor: QuestionGenerator = (difficulty, data, rng) => {
     {
       topic: "actor",
       difficulty,
-      answerKey: answer.id,
       prompt: `Who played ${answer.name}?`,
       answer: answer.actor!,
+      // Another character of the same name was played by someone else.
+      alsoCorrect: withActor.filter((c) => c.id !== answer.id && c.name === answer.name).map((c) => c.actor!),
       preferred: sameHouse.map((c) => c.actor!),
       fallback: others.map((c) => c.actor!),
     },
