@@ -1,6 +1,6 @@
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { parse } from "graphql";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { CURATED_SPELLS } from "@/data/curated/spells";
 import { ROSTER } from "@/data/curated/roster";
 import { loadWizardingData } from "@/data/repository";
@@ -17,10 +17,8 @@ function query<TResult, TVars = Record<string, never>>(source: string): TypedDoc
 
 let data: WizardingData;
 
-beforeAll(async () => {
-  const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-  data = await loadWizardingData({ fetchImpl: () => Promise.reject(new Error("offline")) });
-  warn.mockRestore();
+beforeAll(() => {
+  data = loadWizardingData();
 });
 
 const run = <TResult, TVars = Record<string, never>>(source: string, vars?: TVars) =>
@@ -73,7 +71,7 @@ describe("read schema", () => {
     const result = await run<{ spells: { name: string; description: string; effect: string }[] }>(
       "{ spells { name description effect } }",
     );
-    expect(result.spells.map((s) => s.name)).toEqual(CURATED_SPELLS.map((s) => s.apiName));
+    expect(result.spells.map((s) => s.name)).toEqual(CURATED_SPELLS.map((s) => data.spells.find((r) => r.id === s.slug)?.name));
     expect(result.spells[9]?.description).toBe(CURATED_SPELLS[9]?.descriptionOverride);
     expect(result.spells[9]?.effect).toBe("PATRONUS");
   });

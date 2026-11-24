@@ -15,10 +15,8 @@ import { createClassicQuizmaster } from "@/quiz/classic-quizmaster";
 import type { Quizmaster, TurnRecord } from "@/quiz/types";
 
 let data: WizardingData;
-beforeAll(async () => {
-  const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-  data = await loadWizardingData({ fetchImpl: () => Promise.reject(new Error("offline")) });
-  warn.mockRestore();
+beforeAll(() => {
+  data = loadWizardingData();
 });
 
 interface TurnResult {

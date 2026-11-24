@@ -2,19 +2,14 @@ import { describe, expect, it } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
 import spellsSnapshot from "@/data/snapshot/spells.json";
 import { CURATED_SPELLS } from "@/data/curated/spells";
-import { RawCharacterSchema, RawSpellSchema } from "@/data/hp-api/schemas";
-import { normaliseCharacter, normaliseSpell } from "@/data/normalise";
+import type { CharacterRecord, SpellRecord } from "@/data/types";
 import { availableTopics, generateQuestion } from "@/quiz/generators";
 import { createRng } from "@/quiz/rng";
 import type { Difficulty, Question, QuizData, Topic } from "@/quiz/types";
 
 const data: QuizData = {
-  characters: (charactersSnapshot as unknown[])
-    .map((c) => RawCharacterSchema.safeParse(c))
-    .flatMap((r) => (r.success ? [normaliseCharacter(r.data)] : [])),
-  spells: (spellsSnapshot as unknown[])
-    .map((s) => RawSpellSchema.safeParse(s))
-    .flatMap((r) => (r.success ? [normaliseSpell(r.data)] : [])),
+  characters: charactersSnapshot as CharacterRecord[],
+  spells: spellsSnapshot as SpellRecord[],
 };
 const DIFFICULTIES: Difficulty[] = ["normal", "hard"];
 
@@ -101,8 +96,8 @@ describe("question generators", () => {
         );
       case "spell": {
         const text = m(/^Which spell: “([\s\S]+)”\?$/);
-        const override = (name: string) => CURATED_SPELLS.find((s) => s.apiName === name)?.descriptionOverride;
-        return new Set(data.spells.filter((s) => s.description === text || override(s.name) === text).map((s) => s.name));
+        const override = (slug: string) => CURATED_SPELLS.find((s) => s.slug === slug)?.descriptionOverride;
+        return new Set(data.spells.filter((s) => s.description === text || override(s.id) === text).map((s) => s.name));
       }
       case "actor": {
         const who = m(/^Who played (.+)\?$/);
@@ -122,7 +117,9 @@ describe("question generators", () => {
     for (const topic of availableTopics(data)) {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 400; seed++) {
-          const q = generateQuestion({ topic, difficulty }, data, createRng(seed))!;
+          const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
+          // A house question whose namesakes cover every other house cannot be formed; skip those seeds.
+          if (q === null) continue;
           const fit = labelsThatFit(q);
           const fitting = q.options.filter((o) => fit.has(o.label));
           const correct = q.options.find((o) => o.id === q.correctOptionId)!;
@@ -140,7 +137,9 @@ describe("question generators", () => {
     for (const topic of availableTopics(data) as Topic[]) {
       for (const difficulty of DIFFICULTIES) {
         for (let seed = 1; seed <= 300; seed++) {
-          const q = generateQuestion({ topic, difficulty }, data, createRng(seed))!;
+          const q = generateQuestion({ topic, difficulty }, data, createRng(seed));
+          // A house question whose namesakes cover every other house cannot be formed; skip those seeds.
+          if (q === null) continue;
           const looks = `${q.topic}|${q.prompt}|${q.artSlot}`;
           expect(byId.get(q.id) ?? looks, q.id).toBe(looks);
           byId.set(q.id, looks);

@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test";
 
 test("the intro entrance causes no meaningful layout shift (CLS < 0.1)", async ({ page }) => {
-  await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
   await page.addInitScript(() => {
     const w = window as unknown as { __cls: number };
     w.__cls = 0;

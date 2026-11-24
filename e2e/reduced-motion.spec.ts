@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 
 test.describe("reduced motion", () => {
   test.beforeEach(async ({ page }) => {
-    await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
     await page.emulateMedia({ reducedMotion: "reduce" });
   });
 

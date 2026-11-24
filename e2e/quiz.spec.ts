@@ -4,10 +4,6 @@ import { expect, test } from "@playwright/test";
 const HOUSES = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"];
 
 test.describe("the Sorting Ceremony", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
-  });
-
   // The web server runs with every AI var blanked, so this is always classic mode.
   test("plays a classic round and sends the player to their housemates", async ({ page }) => {
     const consoleErrors: string[] = [];

@@ -15,10 +15,9 @@ export default defineConfig({
     // the blanked env below only applies to a server Playwright starts itself.
     reuseExistingServer: false,
     timeout: 180_000,
-    // Always classic mode with the snapshot data: HP-API is unreachable and every AI/Redis
+    // Always classic mode (the snapshot is the only data path): every AI/Redis
     // var is blanked, so e2e never spends API money even when .env.local holds a real key.
     env: {
-      HP_API_BASE_URL: "http://127.0.0.1:9",
       ANTHROPIC_API_KEY: "",
       UPSTASH_REDIS_REST_URL: "",
       UPSTASH_REDIS_REST_TOKEN: "",

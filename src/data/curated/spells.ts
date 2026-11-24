@@ -11,8 +11,8 @@ export type SpellEffectKey =
   | "patronus";
 
 export interface CuratedSpell {
-  /** Spell name exactly as it appears in the HP-API data. */
-  apiName: string;
+  /** The spell's PotterDB slug, which is its id in the snapshot. */
+  slug: string;
   colour: string;
   effect: SpellEffectKey;
   descriptionOverride?: string;
@@ -20,17 +20,17 @@ export interface CuratedSpell {
 
 /** The spells featured on the Spells board, in display order. */
 export const CURATED_SPELLS: readonly CuratedSpell[] = [
-  { apiName: "Lumos", colour: "#FFF1C1", effect: "lumos" },
-  { apiName: "Wingardium Leviosa", colour: "#C9B8FF", effect: "leviosa" },
-  { apiName: "Incendio", colour: "#FF8A3D", effect: "incendio" },
-  { apiName: "Expelliarmus", colour: "#FF5C5C", effect: "expelliarmus" },
-  { apiName: "Stupefy", colour: "#E5484D", effect: "stupefy" },
-  { apiName: "Protego", colour: "#6CB6FF", effect: "protego" },
-  { apiName: "Accio", colour: "#4FD1C5", effect: "accio" },
-  { apiName: "Alohomora", colour: "#F5C451", effect: "alohomora" },
-  { apiName: "Reparo", colour: "#7EE081", effect: "reparo" },
+  { slug: "wand-lighting-charm", colour: "#FFF1C1", effect: "lumos" },
+  { slug: "levitation-charm", colour: "#C9B8FF", effect: "leviosa" },
+  { slug: "fire-making-spell", colour: "#FF8A3D", effect: "incendio" },
+  { slug: "disarming-charm", colour: "#FF5C5C", effect: "expelliarmus" },
+  { slug: "stunning-spell", colour: "#E5484D", effect: "stupefy" },
+  { slug: "shield-charm", colour: "#6CB6FF", effect: "protego" },
+  { slug: "summoning-charm", colour: "#4FD1C5", effect: "accio" },
+  { slug: "unlocking-charm", colour: "#F5C451", effect: "alohomora" },
+  { slug: "mending-charm", colour: "#7EE081", effect: "reparo" },
   {
-    apiName: "Expecto patronum",
+    slug: "patronus-charm",
     colour: "#DDE6F0",
     effect: "patronus",
     descriptionOverride:

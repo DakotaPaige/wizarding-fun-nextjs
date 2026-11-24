@@ -1,14 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
-import { RawCharacterSchema } from "@/data/hp-api/schemas";
-import { normaliseCharacter } from "@/data/normalise";
-import type { Wand } from "@/data/types";
+import type { CharacterRecord, Wand } from "@/data/types";
 import { formatWand } from "./format";
 import { WandIllustration } from "./WandIllustration";
 import { DEFAULT_WOOD_TONE, WOOD_TONES, woodTone } from "./wand-woods";
 
-const snapshotCharacters = charactersSnapshot.map((raw) => normaliseCharacter(RawCharacterSchema.parse(raw)));
+const snapshotCharacters = charactersSnapshot as CharacterRecord[];
 const wandOf = (name: string): Wand => {
   const wand = snapshotCharacters.find((c) => c.name === name)?.wand;
   if (!wand) throw new Error(`${name} has no wand in the snapshot`);
@@ -23,8 +21,8 @@ describe("WandIllustration", () => {
     expect(ratio()).toBeCloseTo(0.7167, 3);
   });
 
-  it("clamps Lucius's 18 in wand to the full track", () => {
-    render(<WandIllustration wand={wandOf("Lucius Malfoy")} />);
+  it("clamps Hagrid's 16 in wand to the full track", () => {
+    render(<WandIllustration wand={wandOf("Rubeus Hagrid")} />);
     expect(ratio()).toBe(1);
   });
 
@@ -49,9 +47,9 @@ describe("WandIllustration", () => {
 
 describe("WOOD_TONES", () => {
   it("has a tone for every wood in the snapshot", () => {
-    const woods = new Set(snapshotCharacters.flatMap((c) => (c.wand?.wood ? [c.wand.wood] : [])));
+    const woods = new Set(snapshotCharacters.flatMap((c) => (c.wand?.wood ? [c.wand.wood.toLowerCase()] : [])));
     expect(woods.size).toBeGreaterThan(10);
-    for (const wood of woods) expect(WOOD_TONES, wood).toHaveProperty(wood.toLowerCase());
+    for (const wood of woods) expect(WOOD_TONES, wood).toHaveProperty(wood);
   });
 
   it("falls back to the default tone for a missing or unknown wood", () => {

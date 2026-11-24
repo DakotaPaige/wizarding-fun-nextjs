@@ -2,10 +2,6 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test.describe("page shell", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.route("**/hp-api.onrender.com/**", (route) => route.abort());
-  });
-
   test("renders every section without console errors or serious a11y violations", async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on("console", (message) => {

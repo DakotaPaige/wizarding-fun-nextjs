@@ -3,10 +3,10 @@ import { createQuizServices, type QuizServices } from "@/quiz/services";
 import type { CharacterRecord, SpellRecord, WizardingData } from "@/data/types";
 
 export interface GraphQLContext {
-  /** Loaded once per request; resolvers read from it instead of refetching. */
+  /** The committed snapshot; resolvers read from it. */
   data: WizardingData;
   ip: string | null;
-  /** `Date.now()` when the request began, before the data load; bounds the AI call's timeout. */
+  /** `Date.now()` when the request began; bounds the AI call's timeout. */
   startedAt: number;
   /** Quizmaster collaborators; built from env per request, replaced by fakes in tests. */
   quiz: QuizServices;
@@ -14,7 +14,7 @@ export interface GraphQLContext {
 
 export interface Lookups {
   characterById: ReadonlyMap<string, CharacterRecord>;
-  spellByName: ReadonlyMap<string, SpellRecord>;
+  spellById: ReadonlyMap<string, SpellRecord>;
 }
 
 const lookupCache = new WeakMap<WizardingData, Lookups>();
@@ -25,7 +25,7 @@ export function getLookups(data: WizardingData): Lookups {
   if (!lookups) {
     lookups = {
       characterById: new Map(data.characters.map((c) => [c.id, c])),
-      spellByName: new Map(data.spells.map((s) => [s.name, s])),
+      spellById: new Map(data.spells.map((s) => [s.id, s])),
     };
     lookupCache.set(data, lookups);
   }
@@ -42,6 +42,6 @@ export function getClientIp(request?: Request): string | null {
 
 export async function createContext(request?: Request): Promise<GraphQLContext> {
   const startedAt = Date.now();
-  const data = await getWizardingData();
+  const data = getWizardingData();
   return { data, ip: getClientIp(request), startedAt, quiz: createQuizServices(data) };
 }

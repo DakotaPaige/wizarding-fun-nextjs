@@ -1,387 +1,1662 @@
 [
   {
-    "id": "c76a2922-ba4c-4278-baab-44defb631236",
-    "name": "Aberto",
-    "description": "Opens locked doors"
+    "id": "age-line",
+    "name": "Age Line",
+    "description": "Prevented people above or below a certain age from access to a target"
   },
   {
-    "id": "06485500-d023-4799-93fd-77f2c3341aa3",
-    "name": "Accio",
-    "description": "Summons objects"
+    "id": "alarte-ascendare",
+    "name": "Alarte Ascendare",
+    "description": "Rocketed target upward"
   },
   {
-    "id": "acbc0ae1-12e1-4813-b51e-09d22de40475",
-    "name": "Aguamenti",
-    "description": "Summons water"
+    "id": "albus-dumbledore-s-forceful-spell",
+    "name": "Albus Dumbledore's forceful spell",
+    "description": "Great force"
   },
   {
-    "id": "c9d2f389-a419-4f7e-8d3d-254959638019",
-    "name": "Alohomora",
-    "description": "Unlocks objects"
+    "id": "alohomora-duo",
+    "name": "Alohomora Duo",
+    "description": "Stronger variation of the Unlocking Charm"
   },
   {
-    "id": "018429a5-15d5-41af-bf8f-98a966733d77",
+    "id": "altering-spell",
+    "name": "Altering Spell",
+    "description": "Transformed the physical form or colour of objects"
+  },
+  {
+    "id": "amplifying-charm",
+    "name": "Sonorus",
+    "description": "Loudens target"
+  },
+  {
+    "id": "anapneo",
     "name": "Anapneo",
-    "description": "Clears someone's airway"
+    "description": "Cleared target's airway by vanishing blockages"
   },
   {
-    "id": "c828685c-52d2-466d-bcc6-fbcd8376cfb5",
-    "name": "Aparecium",
-    "description": "Reveals secret written messages"
+    "id": "animagus-spell",
+    "name": "Amato Animo Animato Animagus",
+    "description": "Used as part of the ritual to become an Animagus"
   },
   {
-    "id": "7fdd393c-2608-4ef3-9fd0-f691ad6f8b88",
-    "name": "Apparate",
-    "description": "A non-verbal transportation spell that allows a witch or wizard to instantly travel on the spot and appear at another location (disapparate is the opposite)"
+    "id": "animation-charm",
+    "name": "Piertotum Locomotor",
+    "description": "Animated target"
   },
   {
-    "id": "73886d47-2808-4861-ae40-956f4cb56272",
+    "id": "anteoculatia",
+    "name": "Anteoculatia",
+    "description": "Grew antlers on head"
+  },
+  {
+    "id": "anti-apparition-charm",
+    "name": "Anti-Apparition Charm",
+    "description": "Prevented Apparition into an area"
+  },
+  {
+    "id": "anti-cheating-spell",
+    "name": "Anti-Cheating Spell",
+    "description": "Prevented cheating"
+  },
+  {
+    "id": "anti-disapparition-jinx",
+    "name": "Anti-Disapparition Jinx",
+    "description": "Prevented Disapparition within a certain area"
+  },
+  {
+    "id": "anti-intruder-jinx",
+    "name": "Anti-intruder jinxes",
+    "description": "Repelled intruders"
+  },
+  {
+    "id": "antonin-dolohov-s-curse",
+    "name": "Antonin Dolohov's curse",
+    "description": "Injuries capable of killing"
+  },
+  {
+    "id": "apparition",
+    "name": "None",
+    "description": "Instantly teleports user"
+  },
+  {
+    "id": "aqua-eructo",
+    "name": "Aqua Eructo",
+    "description": "Jet of water"
+  },
+  {
+    "id": "arrow-shooting-spell",
+    "name": "Arrow Shooting Spell",
+    "description": "Conjures a shooting arrow from the caster's wand"
+  },
+  {
+    "id": "ascendio",
     "name": "Ascendio",
-    "description": "Propells someone into the air"
+    "description": "Lifted caster in air"
   },
   {
-    "id": "9a6b6854-8858-4b21-b761-12526a154597",
-    "name": "Avada Kedavra",
-    "description": "Also known as The Killing Curse, the most evil spell in the Wizarding World; one of three Unforgivable Curses; Harry Potter is the only known witch or wizard to survive it"
+    "id": "atmospheric-charm",
+    "name": "Atmospheric Charm",
+    "description": "Modified or created certain weather conditions"
   },
   {
-    "id": "b6f20bba-c0db-4ad2-8ac6-2a375a596287",
+    "id": "avenseguim",
+    "name": "Avenseguim",
+    "description": "Turned the object into a tracking device"
+  },
+  {
+    "id": "avifors-spell",
+    "name": "Avifors",
+    "description": "Turned objects into birds"
+  },
+  {
+    "id": "babbling-curse",
+    "name": "Babbling Curse",
+    "description": "Uncontrollable babbling"
+  },
+  {
+    "id": "badgering",
+    "name": "Badgering",
+    "description": "Turns target human into a badger"
+  },
+  {
+    "id": "bandaging-charm",
+    "name": "Ferula",
+    "description": "Bandaged target"
+  },
+  {
+    "id": "banishing-charm",
+    "name": "Depulso",
+    "description": "Sent target away"
+  },
+  {
+    "id": "basic-cast",
+    "name": "Basic Cast",
+    "description": "Caused damage or harm to targets"
+  },
+  {
+    "id": "bat-bogey-hex",
+    "name": "Bat-Bogey Hex",
+    "description": "Transformed target's bogeys into bats that flew out of the victim's nose"
+  },
+  {
+    "id": "baubillious",
+    "name": "Baubillious",
+    "description": "Jet of white sparks"
+  },
+  {
+    "id": "bedazzling-hex",
+    "name": "Bedazzling Hex",
+    "description": "Disguised things"
+  },
+  {
+    "id": "bewitched-snowballs",
+    "name": "Bewitched Snowballs",
+    "description": "Bewitches snowballs to follow and harass a designated target"
+  },
+  {
+    "id": "bird-conjuring-charm",
     "name": "Avis",
-    "description": "Conjures a small flock of birds"
+    "description": "Conjures birds"
   },
   {
-    "id": "48edfe4d-ddfc-49ac-8065-bd7e73c73778",
-    "name": "Bat",
-    "description": "Bogey Hex - Turns the target's boogers into bats"
+    "id": "blasting-curse",
+    "name": "Confringo",
+    "description": "Explosion"
   },
   {
-    "id": "6bd8d5c1-9375-4b70-8d6e-ad019176c7a2",
-    "name": "Bombardo",
-    "description": "Creates an explosion"
+    "id": "blue-sparks",
+    "name": "Blue Sparks",
+    "description": "Jet of blue sparks"
   },
   {
-    "id": "8fc19d10-3130-4b85-95c1-f2a51ba5ee3c",
+    "id": "bluebell-flames",
+    "name": "Unknown",
+    "description": "Conjures bluebell flames"
+  },
+  {
+    "id": "boggart-banishing-spell",
+    "name": "Riddikulus",
+    "description": "Turned a Boggart into something amusing"
+  },
+  {
+    "id": "bombarda-maxima",
+    "name": "Bombarda Maxima",
+    "description": "Powerful explosion"
+  },
+  {
+    "id": "bombardment-spell",
+    "name": "Bombarda",
+    "description": "Small explosion"
+  },
+  {
+    "id": "bouquet-spell",
+    "name": "Orchideous",
+    "description": "Conjured flowers"
+  },
+  {
+    "id": "box-blasting-charm",
+    "name": "Cistem Aperio",
+    "description": "Opened chests"
+  },
+  {
+    "id": "brackium-emendo",
     "name": "Brackium Emendo",
-    "description": "Heals broken bones"
+    "description": "Removes bones (according to Gilderoy Lockhart, it cures bones)"
   },
   {
-    "id": "f08c17fa-7bf9-49bf-9fba-a7806815bc80",
-    "name": "Capacious Extremis",
-    "description": "Known as the Extension Charm, it's a complicated spell that can greatly expand or extend the capacity of an object or space without affecting it externally"
+    "id": "bravery-charm",
+    "name": "Bravery Charm",
+    "description": "Enhances teammates against foes"
   },
   {
-    "id": "55dec867-ac07-4975-94c7-090f6fd25c86",
+    "id": "bridge-conjuring-spell",
+    "name": "Bridge-conjuring spell",
+    "description": "Conjures bridges"
+  },
+  {
+    "id": "broom-jinx",
+    "name": "Broom jinx",
+    "description": "Made a broomstick attempt to buck its rider off"
+  },
+  {
+    "id": "bubble-head-charm",
+    "name": "Bubble-Head Charm",
+    "description": "Creates bubble protecting the head"
+  },
+  {
+    "id": "bubble-spell",
+    "name": "Bubble Spell",
+    "description": "Created a stream of non-bursting bubbles"
+  },
+  {
+    "id": "cascading-jinx",
+    "name": "Cascading Jinx",
+    "description": "Attacks multiple enemies"
+  },
+  {
+    "id": "caterwauling-charm",
+    "name": "Caterwauling Charm",
+    "description": "Sets off a high-pitched shriek if entered"
+  },
+  {
+    "id": "cauldron-to-badger-spell",
+    "name": "Cauldron to badger",
+    "description": "Transformed a cauldron into a badger"
+  },
+  {
+    "id": "cauldron-to-sieve",
+    "name": "Cauldron to Sieve",
+    "description": "Turned a cauldron into a sieve"
+  },
+  {
+    "id": "cave-inimicum",
+    "name": "Cave inimicum",
+    "description": "Concealment"
+  },
+  {
+    "id": "cheering-charm",
+    "name": "Cheering Charm",
+    "description": "Created joy and contentment"
+  },
+  {
+    "id": "circumrota",
+    "name": "Circumrota",
+    "description": "Rotated an object"
+  },
+  {
+    "id": "cleaning-charm",
+    "name": "Cleaning Charm",
+    "description": "Cleans objects"
+  },
+  {
+    "id": "colour-change-charm",
+    "name": "Colovaria",
+    "description": "Changes colour of target"
+  },
+  {
+    "id": "combat-bolt",
+    "name": "Combat Bolt",
+    "description": "Offensive spell; injured the target"
+  },
+  {
+    "id": "concealment-charm",
+    "name": "Concealment Charm",
+    "description": "Conceals things from view and obfuscates inherent magical properties of objects"
+  },
+  {
+    "id": "confundus-charm",
     "name": "Confundo",
-    "description": "Known as the Confundus Charm, it causes confusion of the target"
+    "description": "Confused the target"
   },
   {
-    "id": "816d9fee-b78f-47b4-be46-b48626c013f9",
+    "id": "confusion-hex",
+    "name": "Confusion Hex",
+    "description": "Significantly impairs foes by weakening their mental awareness"
+  },
+  {
+    "id": "conjunctivitis-curse",
     "name": "Conjunctivitis Curse",
-    "description": "Affects the eyes and sight of a target"
+    "description": "Irritated eyes"
   },
   {
-    "id": "58b8727a-6c0c-469c-b91d-8ac0cc0dd2d8",
+    "id": "cornflake-skin-spell",
+    "name": "Cornflake Skin Jinx",
+    "description": "Made skin appear like cornflakes"
+  },
+  {
+    "id": "cracker-jinx",
+    "name": "Cracker Jinx",
+    "description": "Conjured exploding Wizard Crackers"
+  },
+  {
+    "id": "cribbing-spell",
+    "name": "Cribbing Spell",
+    "description": "Assists the caster in cheating on written papers"
+  },
+  {
+    "id": "crinus-muto",
     "name": "Crinus Muto",
-    "description": "Changes hair color and style"
+    "description": "Transformed hair"
   },
   {
-    "id": "f1e91049-e866-4f6f-9d87-d6fd366aecbf",
+    "id": "cruciatus-curse",
     "name": "Crucio",
-    "description": "One of three Unforgivable Curses, it causes unbearable pain in the target"
+    "description": "Excruciating physical pain, insanity if victim was subjected for too long"
   },
   {
-    "id": "7324e645-8f41-4c83-a367-0d10a72906ff",
-    "name": "Diffindo",
-    "description": "Used to precisely cut an object"
+    "id": "curse-of-the-bogies",
+    "name": "Mucus ad Nauseam",
+    "description": "Nasty cold and an extremely runny nose"
   },
   {
-    "id": "638072b9-b7ac-405d-914b-d9293c5f9d25",
+    "id": "cushioning-charm",
+    "name": "Molliare",
+    "description": "Placed a cushioning effect on an object"
+  },
+  {
+    "id": "dancing-feet-spell",
+    "name": "Tarantallegra",
+    "description": "Sent legs out of control"
+  },
+  {
+    "id": "dangling-jinx",
+    "name": "Levicorpus",
+    "description": "Suspends people by the ankles in the air"
+  },
+  {
+    "id": "densaugeo",
+    "name": "Densaugeo",
+    "description": "Elongates teeth"
+  },
+  {
+    "id": "deprimo",
+    "name": "Deprimo",
+    "description": "Blasts holes in ground"
+  },
+  {
+    "id": "descending-charm",
+    "name": "Descendo",
+    "description": "Lowered target"
+  },
+  {
+    "id": "desk-into-pig",
+    "name": "Desk Into Pig",
+    "description": "Transfigured desks into pigs"
+  },
+  {
+    "id": "deterioration-hex",
+    "name": "Deterioration Hex",
+    "description": "Impairs foes"
+  },
+  {
+    "id": "diminuendo",
+    "name": "Diminuendo",
+    "description": "Shrunk objects and humans"
+  },
+  {
+    "id": "disarming-charm",
+    "name": "Expelliarmus",
+    "description": "Disarms an opponent"
+  },
+  {
+    "id": "disillusionment-charm",
     "name": "Disillusionment Charm",
-    "description": "Causes the target to take on the appearance of its surroundings"
+    "description": "Disguised target as surroundings"
   },
   {
-    "id": "b7643e32-ef9c-41b8-83f2-03f6b5015e04",
-    "name": "Disapparate",
-    "description": "A non-verbal transportation spell that allows a witch or wizard to instantly travel on the spot and leave for another location (apparate is the opposite)"
+    "id": "disintegration-spell",
+    "name": "Disintegration spell",
+    "description": "Blew up and disintegrated the target"
   },
   {
-    "id": "20476c31-4f27-49ac-876f-a4c4028f1b5b",
+    "id": "doubling-charm",
+    "name": "For the Charm: Geminio(juh-MIN-ee-oh)For the Curse: Gemino",
+    "description": "Duplicated an object"
+  },
+  {
+    "id": "draconifors-spell",
+    "name": "Draconifors",
+    "description": "Turned object into dragon"
+  },
+  {
+    "id": "drought-charm",
+    "name": "Drought Charm",
+    "description": "Dried up small bodies of water"
+  },
+  {
+    "id": "ducklifors",
+    "name": "Ducklifors",
+    "description": "Turned organisms into ducks"
+  },
+  {
+    "id": "dumbledore-s-army-parchment-jinx",
+    "name": "Dumbledore's Army parchment jinx",
+    "description": "Caused boils to spell 'SNEAK' on the face of a traitor"
+  },
+  {
+    "id": "ear-shrivelling-curse",
+    "name": "Ear-Shrivelling Curse",
+    "description": "Caused ears to shrivel up"
+  },
+  {
+    "id": "ears-to-kumquats-spell",
+    "name": "Ears to kumquats",
+    "description": "Transforms target's ears into kumquats"
+  },
+  {
+    "id": "ebublio-jinx",
+    "name": "Ebublio",
+    "description": "Traps target in giant bubble"
+  },
+  {
+    "id": "echo-detection-charm",
+    "name": "Echo-detection Charm",
+    "description": "Emitted waves of magic that rebounded to the caster when hitting an object."
+  },
+  {
+    "id": "engorgement-charm",
     "name": "Engorgio",
-    "description": "Causes rapid growth in the targeted object"
+    "description": "Caused swelling"
   },
   {
-    "id": "ecb9a882-d6d7-495e-9958-a1a06902bb65",
+    "id": "engorgio-skullus",
+    "name": "Engorgio Skullus",
+    "description": "Swelled head"
+  },
+  {
+    "id": "entrail-expelling-curse",
+    "name": "Entrail-Expelling Curse",
+    "description": "Expelled entrails (presumably)"
+  },
+  {
+    "id": "episkey",
     "name": "Episkey",
     "description": "Heals minor injuries"
   },
   {
-    "id": "317ff981-ad65-421e-92fb-5f6647d95232",
-    "name": "Expecto patronum",
-    "description": "The Patronus Charm is a powerful projection of hope and happiness that drives away Dementors; a corpeal Patronus takes the the respective animal form of the caster, while a non-corpeal appears as a wisp of light; at 13, Harry Potter was the youngest known witch or wizard to prouduce a corpeal Patronus"
+    "id": "epoximise",
+    "name": "Epoximise",
+    "description": "Bonded two objects together"
   },
   {
-    "id": "60149246-91cf-44a5-8885-78a7acc4bf90",
+    "id": "eradication-spell",
+    "name": "Deletrius",
+    "description": "Disintegrated objects and images"
+  },
+  {
+    "id": "erecto",
     "name": "Erecto",
-    "description": "Allows a witch or wizard to build a structure, like a tent"
+    "description": "Erects a structure"
   },
   {
-    "id": "6d8138c3-0773-4c23-b0bf-aab0e5c6fd95",
-    "name": "Evanesco",
-    "description": "Vanishes objects"
+    "id": "everte-statum",
+    "name": "Everte Statum",
+    "description": "Made opponent stumble, Caused sharp pain"
   },
   {
-    "id": "678474e6-fb30-4bf0-a18c-228f6b36592d",
-    "name": "Expelliarmus",
-    "description": "Forces an opponent to drop whatever's in their possession"
+    "id": "expulso-curse",
+    "name": "Expulso",
+    "description": "Caused powerful explosions"
   },
   {
-    "id": "31b38b6c-4775-4e20-815d-dbf302433de6",
-    "name": "Ferula",
-    "description": "A healing charm that conjures wraps and bandages for wounds"
+    "id": "extension-charm",
+    "name": "Capacious extremis",
+    "description": "Increases interior space of object"
   },
   {
-    "id": "37d262c9-28ab-408f-9576-acf54ce50203",
+    "id": "extinguishing-spell",
+    "name": "Extinguishing Spell",
+    "description": "Extinguished fires"
+  },
+  {
+    "id": "false-memory-spell",
+    "name": "False memory spell",
+    "description": "Implanted a false memory in the victim's mind"
+  },
+  {
+    "id": "feather-light-charm",
+    "name": "Feather-light charm",
+    "description": "Minimises object's weight"
+  },
+  {
+    "id": "ferret-to-human-spell",
+    "name": "Ferret to human spell",
+    "description": "Changes ferrets into humans"
+  },
+  {
+    "id": "fianto-duri",
+    "name": "Fianto Duri",
+    "description": "Strengthens magical protections"
+  },
+  {
+    "id": "fidelius-charm",
     "name": "Fidelius Charm",
-    "description": "A complex charm that conceals a secret into the soul of a chosen \"Secret Keeper\". If a location is the subject of concealment, it becomes undetectable to others"
+    "description": "Conceals a secret"
   },
   {
-    "id": "9121b557-0ebf-4b60-a119-9d1c5ff05dee",
-    "name": "Fiendfyre Curse",
-    "description": "Conjures destructive, enormous enchanted flames"
+    "id": "fiendfyre",
+    "name": "Pestis Incendium",
+    "description": "Unleashed cursed fire"
   },
   {
-    "id": "de23025f-5e6a-4ec3-b827-5c526a922a89",
-    "name": "Finite Incantatem",
-    "description": "A general counter-spell that's used to reverse or counter already cast charms"
+    "id": "finestra-spell",
+    "name": "Finestra",
+    "description": "Shatters glass"
   },
   {
-    "id": "d536cbe5-bc0f-49e5-b063-e02c231a3988",
-    "name": "Furnunculus Curse",
-    "description": "A jinx that causes a breakout of boils or pimples"
+    "id": "finger-removing-jinx",
+    "name": "Finger-removing jinx",
+    "description": "Removes a person's fingers"
   },
   {
-    "id": "7915b07a-d26e-4057-9083-e457643e57a6",
-    "name": "Geminio",
-    "description": "Duplicates objects"
-  },
-  {
-    "id": "2a942514-7a19-4f0e-9353-171c573abcba",
-    "name": "Glisseo",
-    "description": "Transforms a staircase into a slide"
-  },
-  {
-    "id": "a42028b6-67f5-463b-b759-452103533227",
-    "name": "Homenum Revelio",
-    "description": "Reveals the presence of another person"
-  },
-  {
-    "id": "552cd4ee-2c67-48fd-ae20-a83773262a8a",
-    "name": "Homonculus Charm",
-    "description": "Detects anyone's true identity and location on a piece of parchment; used to create the Marauder's Map"
-  },
-  {
-    "id": "2dfca7d2-ec9b-4150-b3f3-fd972a5fd1bc",
-    "name": "Immobulus",
-    "description": "Immobilises living targets"
-  },
-  {
-    "id": "a49300cc-ddbf-4ff4-b8c2-e8bddbbe4118",
-    "name": "Impedimenta",
-    "description": "A temporary jinx that slows the movement of the target"
-  },
-  {
-    "id": "e5c22d31-26f1-4c88-a586-d9c09cb88c1f",
-    "name": "Incarcerous",
-    "description": "Conjures ropes"
-  },
-  {
-    "id": "a53ad5be-00ee-4254-b3c0-4cec60b0c034",
-    "name": "Imperio",
-    "description": "One of the three Unforgivable Curses, it places the target under the complete control of the caster"
-  },
-  {
-    "id": "a3b34bf6-1ff7-4fe3-81ee-e617150f5da9",
-    "name": "Impervius",
-    "description": "Makes an object waterproof"
-  },
-  {
-    "id": "de048df0-b227-4376-a29b-90fe6878d950",
+    "id": "fire-making-spell",
     "name": "Incendio",
-    "description": "Conjures flames"
+    "description": "Conjured flames"
   },
   {
-    "id": "c4a4520b-b80d-49e8-9e5a-3ca0a7f376ca",
-    "name": "Langlock",
-    "description": "Causes the target's tongue to stick to the roof of their mouth"
+    "id": "firestorm",
+    "name": "Firestorm",
+    "description": "Ring of fire"
   },
   {
-    "id": "0da7cb76-dabc-46ff-b8e9-c23a4f03caea",
-    "name": "Legilimens",
-    "description": "Invading or navigating another's mind"
+    "id": "flagrante-curse",
+    "name": "Flagrante",
+    "description": "Causes objects to burn on contact"
   },
   {
-    "id": "723dd9c9-ee62-495b-9071-cddd16087b86",
-    "name": "Levicorpus",
-    "description": "Levitates the target by their ankle"
+    "id": "flagrate",
+    "name": "Flagrate",
+    "description": "Writes in midair"
   },
   {
-    "id": "8add16ef-b4b1-4e2b-a91e-80aa194da438",
-    "name": "Locomotor Mortis",
-    "description": "The Leg-Locker curse bounds the target's legs"
+    "id": "flame-freezing-charm",
+    "name": "Flame-Freezing Charm",
+    "description": "Rendered fire harmless"
   },
   {
-    "id": "3b7a10ce-3339-4a36-9493-292c8775e47b",
-    "name": "Lumos",
-    "description": "Illuminates the caster's wand"
+    "id": "flask-conjuring-spell",
+    "name": "Flask-conjuring spell",
+    "description": "Conjures flask"
   },
   {
-    "id": "832edaca-dbff-4a57-80c7-1d8a827c8416",
-    "name": "Morsmordre",
-    "description": "Conjures and projects Lord Voldemort's Dark Mark"
+    "id": "flintifors",
+    "name": "Flintifors",
+    "description": "Turned target into matchboxes"
   },
   {
-    "id": "7f4b43e0-3356-43f9-9299-15ec37cfaf76",
-    "name": "Mucus Ad Nauseam",
-    "description": "Inflicts an extreme runny nose or cold"
+    "id": "flipendo-maxima",
+    "name": "Flipendo Maxima",
+    "description": "Knocks the target back with greater force than the Knockback Jinx"
   },
   {
-    "id": "f86bbf7e-94ea-4c22-89fb-809af8214a85",
-    "name": "Muffliato",
-    "description": "Creates a buzzing sound in the target's ears to prevent eavesdropping"
+    "id": "flipendo-tria",
+    "name": "Flipendo Tria",
+    "description": "More powerful version of Flipendo"
   },
   {
-    "id": "66be613d-532c-46d8-a3e9-f5a2d9cccf0c",
-    "name": "Nox",
-    "description": "Reverses the lumos charm, extinguishing a wand's light"
+    "id": "flying-charm",
+    "name": "Flying charm",
+    "description": "Allows an object to fly"
   },
   {
-    "id": "9e3c0217-652a-4763-82f8-5519026a1ea6",
-    "name": "Obliviate",
-    "description": "Erases the target's memory"
+    "id": "fogging-spell",
+    "name": "Nebulus",
+    "description": "Conjured fog"
   },
   {
-    "id": "0af49753-c8ae-4748-87a7-b7cfc47d33a0",
-    "name": "Obscuro",
-    "description": "Conjures a blindfold"
+    "id": "foundables-spell",
+    "name": "Foundables Spell",
+    "description": "Unleashed the Calamity upon the Wizarding world; created foundables"
   },
   {
-    "id": "67e838c1-4623-414e-9a91-12125631dbad",
-    "name": "Oculus Reparo",
-    "description": "Repairs eyeglasses"
+    "id": "four-point-spell",
+    "name": "Point Me",
+    "description": "Wand pointed due north"
   },
   {
-    "id": "12251f32-af9d-408f-a652-3a4cc9602bc0",
-    "name": "Oppugno",
-    "description": "Directs an object or person to attack a victim"
+    "id": "fracto-strata",
+    "name": "Fracto Strata",
+    "description": "Destroy weak objects"
   },
   {
-    "id": "da9eab7b-2c7c-42de-861c-fb254bd9423c",
+    "id": "freezing-charm",
+    "name": "Immobulus",
+    "description": "Stopped movement and actions of the target"
+  },
+  {
+    "id": "freezing-spell",
+    "name": "Glacius",
+    "description": "Froze target"
+  },
+  {
+    "id": "full-body-bind-curse",
     "name": "Petrificus Totalus",
-    "description": "Temporarily freezes or petrifies the body of the target"
+    "description": "Temporary paralysis"
   },
   {
-    "id": "3e5fd245-2ecf-40c4-937d-b2c2f9eee003",
-    "name": "Periculum",
-    "description": "Conjures flares/red sparks"
+    "id": "fumos-duo",
+    "name": "Fumos Duo",
+    "description": "Multiple concealing smokescreens"
   },
   {
-    "id": "ad5685f8-6e05-49b1-a41c-d72786001d72",
-    "name": "Piertotum Locomotor",
-    "description": "Incantation used to bring to life inanimate objects and artifacts"
+    "id": "fur-spell",
+    "name": "Fur spell",
+    "description": "Causes fur to grow on someone"
   },
   {
-    "id": "0a267162-0594-4372-a3d5-89382926f495",
-    "name": "Protean Charm",
-    "description": "Links objects together for better communication"
+    "id": "general-counter-spell",
+    "name": "Finite(fi-NEE-tay), Finite Incantatem'",
+    "description": "Terminates all spell effects"
   },
   {
-    "id": "8808aa30-39f4-400c-a0e5-1dcbad657931",
-    "name": "Protego",
-    "description": "Casts an invisible shield around the caster, protecting against spells and objects (except for The Killing Curse)"
+    "id": "glacius-duo",
+    "name": "Glacius Duo",
+    "description": "Freezes the target"
   },
   {
-    "id": "56742dd7-3c93-4085-bea3-971e88d81dc2",
-    "name": "Reducto",
-    "description": "Reduces the target to pieces"
+    "id": "glacius-tria",
+    "name": "Glacius Tria",
+    "description": "Freezes target enemy"
   },
   {
-    "id": "2f177949-1f80-4663-9840-da8197411f2a",
-    "name": "Reducio",
-    "description": "Shrinks an enlarged object to its regular size"
+    "id": "glisseo",
+    "name": "Glisseo",
+    "description": "Turned stairs into a slide"
   },
   {
-    "id": "358ecb3c-e684-492c-b706-47cbd1eae02e",
-    "name": "Renneverate",
-    "description": "Awakens or revives the target"
+    "id": "gouging-spell",
+    "name": "Defodio",
+    "description": "Carved through material"
   },
   {
-    "id": "1b7a8a4c-8d4f-4001-8155-e68f1198ef72",
-    "name": "Reparifors",
-    "description": "Heals magical ailments like poisoning or paralysis"
+    "id": "green-sparks",
+    "name": "Green Sparks",
+    "description": "Jet of green sparks"
   },
   {
-    "id": "799f31a3-799e-411f-b67c-a64e48a5f503",
-    "name": "Reparo",
-    "description": "Fixes broken objects"
+    "id": "greenhouse-charm",
+    "name": "Celescere",
+    "description": "Helped grow plant-based potion ingredients"
   },
   {
-    "id": "32dbeb89-0978-4037-ab1b-413d62be02c3",
-    "name": "Rictusempra",
-    "description": "A charm that disarms an opponent by tickling them"
+    "id": "gripping-charm",
+    "name": "Gripping Charm",
+    "description": "Made holding objects easier"
   },
   {
-    "id": "c9dc8bed-5834-4001-8fa1-852690d027f2",
-    "name": "Riddikulus",
-    "description": "Used to defeat a Boggart, the charm allows the scary creature to assume a comedic form, disarming it"
+    "id": "growth-charm",
+    "name": "Growth Charm",
+    "description": "Increased size"
   },
   {
-    "id": "14c47e18-cbf3-4aec-afd3-5473d18ee7c0",
-    "name": "Scourgify",
-    "description": "Cleans objects"
+    "id": "gusts",
+    "name": "Gusts",
+    "description": "Rush of wind"
   },
   {
-    "id": "3617c34c-e650-4e3b-a13a-651d18471225",
+    "id": "gytrash-conjuring-spell",
+    "name": "Unknown",
+    "description": "Conjured Gytrashes"
+  },
+  {
+    "id": "hair-loss-curse",
+    "name": "Calvorio",
+    "description": "Removed victim's hair"
+  },
+  {
+    "id": "hair-thickening-charm",
+    "name": "Hair-Thickening Charm",
+    "description": "Caused hair to grow longer and thicker"
+  },
+  {
+    "id": "hardening-charm",
+    "name": "Duro",
+    "description": "Turned objects to stone"
+  },
+  {
+    "id": "head-shrink-spell",
+    "name": "Redactum Skullus",
+    "description": "Shrunk head"
+  },
+  {
+    "id": "herbifors",
+    "name": "Herbifors",
+    "description": "Transformed target into flowers"
+  },
+  {
+    "id": "herbivicus-charm",
+    "name": "Herbivicus",
+    "description": "Rapidly grew plants"
+  },
+  {
+    "id": "homing-spell",
+    "name": "Homing spell",
+    "description": "Offensive spells that caused damage; would follow their target"
+  },
+  {
+    "id": "homonculous-charm",
+    "name": "Homonculous Charm",
+    "description": "When cast onto a map, it enabled tracking the movements of every person in the mapped area"
+  },
+  {
+    "id": "homorphus-charm",
+    "name": "Homorphus Charm",
+    "description": "Temporarily change a transformed werewolf back into their human form (according to Gilderoy Lockhart, it cured lycanthropy if cast perfectly)."
+  },
+  {
+    "id": "horcrux-making-spell",
+    "name": "Horcrux-making spell",
+    "description": "Prepared a receptacle to become a Horcrux"
+  },
+  {
+    "id": "horn-tongue-hex",
+    "name": "Horn Tongue Hex",
+    "description": "Transformed target's tongue into a horn"
+  },
+  {
+    "id": "horton-keitch-braking-charm",
+    "name": "Horton-Keitch Braking Charm",
+    "description": "Allow broomsticks to brake more easily"
+  },
+  {
+    "id": "hot-air-charm",
+    "name": "Hot Air Charm",
+    "description": "Jet of hot air"
+  },
+  {
+    "id": "hour-reversal-charm",
+    "name": "Hour-Reversal Charm",
+    "description": "Reversal of time"
+  },
+  {
+    "id": "hover-charm",
+    "name": "Hover Charm",
+    "description": "Made objects hover"
+  },
+  {
+    "id": "human-presence-revealing-spell",
+    "name": "Homenum Revelio",
+    "description": "Revealed human presence"
+  },
+  {
+    "id": "hurling-hex",
+    "name": "Hurling Hex",
+    "description": "Causes a broomstick to attempt to hurl its rider off"
+  },
+  {
+    "id": "ice-jinx",
+    "name": "Ice Jinx",
+    "description": "Generated a small block of ice"
+  },
+  {
+    "id": "ignition-spell",
+    "name": "Inflamare",
+    "description": "Lights a target using a small fireball"
+  },
+  {
+    "id": "illegibilus",
+    "name": "Illegibilus",
+    "description": "Makes text illegible"
+  },
+  {
+    "id": "impediment-jinx",
+    "name": "Impedimenta",
+    "description": "Hindered movement of target"
+  },
+  {
+    "id": "imperius-curse",
+    "name": "Imperio",
+    "description": "Total control"
+  },
+  {
+    "id": "imperturbable-charm",
+    "name": "Imperturbable Charm",
+    "description": "Invisible barrier"
+  },
+  {
+    "id": "impervius-charm",
+    "name": "Impervius",
+    "description": "Waterproofed an object"
+  },
+  {
+    "id": "inanimatus-conjurus-spell",
+    "name": "Inanimatus Conjurus",
+    "description": "Alters the design of a room"
+  },
+  {
+    "id": "incarcerous-spell",
+    "name": "Incarcerous",
+    "description": "Bound target in ropes"
+  },
+  {
+    "id": "incendio-duo-spell",
+    "name": "Incendio",
+    "description": "Conjured flames"
+  },
+  {
+    "id": "incendio-tria",
+    "name": "Incendio Tria",
+    "description": "Conjured blue flames"
+  },
+  {
+    "id": "inflating-charm",
+    "name": "Inflatus",
+    "description": "Inflated target"
+  },
+  {
+    "id": "informous-spell",
+    "name": "Informous",
+    "description": "Adds to the Folio Bruti"
+  },
+  {
+    "id": "inn-charm",
+    "name": "Tribuomnus",
+    "description": "Improved the quality of food"
+  },
+  {
+    "id": "insect-hex",
+    "name": "Entomorphis",
+    "description": "Gives target insectoid qualities for a short period of time"
+  },
+  {
+    "id": "instant-scalping-hex",
+    "name": "Instant scalping hex",
+    "description": "Instantly scalps hair"
+  },
+  {
+    "id": "intruder-charm",
+    "name": "Intruder Charm",
+    "description": "Detects intruders and sounds an alarm"
+  },
+  {
+    "id": "jelly-brain-jinx",
+    "name": "Jelly-Brain Jinx",
+    "description": "Dulls mental abilities"
+  },
+  {
+    "id": "jelly-fingers-curse",
+    "name": "Jelly-Fingers Curse",
+    "description": "Fingers become wobbly"
+  },
+  {
+    "id": "jelly-legs-curse",
+    "name": "Locomotor Wibbly",
+    "description": "Legs become wobbly"
+  },
+  {
+    "id": "killing-curse",
+    "name": "Avada Kedavra",
+    "description": "Instantaneous death"
+  },
+  {
+    "id": "knee-reversal-hex",
+    "name": "Knee-reversal hex",
+    "description": "Put knees on backward"
+  },
+  {
+    "id": "knitting-charm",
+    "name": "Knitting Charm",
+    "description": "Knitting needles knit automatically"
+  },
+  {
+    "id": "knockback-jinx",
+    "name": "Flipendo",
+    "description": "Knocked target back"
+  },
+  {
+    "id": "knockback-jinx-duo",
+    "name": "Flipendo",
+    "description": "Knocked target back"
+  },
+  {
+    "id": "lacarnum-inflamari",
+    "name": "Lacarnum Inflamari",
+    "description": "Ignites items of clothing"
+  },
+  {
+    "id": "laceration-curse",
     "name": "Sectumsempra",
-    "description": "Inflicts severe lacerations and haemorrhaging on the target"
+    "description": "Lacerated target"
   },
   {
-    "id": "53747fb8-bdab-466e-90fb-ca75c66f3dd9",
+    "id": "langlock",
+    "name": "Langlock",
+    "description": "Stuck tongue to roof of the mouth"
+  },
+  {
+    "id": "lapifors-spell",
+    "name": "Lapifors",
+    "description": "Turned target into rabbit"
+  },
+  {
+    "id": "leek-jinx",
+    "name": "Leek jinx",
+    "description": "Leeks sprout from ears"
+  },
+  {
+    "id": "leg-locker-curse",
+    "name": "Locomotor Mortis",
+    "description": "Sticks legs together"
+  },
+  {
+    "id": "legilimency-spell",
+    "name": "Legilimens",
+    "description": "Lets the caster see into the mind of another person"
+  },
+  {
+    "id": "levitation-charm",
+    "name": "Wingardium Leviosa",
+    "description": "Made objects levitate"
+  },
+  {
+    "id": "levitation-spell",
+    "name": "Levioso",
+    "description": "Made objects levitate"
+  },
+  {
+    "id": "liberacorpus",
+    "name": "Liberacorpus",
+    "description": "Counteracts the Dangling Jinx"
+  },
+  {
+    "id": "locking-spell",
+    "name": "Colloportus",
+    "description": "Locks doors"
+  },
+  {
+    "id": "locomotion-charm",
+    "name": "Locomotor",
+    "description": "Moved objects in midair"
+  },
+  {
+    "id": "lumos-duo",
+    "name": "Lumos Duo",
+    "description": "Focused beam of light from end of wand"
+  },
+  {
+    "id": "lumos-maxima",
+    "name": "Lumos Maxima",
+    "description": "Produced very bright light from wand tip"
+  },
+  {
+    "id": "lumos-solem-spell",
+    "name": "Lumos Solem",
+    "description": "Produced blinding flash of sunlight"
+  },
+  {
+    "id": "magicus-extremos",
+    "name": "Magicus Extremos",
+    "description": "Temporarily increases casters' spell power"
+  },
+  {
+    "id": "memory-charm",
+    "name": "Obliviate",
+    "description": "Erases memories"
+  },
+  {
+    "id": "mending-charm",
+    "name": "Reparo",
+    "description": "Fixed broken objects"
+  },
+  {
+    "id": "meteolojinx-recanto",
+    "name": "Meteolojinx recanto",
+    "description": "Caused weather effects caused by spells to cease"
+  },
+  {
+    "id": "ministry-of-magic-fog",
+    "name": "Ministry of Magic Fog",
+    "description": "Produced special fog for the concealment of certain locations"
+  },
+  {
+    "id": "mobiliarbus",
+    "name": "Mobiliarbus",
+    "description": "Levitated wooden objects"
+  },
+  {
+    "id": "mobilicorpus",
+    "name": "Mobilicorpus",
+    "description": "Moved bodies"
+  },
+  {
+    "id": "morsmordre",
+    "name": "Morsmordre",
+    "description": "Conjured the Dark Mark in the sky"
+  },
+  {
+    "id": "muffliato-charm",
+    "name": "Muffliato",
+    "description": "Conceals sound"
+  },
+  {
+    "id": "muggle-repelling-charm",
+    "name": "Repello Muggletum",
+    "description": "Repelled Muggles"
+  },
+  {
+    "id": "multicorfors-spell",
+    "name": "Multicorfors",
+    "description": "Changed clothes"
+  },
+  {
+    "id": "mutatio-skullus",
+    "name": "Mutatio Skullus",
+    "description": "Mutated the skull (presumably)"
+  },
+  {
+    "id": "obliteration-charm",
+    "name": "Obliteration Charm",
+    "description": "Removes footprints"
+  },
+  {
+    "id": "obscuro",
+    "name": "Obscuro",
+    "description": "Blindfolded target"
+  },
+  {
+    "id": "oculus-reparo",
+    "name": "Oculus Reparo",
+    "description": "Repairs glasses"
+  },
+  {
+    "id": "one-eyed-witch-spell",
+    "name": "Dissendium",
+    "description": "Revealed secret passages, particularly the One-Eyed Witch Passage"
+  },
+  {
+    "id": "opening-charm",
+    "name": "Aberto",
+    "description": "Opened doors"
+  },
+  {
+    "id": "oppugno-jinx",
+    "name": "Oppugno",
+    "description": "Assaulted target with directed object(s)"
+  },
+  {
+    "id": "orbis",
+    "name": "Orbis",
+    "description": "Sucks the target into the ground"
+  },
+  {
+    "id": "oscausi",
+    "name": "Oscausi",
+    "description": "Sealed mouth shut"
+  },
+  {
+    "id": "pack-charm",
+    "name": "Pack",
+    "description": "Packed luggage into trunk"
+  },
+  {
+    "id": "pain-extraction-spell",
+    "name": "Pain extraction spell",
+    "description": "Removed pain from the target, Could empower those who absorbed it"
+  },
+  {
+    "id": "papyrus-reparo",
+    "name": "Papyrus Reparo",
+    "description": "Mends torn paper"
+  },
+  {
+    "id": "partis-temporus",
+    "name": "Partis Temporus",
+    "description": "Parted the target"
+  },
+  {
+    "id": "patronus-charm",
+    "name": "Expecto Patronum",
+    "description": "Conjured a spirit guardian"
+  },
+  {
+    "id": "pepper-breath",
+    "name": "Pepper Breath",
+    "description": "Inflicts fiery hot breath"
+  },
+  {
+    "id": "periculum",
+    "name": "Periculum",
+    "description": "Burst of red sparks"
+  },
+  {
+    "id": "permanent-sticking-charm",
+    "name": "Permanent Sticking Charm",
+    "description": "Stuck object permanently in place"
+  },
+  {
+    "id": "peskipiksi-pesternomi",
+    "name": "Peskipiksi Pesternomi",
+    "description": "Nothing (supposedly captured pixies)"
+  },
+  {
+    "id": "pimple-jinx",
+    "name": "Furnunculus",
+    "description": "Caused pimples/boils to erupt"
+  },
+  {
+    "id": "piscifors",
+    "name": "Piscifors",
+    "description": "Turns target into fish"
+  },
+  {
+    "id": "placement-charm",
+    "name": "Placement Charm",
+    "description": "Placed object on target"
+  },
+  {
+    "id": "portkey-spell",
+    "name": "Portus",
+    "description": "Turns object into Portkey"
+  },
+  {
+    "id": "proficiency-charm",
+    "name": "Proficiency Charm",
+    "description": "Boosts an individual's performance with certain talents"
+  },
+  {
+    "id": "projectile-jinx",
+    "name": "Waddiwasi",
+    "description": "Propelled wad at the target"
+  },
+  {
+    "id": "protean-charm",
+    "name": "Protean Charm",
+    "description": "Synchronises changes through objects"
+  },
+  {
+    "id": "protection-charm",
+    "name": "Protection Charm",
+    "description": "Enhanced an individual's defence"
+  },
+  {
+    "id": "protego-diabolica",
+    "name": "Protego Diabolica",
+    "description": "Encircling the caster with a protective ring of black fire that incinerated enemies and left allies unharmed"
+  },
+  {
+    "id": "protego-horribilis",
+    "name": "Protego horribilis",
+    "description": "Summoned a powerful protective barrier"
+  },
+  {
+    "id": "protego-maxima",
+    "name": "Protego Maxima",
+    "description": "Summons a large protective barrier"
+  },
+  {
+    "id": "protego-totalum",
+    "name": "Protego totalum",
+    "description": "Shields an area"
+  },
+  {
+    "id": "pullus",
+    "name": "Pullus",
+    "description": "Transformed creatures into chickens"
+  },
+  {
+    "id": "pumpkin-head-jinx",
+    "name": "Melofors",
+    "description": "Encased head in pumpkin"
+  },
+  {
+    "id": "purple-firecrackers",
+    "name": "Purple Firecrackers",
+    "description": "Exploding firecrackers"
+  },
+  {
+    "id": "pus-squirting-hex",
+    "name": "Pus Squirting Hex",
+    "description": "Caused yellowish pus to squirt from one's nose"
+  },
+  {
+    "id": "quietening-charm",
+    "name": "Quietus",
+    "description": "Quietens target"
+  },
+  {
+    "id": "red-sparks",
+    "name": "Vermillious",
+    "description": "Jet of red sparks"
+  },
+  {
+    "id": "reductor-curse",
+    "name": "Reducto",
+    "description": "Destroyed solid objects"
+  },
+  {
+    "id": "refilling-charm",
+    "name": "Refilling Charm",
+    "description": "Refills beverage containers"
+  },
+  {
+    "id": "reparifarge",
+    "name": "Reparifarge",
+    "description": "Reverses the effects of an incomplete Transformation spell"
+  },
+  {
+    "id": "reparifors",
+    "name": "Reparifors",
+    "description": "Healed minor magically induced ailments"
+  },
+  {
+    "id": "repello-inimicum",
+    "name": "Repello Inimicum",
+    "description": "Repels enemies; if used with Protego Maxima and Fianto Duri, it disintegrates anything that comes in contact with the barrier"
+  },
+  {
+    "id": "revealing-charm",
+    "name": "Aparecium",
+    "description": "Revealed hidden writing"
+  },
+  {
+    "id": "revelio-charm",
+    "name": "Revelio",
+    "description": "Revealed secrets about a person or object"
+  },
+  {
+    "id": "reverse-spell",
+    "name": "Prior Incantato",
+    "description": "Showed the previous spells cast by a wand"
+  },
+  {
+    "id": "reverte",
+    "name": "Reverte",
+    "description": "Returned objects to their original positions or states"
+  },
+  {
+    "id": "reviving-spell",
+    "name": "Rennervate",
+    "description": "Awakened target from unconsciousness"
+  },
+  {
+    "id": "revulsion-jinx",
+    "name": "Relashio",
+    "description": "Forced target to let go"
+  },
+  {
+    "id": "rose-growth",
+    "name": "Rose Growth",
+    "description": "Accelerates the growth of a rosebush"
+  },
+  {
+    "id": "rowboat-spell",
+    "name": "Rowboat spell",
+    "description": "Caused a rowboat to propel itself"
+  },
+  {
+    "id": "salvio-hexia",
+    "name": "Salvio hexia",
+    "description": "Hex deflection"
+  },
+  {
+    "id": "sardine-hex",
+    "name": "Sardine spell",
+    "description": "Victim sneezed sardines"
+  },
+  {
+    "id": "sauce-making-spell",
+    "name": "Sauce-creating spell",
+    "description": "Conjured sauce"
+  },
+  {
+    "id": "scouring-charm",
+    "name": "Scourgify",
+    "description": "Cleaned objects, Caused human mouths to fill with soap"
+  },
+  {
+    "id": "sea-urchin-jinx",
+    "name": "Sea Urchin Jinx",
+    "description": "Makes tiny spikes erupt all over the victim"
+  },
+  {
+    "id": "sealant-charm",
+    "name": "Sealant Charm",
+    "description": "Seals envelopes"
+  },
+  {
+    "id": "seize-and-pull-charm",
+    "name": "Carpe Retractum",
+    "description": "Pulled something towards the caster or vice versa"
+  },
+  {
+    "id": "severing-charm",
+    "name": "Diffindo",
+    "description": "Severed objects"
+  },
+  {
+    "id": "shield-charm",
+    "name": "Protego",
+    "description": "Reflected spells and blocked physical forces"
+  },
+  {
+    "id": "shield-penetration-spell",
+    "name": "Shield penetration spell",
+    "description": "Used to break down magical shields"
+  },
+  {
+    "id": "shooting-spell",
+    "name": "Shooting spell",
+    "description": "Small explosion with a gunshot-sound"
+  },
+  {
+    "id": "shrinking-charm",
+    "name": "Reducio",
+    "description": "Shrinks target"
+  },
+  {
+    "id": "silencing-charm",
+    "name": "Silencio",
+    "description": "Silenced target"
+  },
+  {
+    "id": "singing-charm",
+    "name": "Cantis",
+    "description": "Makes target sing"
+  },
+  {
+    "id": "skurge-charm",
+    "name": "Skurge",
+    "description": "Cleaned ectoplasm, Frightened ghosts and other spirits"
+  },
+  {
+    "id": "slippery-jinx",
+    "name": "Slippery Jinx",
+    "description": "Makes object slippery"
+  },
+  {
+    "id": "slowing-charm",
+    "name": "Arresto Momentum",
+    "description": "Slowed or stopped the target's velocity"
+  },
+  {
+    "id": "slug-vomiting-charm",
+    "name": "Slugulus Eructo",
+    "description": "Victim vomited slugs"
+  },
+  {
+    "id": "smashing-spell",
+    "name": "Smashing Spell",
+    "description": "Explosive, destroyed everything in its range"
+  },
+  {
+    "id": "smokescreen-spell",
+    "name": "Fumos",
+    "description": "Defensive smokescreen"
+  },
+  {
+    "id": "snake-summons-spell",
     "name": "Serpensortia",
     "description": "Conjures a live snake"
   },
   {
-    "id": "43d3d53e-7ab9-4145-bda7-d96be99c5d31",
-    "name": "Silencio",
-    "description": "Silences the target"
+    "id": "snake-vanishing-spell",
+    "name": "Vipera Evanesca",
+    "description": "Vanishes snakes"
   },
   {
-    "id": "d5f71164-fa43-4566-b537-8852859bde01",
-    "name": "Sonorus",
-    "description": "Amplifies the witch or wizard's voice"
-  },
-  {
-    "id": "9ec3258c-bc2f-4427-8440-ebea450a44aa",
+    "id": "softening-charm",
     "name": "Spongify",
-    "description": "Softens the target"
+    "description": "Softening objects"
   },
   {
-    "id": "37110a48-07e3-4fd7-9aae-ac1145161e1e",
+    "id": "sonorous-charm",
+    "name": "Sonorous Charm",
+    "description": "Emitted a magnified roar from the tip of the wand"
+  },
+  {
+    "id": "specialis-revelio",
+    "name": "Specialis Revelio",
+    "description": "Revealed spells cast on objects or potions"
+  },
+  {
+    "id": "spider-banishing-charm",
+    "name": "Arania Exumai",
+    "description": "Repelled spiders"
+  },
+  {
+    "id": "sponge-knees-curse",
+    "name": "Sponge-Knees Curse",
+    "description": "Causes the target's legs to become spongy"
+  },
+  {
+    "id": "squiggle-quill",
+    "name": "Squiggle Quill",
+    "description": "Transfigures writing quills into worms"
+  },
+  {
+    "id": "stamina-charm",
+    "name": "Stamina Charm",
+    "description": "Increases stamina"
+  },
+  {
+    "id": "stealth-sensoring-spell",
+    "name": "Stealth Sensoring Spell",
+    "description": "Detects those under magical disguise."
+  },
+  {
+    "id": "sternius",
+    "name": "Sternius",
+    "description": "Caused target to sneeze"
+  },
+  {
+    "id": "stickfast-hex",
+    "name": "Colloshoo",
+    "description": "Stuck shoes to floor"
+  },
+  {
+    "id": "stinging-jinx",
+    "name": "Stinging Jinx",
+    "description": "Stung flesh"
+  },
+  {
+    "id": "stretching-jinx",
+    "name": "Stretching Jinx",
+    "description": "Stretches the target"
+  },
+  {
+    "id": "stunning-spell",
     "name": "Stupefy",
-    "description": "The Stunning spell freezes objects and renders living targets unconscious"
+    "description": "Rendered target unconscious"
   },
   {
-    "id": "daeb6f2a-5aff-43e1-964a-a06da7f66a3c",
-    "name": "Tarantallegra",
-    "description": "Aimed at the legs, causes uncontrollable dancing movement"
+    "id": "summoning-charm",
+    "name": "Accio",
+    "description": "Summoned an object"
   },
   {
-    "id": "4eaa6532-3ef2-428d-922f-101aee3d66ed",
+    "id": "supersensory-charm",
+    "name": "Supersensory Charm",
+    "description": "Superior perception"
+  },
+  {
+    "id": "surgito",
+    "name": "Surgito",
+    "description": "Removed enchantments"
+  },
+  {
+    "id": "switching-spell",
+    "name": "Switching Spell",
+    "description": "Switches two objects"
+  },
+  {
+    "id": "taboo",
+    "name": "Taboo",
+    "description": "When a word was spoken, the caster was alerted and protective enchantments around the speaker were weakened"
+  },
+  {
+    "id": "tail-growing-spell",
+    "name": "Tail-growing spell",
+    "description": "Gives the victim a tail"
+  },
+  {
+    "id": "teacup-to-tortoise-spell",
+    "name": "Teacup to tortoise",
+    "description": "Transformed a teacup into a tortoise"
+  },
+  {
+    "id": "teapot-to-tortoise-spell",
+    "name": "Teapot to tortoise",
+    "description": "Transforms a teapot into a tortoise"
+  },
+  {
+    "id": "teeth-straightening-spell",
+    "name": "Teeth-straightening spell",
+    "description": "Straightened teeth"
+  },
+  {
+    "id": "teleportation-spell",
+    "name": "Teleportation spell",
+    "description": "Made objects teleport elsewhere"
+  },
+  {
+    "id": "tentaclifors",
+    "name": "Tentaclifors",
+    "description": "Turned victim's head into tentacle"
+  },
+  {
+    "id": "terrifying-charm",
+    "name": "Unknown",
+    "description": "Terrifies someone (possibly)"
+  },
+  {
+    "id": "tickling-charm",
+    "name": "Rictusempra",
+    "description": "Tickles and weakens"
+  },
+  {
+    "id": "tickling-hex",
+    "name": "Titillando",
+    "description": "Tickled and weakened"
+  },
+  {
+    "id": "toenail-growing-hex",
+    "name": "Toenail-growing hex",
+    "description": "Causes its victim's toenails to grow alarmingly fast"
+  },
+  {
+    "id": "tongue-tying-curse",
+    "name": "Mimblewimble",
+    "description": "Tied tongue in knot"
+  },
+  {
+    "id": "tracking-spell",
+    "name": "Appare Vestigium",
+    "description": "Revealed traces of magic, including footprints and track marks"
+  },
+  {
+    "id": "transmogrifian-torture",
+    "name": "Transmogrifian Torture",
+    "description": "Tortured, possibly by transfiguring the target to death"
+  },
+  {
+    "id": "trip-jinx",
+    "name": "Trip Jinx",
+    "description": "Tripped victim"
+  },
+  {
+    "id": "twitchy-ears-hex",
+    "name": "Twitchy-Ears Hex",
+    "description": "Makes victim's ears twitch"
+  },
+  {
+    "id": "unbreakable-charm",
+    "name": "Unbreakable Charm",
+    "description": "Made object unbreakable"
+  },
+  {
+    "id": "unbreakable-vow",
     "name": "Unbreakable Vow",
-    "description": "A magically binding contract that results in the death of whoever breaks it"
+    "description": "Binding magical contract, that was fatal if broken"
   },
   {
-    "id": "e23728b2-f6fd-4c70-a1d2-ce602940d873",
-    "name": "Wingardium Leviosa",
-    "description": "Causes an object to levitate; but remember what Hermione said: \"It's Wing-gar-dium Levi-o-sa, make the 'gar' nice and long.'\""
+    "id": "uninviting-charm",
+    "name": "Unknown",
+    "description": "Univites an individual (possibly)"
+  },
+  {
+    "id": "unlocking-charm",
+    "name": "Alohomora",
+    "description": "Unlocked objects"
+  },
+  {
+    "id": "unsupported-flight",
+    "name": "Unsupported flight",
+    "description": "Allowed a witch or wizard to fly unaided"
+  },
+  {
+    "id": "vacuum-cleaner-spell",
+    "name": "Vacuum cleaner spell",
+    "description": "Cleans an object like a vacuum cleaner"
+  },
+  {
+    "id": "vanishing-cabinet-repair-spell",
+    "name": "Harmonia Nectere Passus",
+    "description": "Repairing Vanishing Cabinets"
+  },
+  {
+    "id": "vanishing-spell",
+    "name": "Evanesco",
+    "description": "Made objects vanish"
+  },
+  {
+    "id": "ventus-duo",
+    "name": "Ventus Duo",
+    "description": "Creates a stronger jet of wind compared to Ventus"
+  },
+  {
+    "id": "vera-verto",
+    "name": "Vera Verto",
+    "description": "Transformed animals into water goblets"
+  },
+  {
+    "id": "verdillious",
+    "name": "Verdillious",
+    "description": "Caused the wand tip to burn like a sparkler whilst damaging an opponent"
+  },
+  {
+    "id": "verdimillious-charm",
+    "name": "Verdimillious",
+    "description": "Do damage to opponents, Reveal hidden things"
+  },
+  {
+    "id": "verdimillious-duo-spell",
+    "name": "Verdimillious",
+    "description": "Do damage to an opponent, Revealed hidden objects"
+  },
+  {
+    "id": "vermiculus",
+    "name": "Vermiculus",
+    "description": "Turns things into worms"
+  },
+  {
+    "id": "victor-rookwood-s-curse",
+    "name": "Victor Rookwood's curse",
+    "description": "Constant, prolonged pain and agony"
+  },
+  {
+    "id": "vulnera-sanentur",
+    "name": "Vulnera Sanentur",
+    "description": "Slows blood flowClears residueKnits wounds"
+  },
+  {
+    "id": "wand-extinguishing-charm",
+    "name": "Nox",
+    "description": "Extinguished the Wand-Lighting Charm"
+  },
+  {
+    "id": "wand-lighting-charm",
+    "name": "Lumos",
+    "description": "Illuminates the wand tip"
+  },
+  {
+    "id": "washing-up-spell",
+    "name": "Washing up spell",
+    "description": "Cleans dishes"
+  },
+  {
+    "id": "water-making-spell",
+    "name": "Aguamenti",
+    "description": "Conjuring water"
+  },
+  {
+    "id": "weight-loss-charms",
+    "name": "Weight-loss Charm",
+    "description": "Reduce the target's weight"
+  },
+  {
+    "id": "white-sparks",
+    "name": "White sparks",
+    "description": "Jet of white sparks"
+  },
+  {
+    "id": "windy-spell",
+    "name": "Ventus",
+    "description": "Jet of spiralling wind"
+  },
+  {
+    "id": "wiping-spell",
+    "name": "Tergeo",
+    "description": "Cleaned up objects"
   }
 ]
