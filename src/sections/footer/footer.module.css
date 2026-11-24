@@ -50,6 +50,7 @@
 }
 
 .link:focus-visible,
+.disclaimer a:focus-visible,
 .credit a:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
@@ -71,6 +72,15 @@
 .disclaimer {
   max-width: 640px;
   margin: 0;
+}
+
+.disclaimer a {
+  color: var(--text);
+  text-underline-offset: 2px;
+}
+
+.disclaimer a:hover {
+  color: var(--gold);
 }
 
 .credit {

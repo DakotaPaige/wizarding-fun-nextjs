@@ -49,6 +49,13 @@ test.describe("page shell", () => {
     const colophon = page.locator("footer");
     await expect(colophon).toContainText("Potter DB");
     await expect(colophon).toContainText("CC BY-SA");
+
+    const potterDb = colophon.getByRole("link", { name: /^Potter DB/ });
+    await expect(potterDb).toHaveAttribute("href", "https://potterdb.com");
+    await expect(potterDb).toHaveAttribute("target", "_blank");
+    const licence = colophon.getByRole("link", { name: /^CC BY-SA/ });
+    await expect(licence).toHaveAttribute("href", "https://creativecommons.org/licenses/by-sa/4.0/");
+    await expect(licence).toHaveAttribute("rel", "noopener noreferrer");
   });
 
   test("the footer writes in when reached, even after the quiz changes the page height", async ({ page }) => {

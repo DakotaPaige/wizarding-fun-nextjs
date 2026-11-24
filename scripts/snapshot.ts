@@ -1,8 +1,9 @@
 /**
- * Builds src/data/snapshot/{characters,spells}.json from PotterDB (characters, spells) and
- * HP-API (actor names only; falls back to the actors in the existing snapshot if HP-API is down). PotterDB allows 15 requests a minute, so a run takes about four
- * minutes; nothing is written unless every request succeeds. The free HP-API host can take
- * 30-50 s to wake, so it has deliberately no timeout.
+ * Builds src/data/snapshot/{characters,spells}.json from PotterDB (characters, spells) and HP-API
+ * (actor names only). PotterDB allows 15 requests a minute, so a run takes about four minutes;
+ * nothing is written unless every PotterDB request succeeds. The free HP-API host can take 30-50 s
+ * to wake, so its request gets a generous 60 s timeout; if it fails or times out, the actors in the
+ * existing snapshot are reused.
  *
  * Usage: pnpm snapshot
  */
@@ -12,6 +13,9 @@ import { buildSnapshot, fetchAllPages, HP_API_URL } from "./snapshot-lib";
 
 const outDir = path.join(process.cwd(), "src/data/snapshot");
 
+/** Long enough for the free host to wake; short enough that a hung host falls back. */
+const HP_API_TIMEOUT_MS = 60_000;
+
 /**
  * HP-API is the actor source, but the free host has been suspended before. When it can't be read,
  * fall back to the actors already in the committed snapshot (records carry id, name and actor, which
@@ -19,7 +23,7 @@ const outDir = path.join(process.cwd(), "src/data/snapshot");
  */
 async function fetchActorSource(): Promise<unknown[]> {
   try {
-    const response = await fetch(HP_API_URL);
+    const response = await fetch(HP_API_URL, { signal: AbortSignal.timeout(HP_API_TIMEOUT_MS) });
     if (!response.ok) throw new Error(`${HP_API_URL} responded ${response.status}`);
     const data: unknown = await response.json();
     if (!Array.isArray(data)) throw new Error(`${HP_API_URL} did not return an array`);
