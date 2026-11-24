@@ -26,12 +26,17 @@ function parseRecords<S extends z.ZodType>(label: string, schema: S, payload: un
   return valid;
 }
 
-/** Uncached implementation: the committed snapshot, validated. No I/O. */
+let data: WizardingData | undefined;
+
+/**
+ * The committed snapshot, validated on first use and then reused for the life of the module (the
+ * snapshot is static, so validating it again outside a React render would only repeat the work). No I/O.
+ */
 export function loadWizardingData(): WizardingData {
-  return {
+  return (data ??= {
     characters: parseRecords("character", CharacterRecordSchema, charactersSnapshot),
     spells: parseRecords("spell", SpellRecordSchema, spellsSnapshot),
-  };
+  });
 }
 
 export const getWizardingData = cache(loadWizardingData);

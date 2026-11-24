@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import charactersSnapshot from "@/data/snapshot/characters.json";
 import spellsSnapshot from "@/data/snapshot/spells.json";
 import { loadWizardingData } from "@/data/repository";
+import { CharacterRecordSchema } from "@/data/schemas";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -18,6 +19,14 @@ describe("loadWizardingData", () => {
     expect(data.characters.find((c) => c.id === "harry-potter")?.name).toBe("Harry Potter");
     expect(data.spells.find((s) => s.id === "disarming-charm")?.name).toBe("Expelliarmus");
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("validates the snapshot once and then reuses it", () => {
+    const parse = vi.spyOn(CharacterRecordSchema, "safeParse");
+    const first = loadWizardingData();
+    const callsAfterFirst = parse.mock.calls.length;
+    expect(loadWizardingData()).toBe(first);
+    expect(parse.mock.calls.length).toBe(callsAfterFirst);
   });
 
   it("has no source flag", () => {
